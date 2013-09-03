@@ -89,8 +89,6 @@ public class CreateExamDialog extends javax.swing.JDialog {
 
         jComboBoxEcts.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15" }));
 
-        jComboBoxSemester.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "WS 13/14", "SS 13", "WS 12/13", "SS 12", "WS 11/12", "SS 11", "WS 10/11" }));
-
         jTextFieldSubject.setDocument(new pim.JTextFieldLimit(40));
 
         jButtonSubmit.setText("Eintragen");
@@ -170,6 +168,8 @@ public class CreateExamDialog extends javax.swing.JDialog {
                     .addComponent(jButtonSubmit))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        jComboBoxSemester.setModel(new javax.swing.DefaultComboBoxModel(Exam.SEMESTER));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

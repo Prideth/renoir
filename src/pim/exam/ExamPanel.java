@@ -7,10 +7,12 @@ package pim.exam;
 import java.awt.Component;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -18,22 +20,23 @@ import javax.swing.table.TableColumn;
  */
 public class ExamPanel extends javax.swing.JPanel {
     
-    private Exam[] exams;
-    private int size;
     private DefaultTableModel model;
-    
+    private TableRowSorter sorter;
     
     /**
      * Creates new form ExamPanel
      */
     public ExamPanel(Exam[] exams) {
         initComponents();
+        
         model = (DefaultTableModel) jTableExams.getModel();
-        this.exams = new Exam[100];
+        sorter = new TableRowSorter(model);
+        sorter.setComparator(1, new sortBySemester());
+        jTableExams.setRowSorter(sorter);
         
         if (exams != null) {
             for (int i = 0; i < exams.length; i++) {
-                insertExam(exams[i]);
+                model.addRow(exams[i].getTableRow());
             }
             initColumnSizes();
             calculateAverage();
@@ -90,7 +93,11 @@ public class ExamPanel extends javax.swing.JPanel {
         jButtonResult = new javax.swing.JButton();
         jButtonChange = new javax.swing.JButton();
 
-        jComboBoxView.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Alle Klausuren", "Ohne Ergebnis", "WS 13/14", "SS 13", "WS 12/13", "SS 12", "WS 11/12", "SS 11", "WS 10/11" }));
+        jComboBoxView.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxViewActionPerformed(evt);
+            }
+        });
 
         jButtonAdd.setText("Erstellen");
         jButtonAdd.addActionListener(new java.awt.event.ActionListener() {
@@ -117,7 +124,7 @@ public class ExamPanel extends javax.swing.JPanel {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false, false, false, false
@@ -205,34 +212,37 @@ public class ExamPanel extends javax.swing.JPanel {
                     .addComponent(jLabelAverage))
                 .addGap(0, 0, 0))
         );
+
+        String[] values = new String[Exam.SEMESTER.length + 2];
+        values[0] = "Alle Klausuren";
+        values[1] = "Ohne Ergebnis";
+        for (int i = 2; i < Exam.SEMESTER.length + 2; i++) {
+            values[i] = Exam.SEMESTER[i-2];
+        }
+        jComboBoxView.setModel(new javax.swing.DefaultComboBoxModel(values));
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddActionPerformed
-        if (size < exams.length) {
-            JFrame rootWindow = getRootWindow();
-            CreateExamDialog dialog = new CreateExamDialog(rootWindow, true, null);
-            dialog.setTitle("Klausur erstellen");
-            dialog.setLocationRelativeTo(rootWindow);
-            dialog.setVisible(true);
-            Exam exam = dialog.getExam();
-            if (exam != null) {
-                insertExam(exam);
-                jTableExams.changeSelection(size - 1, 0, true, false);
-                calculateAverage();
-            }
-        } else {
-            JOptionPane.showMessageDialog(null,
-                    "Es können maximal " + exams.length + " Klausuren erstellt werden.");
+        JFrame rootWindow = getRootWindow();
+        CreateExamDialog dialog = new CreateExamDialog(rootWindow, true, null);
+        dialog.setTitle("Klausur erstellen");
+        dialog.setLocationRelativeTo(rootWindow);
+        dialog.setVisible(true);
+        Exam exam = dialog.getExam();
+        if (exam != null) {
+            model.addRow(exam.getTableRow());
+            jTableExams.changeSelection(jTableExams.convertRowIndexToView(model.getRowCount() - 1), 0, true, false);
+            calculateAverage();
         }
     }//GEN-LAST:event_jButtonAddActionPerformed
 
     private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
         int index = getSelectedRow();
         if (index > -1) {
-            
+            Exam exam = (Exam) model.getValueAt(index, 0);
             Object[] options = {"Ja", "Nein"};
             int n = JOptionPane.showOptionDialog(null,
-                    "Klausur \"" + exams[index].getSubject() + "\" löschen?",
+                    "Klausur \"" + exam.getSubject() + "\" löschen?",
                     "Löschen bestätigen",
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.QUESTION_MESSAGE,
@@ -241,7 +251,7 @@ public class ExamPanel extends javax.swing.JPanel {
                     options[0]);
             
             if (n == 0) {
-                deleteExam(index);
+                model.removeRow(index);
                 calculateAverage();
             }
         }
@@ -250,30 +260,18 @@ public class ExamPanel extends javax.swing.JPanel {
     private void jButtonResultActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonResultActionPerformed
         int index = getSelectedRow();
         if (index > -1) {
+            Exam exam = (Exam) model.getValueAt(index, 0);
             JFrame rootWindow = getRootWindow();
-            GradesDialog dialog = new GradesDialog(rootWindow, true, exams[index]);
-            dialog.setTitle(exams[index].getSubject());
+            GradesDialog dialog = new GradesDialog(rootWindow, true, exam);
+            dialog.setTitle(exam.getSubject());
             dialog.setLocationRelativeTo(rootWindow);
             dialog.setVisible(true);
-            Exam exam = dialog.getExam();
+            exam = dialog.getExam();
             if (exam != null) {
-                changeExam(index, exam);
+                model.removeRow(index);
+                model.insertRow(index, exam.getTableRow());
+                jTableExams.changeSelection(jTableExams.convertRowIndexToView(index), 0, true, false);
                 calculateAverage();
-                
-                /*
-                int[] grades = exam.getNumbers();
-                String s = "exams[i] = new Exam(\"" + exam.getSubject() + "\", \"" +
-                        exam.getSemester() + "\", " + exam.getEcts() +
-                        ", null, null, null, " + exam.getGrade() + ", \nnew int[]{";
-                for (int i = 0; i< grades.length; i++) {
-                   s = s + grades[i];
-                   if (i < grades.length - 1) {
-                       s = s + ", ";
-                   }
-                }
-                s = s + "});";
-                System.out.println(s);
-                */
             }
         }
     }//GEN-LAST:event_jButtonResultActionPerformed
@@ -281,55 +279,48 @@ public class ExamPanel extends javax.swing.JPanel {
     private void jButtonChangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonChangeActionPerformed
         int index = getSelectedRow();
         if (index > -1) {
+            Exam exam = (Exam) model.getValueAt(index, 0);
             JFrame rootWindow = getRootWindow();
-            CreateExamDialog dialog = new CreateExamDialog(rootWindow, true, exams[index]);
-            dialog.setTitle(exams[index].getSubject());
+            CreateExamDialog dialog = new CreateExamDialog(rootWindow, true, exam);
+            dialog.setTitle(exam.getSubject());
             dialog.setLocationRelativeTo(rootWindow);
             dialog.setVisible(true);
-            Exam exam = dialog.getExam();
+            exam = dialog.getExam();
             if (exam != null) {
-                changeExam(index, exam);
+                model.removeRow(index);
+                model.insertRow(index, exam.getTableRow());
+                jTableExams.changeSelection(jTableExams.convertRowIndexToView(index), 0, true, false);
                 calculateAverage();
             }
         }
     }//GEN-LAST:event_jButtonChangeActionPerformed
 
-    private void insertExam(Exam exam) {
-        exams[size++] = exam;
-        model.addRow(exam.getTableRow());
-    }
-    
-    private void deleteExam(int index) {
-        for (int i = index; i < size - 1; i++) {
-            exams[i] = exams[i + 1];
+    private void jComboBoxViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxViewActionPerformed
+        if (jComboBoxView.getSelectedIndex() == 0) {
+            sorter.setRowFilter(null);
+        } else if (jComboBoxView.getSelectedIndex() == 1) {
+            sorter.setRowFilter(RowFilter.regexFilter("^$", 6));
+        } else {
+            sorter.setRowFilter(RowFilter.regexFilter((String) jComboBoxView.getSelectedItem(), 1));
         }
-        exams[--size] = null;
-        model.removeRow(index);
-    }
-    
-    private void changeExam(int index, Exam exam) {
-        exams[index] = exam;
-        model.removeRow(index); 
-        model.insertRow(index, exam.getTableRow());
-        jTableExams.changeSelection(index, 0, true, false);
-    }
-    
+    }//GEN-LAST:event_jComboBoxViewActionPerformed
+
     
     private void calculateAverage() {
         int ects1 = 0;
         int ects2 = 0;
         double sum1 = 0d;
-        double sum2 = 0d;
-        for (int i = 0; i < size; i++) {
-            if (exams[i].getGrade() > 0.0 && exams[i].getGrade() < 5.0) {
-                sum1 += exams[i].getEcts() * exams[i].getGrade();
-                ects1 += exams[i].getEcts();
-                if (exams[i].getAverage() > 0.0) {
-                    sum2 += exams[i].getEcts() * exams[i].getAverage();
-                    ects2 += exams[i].getEcts();
+        double sum2 = 0d; 
+        for (int i = 0; i < model.getRowCount(); i++) {
+            Exam exam = (Exam)model.getValueAt(i, 0);
+            if (exam.getGrade() > 0.0 && exam.getGrade() < 5.0) {
+                sum1 += exam.getEcts() * exam.getGrade();
+                ects1 += exam.getEcts();
+                if (exam.getAverage() > 0.0) {
+                    sum2 += exam.getEcts() * exam.getAverage();
+                    ects2 += exam.getEcts();
                 }
             }
-
         }
         double average1 = Math.round((sum1 / ects1) * 10d) / 10d;
         double average2 = Math.round((sum2 / ects2) * 10d) / 10d;
@@ -338,10 +329,13 @@ public class ExamPanel extends javax.swing.JPanel {
     }
     
     
+    
     private int getSelectedRow() {
         int index = jTableExams.getSelectedRow();
         if (index < 0) {
             JOptionPane.showMessageDialog(null, "Es ist keine Klausur ausgewählt.");
+        } else {
+             index = jTableExams.convertRowIndexToModel(index);
         }
         return index;
     }
