@@ -4,26 +4,9 @@
  */
 package pim.mail;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.mail.Folder;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Multipart;
-import javax.mail.Part;
-import javax.mail.Session;
-import javax.mail.Store;
-import javax.mail.Transport;
-import javax.mail.internet.AddressException;
+import java.util.Date;
+import javax.mail.Address;
 import javax.mail.internet.ContentType;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
 
 /**
  *
@@ -31,99 +14,104 @@ import javax.mail.internet.MimeMessage;
  */
 public class Mail {
 
-    public static void send(MailAccounts acc, String recipient, String subject,
-            String text) throws AddressException, MessagingException {
-        // Properties über die Systemeigenschaften anlegen
-        Properties properties = System.getProperties();
-        properties.setProperty("mail.smtp.host", acc.getSmtpHost());
-        properties.setProperty("mail.smtp.port", String.valueOf(acc.getPort()));
-        properties.setProperty("mail.smtp.starttls.enable", "true");
-        properties.setProperty("mail.smtp.auth", "true");
+    private String from;
+    private Address[] recipientsTo;
+    private String subject;
+    private Date sentDate;
+    private ContentType contentType;
+    private Object content;
 
-        Session session = Session.getDefaultInstance(properties, acc.getPasswordAuthentication());
-
-        MimeMessage msg = new MimeMessage(session);
-
-        // Von wem kommt die E-Mail?
-        msg.setFrom(new InternetAddress(acc.getEmail()));
-
-        // Wohin soll die Reise gehen?
-        // CC geht beispielsweise an Message.RecipientType.CC
-        msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipient, false));
-
-        msg.setSubject(subject);
-        msg.setText(text);
-
-        Transport.send(msg);
+    public Mail(String from, Address[] recipientsTo, String subject, Date sentDate, ContentType contentType, Object content) {
+        this.from = from;
+        this.content = content;
+        this.subject = subject;
+        this.contentType = contentType;
+        this.recipientsTo = recipientsTo;
+        this.sentDate = sentDate;
+    
     }
 
-    public static void receive(MailAccounts acc) throws AddressException, MessagingException {
+    /**
+     * @return the from
+     */
+    public String getFrom() {
+        return from;
+    }
 
-            // Properties über die Systemeigenschaften anlegen
-                   Properties properties = System.getProperties();
-        properties.setProperty("mail.imaps.host", acc.getImapHost());
-        properties.setProperty("mail.imaps.port", String.valueOf(acc.getImapPort()));
-        properties.setProperty("mail.store.protocol", "imaps");
+    /**
+     * @param from the from to set
+     */
+    public void setFrom(String from) {
+        this.from = from;
+    }
 
-            Session session = Session.getDefaultInstance(properties, acc.getPasswordAuthentication());
-            //Gibt in der Console Debug-Meldungen zum Verlauf aus
-            session.setDebug(false);
+    /**
+     * @return the recipientsTo
+     */
+    public Address[] getRecipientsTo() {
+        return recipientsTo;
+    }
 
-            //Store: dient dem zum Ablegen der Nachrichten
-            Store store = session.getStore("imaps");
-            store.connect();
+    /**
+     * @param recipientsTo the recipientsTo to set
+     */
+    public void setRecipientsTo(Address[] recipientsTo) {
+        this.recipientsTo = recipientsTo;
+    }
 
-           //Folder: ist ein Ordner-Object für Mails
-            Folder folder = store.getFolder("INBOX");
-            folder.open(Folder.READ_ONLY);
+    /**
+     * @return the subject
+     */
+    public String getSubject() {
+        return subject;
+    }
 
-            Message message[] = folder.getMessages();
+    /**
+     * @param subject the subject to set
+     */
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
 
-            for (int i = 0; i < 10; i++) {
-                try {
-                    Message m = message[i];
+    /**
+     * @return the sentDate
+     */
+    public Date getSentDate() {
+        return sentDate;
+    }
 
-                    System.out.println("-----------------------\nNachricht: " + i);
-                    System.out.println("Von: " + Arrays.toString(m.getFrom()));
-                    System.out.println("Betreff: " + m.getSubject());
-                    System.out.println("Gesendet am: " + m.getSentDate());
-                    System.out.println("ContentType: " + new ContentType(m.getContentType()));
-                    System.out.println("Content: " + m.getContent());
+    /**
+     * @param sentDate the sentDate to set
+     */
+    public void setSentDate(Date sentDate) {
+        this.sentDate = sentDate;
+    }
 
-                    //Nachricht ist eine einfache Text- bzw. HTML-Nachricht
-                    if (m.isMimeType("text/plain")) {
-                        System.out.println(m.getContent());
-                    }
+    /**
+     * @return the contentType
+     */
+    public ContentType getContentType() {
+        return contentType;
+    }
 
-                    //Nachricht ist eine Multipart-Nachricht (besteht aus mehreren Teilen)
-                    if (m.isMimeType("multipart/*")) {
-                        Multipart mp = (Multipart) m.getContent();
+    /**
+     * @param contentType the contentType to set
+     */
+    public void setContentType(ContentType contentType) {
+        this.contentType = contentType;
+    }
 
-                        for (int j = 0; j < mp.getCount(); j++) {
-                            Part part = mp.getBodyPart(j);
-                            String disposition = part.getDisposition();
+    /**
+     * @return the content
+     */
+    public Object getContent() {
+        return content;
+    }
 
-                            if (disposition == null) {
-                                MimeBodyPart mimePart = (MimeBodyPart) part;
-
-                                if (mimePart.isMimeType("text/plain")) {
-                                    BufferedReader in = new BufferedReader(new InputStreamReader(mimePart.getInputStream()));
-
-                                    for (String line; (line = in.readLine()) != null;) {
-                                        System.out.println(line);
-                                    }
-                                }
-                            }
-                        }
-                    }//if Multipart
-                } catch (IOException ex) {
-                    Logger.getLogger(Mail.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-            }
-
-            folder.close(false);
-            store.close();
-
+    /**
+     * @param content the content to set
+     */
+    public void setContent(Object content) {
+        this.content = content;
     }
 }

@@ -183,7 +183,7 @@ public class MailWriteDialog extends JDialog {
             }
             if (n == 1 || !subject.equals("")) {
                 try {
-                    Mail.send(MailAccounts.GOOGLEMAIL, recipient, subject, text);
+                    MailFunction.send(MailAccounts.GOOGLEMAIL, recipient, subject, text);
                 } catch (AddressException ex) {
                     Logger.getLogger(MailWriteDialog.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (MessagingException ex) {

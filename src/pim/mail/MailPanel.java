@@ -282,7 +282,7 @@ public class MailPanel extends JPanel {
         public void run() {
             try {
                 jLabelStatus.setText("Empfange Emails...");
-                Mail.receive(MailAccounts.GOOGLEMAIL);
+                MailFunction.receive(MailAccounts.GOOGLEMAIL);
             } catch (AddressException ex) {
                 Logger.getLogger(MailPanel.class.getName()).log(Level.SEVERE, null, ex);
             } catch (MessagingException ex) {
