@@ -5,7 +5,10 @@
 package pim;
 
 import java.awt.Color;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 import pim.database.DatabaseReader;
+import pim.mail.MailSettings;
 
 /**
  *
@@ -53,6 +56,7 @@ public class MainFrame extends javax.swing.JFrame {
         jMenuBar = new javax.swing.JMenuBar();
         jMenuFile = new javax.swing.JMenu();
         jMenuSettings = new javax.swing.JMenu();
+        jMenuItemMailSettings = new javax.swing.JMenuItem();
         jMenuInfo = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -152,6 +156,15 @@ public class MainFrame extends javax.swing.JFrame {
         jMenuBar.add(jMenuFile);
 
         jMenuSettings.setText("Einstellungen");
+
+        jMenuItemMailSettings.setText("E-Mail Einstellungen");
+        jMenuItemMailSettings.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemMailSettingsActionPerformed(evt);
+            }
+        });
+        jMenuSettings.add(jMenuItemMailSettings);
+
         jMenuBar.add(jMenuSettings);
 
         jMenuInfo.setText("Info");
@@ -210,6 +223,14 @@ public class MainFrame extends javax.swing.JFrame {
     private void jButtonNotesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNotesActionPerformed
         switchPanel(notePanel, jButtonNotes);
     }//GEN-LAST:event_jButtonNotesActionPerformed
+
+    private void jMenuItemMailSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemMailSettingsActionPerformed
+      JFrame rootWindow = (JFrame) SwingUtilities.getWindowAncestor(this);
+        MailSettings dialog = new MailSettings(rootWindow, true);
+        dialog.setTitle("E-Mail Einstellungen");
+        dialog.setLocationRelativeTo(rootWindow);
+        dialog.setVisible(true);
+    }//GEN-LAST:event_jMenuItemMailSettingsActionPerformed
 
     
     private void switchPanel(javax.swing.JPanel panel, javax.swing.JButton button) {
@@ -309,6 +330,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar;
     private javax.swing.JMenu jMenuFile;
     private javax.swing.JMenu jMenuInfo;
+    private javax.swing.JMenuItem jMenuItemMailSettings;
     private javax.swing.JMenu jMenuSettings;
     private javax.swing.JPanel jPanelContent;
     private javax.swing.JSeparator jSeparator1;
