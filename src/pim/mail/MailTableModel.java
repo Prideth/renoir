@@ -15,8 +15,8 @@ import javax.swing.table.TableModel;
  * @author matthiaskiefer
  */
 class MailTableModel implements TableModel {
-    public static final int COLUMN_COUNT = 3;
 
+    public static final int COLUMN_COUNT = 3;
     private Vector mails = new Vector();
     private Vector listeners = new Vector();
 
@@ -36,13 +36,17 @@ class MailTableModel implements TableModel {
             ((TableModelListener) listeners.get(i)).tableChanged(e);
         }
     }
+    
+    
+    public Mail getMailAt(int rowIndex) {
+       Mail mail = (Mail) mails.get(rowIndex);
+       return mail;
+    }
 
-    // Die Anzahl Columns
     public int getColumnCount() {
         return COLUMN_COUNT;
     }
 
-    // Die Anzahl Vehikel
     public int getRowCount() {
         return mails.size();
     }
@@ -72,7 +76,7 @@ class MailTableModel implements TableModel {
                 return mail.getSubject();
             case 2:
                 return mail.getSentDate();
-           
+
             default:
                 return null;
         }
@@ -107,4 +111,5 @@ class MailTableModel implements TableModel {
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         // nicht beachten
     }
+
 }

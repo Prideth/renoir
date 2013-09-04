@@ -20,17 +20,25 @@ public class Mail {
     private Date sentDate;
     private ContentType contentType;
     private Object content;
+    private boolean msgType;
 
-    public Mail(String from, Address[] recipientsTo, String subject, Date sentDate, ContentType contentType, Object content) {
+    public Mail(String from, Address[] recipientsTo, String subject, Date sentDate, ContentType contentType, Object content, boolean msgType) {
         this.from = from;
         this.content = content;
         this.subject = subject;
         this.contentType = contentType;
         this.recipientsTo = recipientsTo;
         this.sentDate = sentDate;
+         this.msgType = msgType;
+
     
     }
 
+     public boolean getMsgType() {
+        return msgType;
+    }
+     
+ 
     /**
      * @return the from
      */

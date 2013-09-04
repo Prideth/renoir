@@ -31,6 +31,7 @@ import javax.mail.internet.MimeMessage;
  * @author matthiaskiefer
  */
 public class MailFunction {
+
     public static void send(MailAccounts acc, String recipient, String subject,
             String text) throws AddressException, MessagingException {
         // Properties über die Systemeigenschaften anlegen
@@ -58,7 +59,7 @@ public class MailFunction {
     }
 
     public static ArrayList<Mail> receive(MailAccounts acc) throws AddressException, MessagingException {
-       ArrayList<Mail> mList;
+        ArrayList<Mail> mList;
         mList = new ArrayList<Mail>();
         // Properties über die Systemeigenschaften anlegen
         Properties properties = System.getProperties();
@@ -83,10 +84,6 @@ public class MailFunction {
         for (int i = 0; i < message.length; i++) {
             try {
                 Message msg = message[i];
-
-                mList.add(new Mail(Arrays.toString(msg.getFrom()), msg.getRecipients(Message.RecipientType.TO), msg.getSubject(), msg.getSentDate(), new ContentType(msg.getContentType()), msg.getContent()));
-
-                    
                 System.out.println("-----------------------\nNachricht: " + i);
                 System.out.println("Von: " + Arrays.toString(msg.getFrom()));
                 System.out.println("Betreff: " + msg.getSubject());
@@ -97,12 +94,11 @@ public class MailFunction {
                 //Nachricht ist eine einfache Text- bzw. HTML-Nachricht
                 if (msg.isMimeType("text/plain")) {
                     System.out.println(msg.getContent());
-                }
-
-                //Nachricht ist eine Multipart-Nachricht (besteht aus mehreren Teilen)
-                if (msg.isMimeType("multipart/*")) {
+                    mList.add(new Mail(Arrays.toString(msg.getFrom()), msg.getRecipients(Message.RecipientType.TO), msg.getSubject(), msg.getSentDate(), new ContentType(msg.getContentType()), msg.getContent(), msg.isMimeType("text/plain")));
+                } else {
                     Multipart mp = (Multipart) msg.getContent();
-
+                  
+                     StringBuilder sb = new StringBuilder();
                     for (int j = 0; j < mp.getCount(); j++) {
                         Part part = mp.getBodyPart(j);
                         String disposition = part.getDisposition();
@@ -112,13 +108,16 @@ public class MailFunction {
 
                             if (mimePart.isMimeType("text/plain")) {
                                 BufferedReader in = new BufferedReader(new InputStreamReader(mimePart.getInputStream()));
-
+                                
                                 for (String line; (line = in.readLine()) != null;) {
+                                    sb.append(line);
+                                    sb.append("\n");
                                     System.out.println(line);
                                 }
                             }
                         }
                     }
+                      mList.add(new Mail(Arrays.toString(msg.getFrom()), msg.getRecipients(Message.RecipientType.TO), msg.getSubject(), msg.getSentDate(), new ContentType(msg.getContentType()), sb.toString(), msg.isMimeType("text/plain")));
                 }//if Multipart
             } catch (IOException ex) {
                 Logger.getLogger(MailFunction.class.getName()).log(Level.SEVERE, null, ex);

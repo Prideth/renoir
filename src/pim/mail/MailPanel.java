@@ -4,12 +4,23 @@
  */
 package pim.mail;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.Part;
 import javax.mail.internet.AddressException;
+import javax.mail.internet.ContentType;
+import javax.mail.internet.MimeBodyPart;
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import pim.*;
 
 /**
@@ -17,6 +28,8 @@ import pim.*;
  * @author lk
  */
 public class MailPanel extends JPanel {
+
+    MailTableModel model;
 
     /**
      * Creates new form MailForm
@@ -26,6 +39,9 @@ public class MailPanel extends JPanel {
 
         TextFieldListener textFieldListener = new TextFieldListener();
         jTextFieldSearch.addMouseListener(textFieldListener);
+
+        jTableMails.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        jTableMails.getSelectionModel().addListSelectionListener(new MySelectionListener(jTableMails));
     }
 
     /**
@@ -127,6 +143,11 @@ public class MailPanel extends JPanel {
             }
         ));
         jTableMails.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jTableMails.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jTableMailsFocusGained(evt);
+            }
+        });
         jScrollPane.setViewportView(jTableMails);
 
         jSplitPane.setLeftComponent(jScrollPane);
@@ -259,6 +280,10 @@ public class MailPanel extends JPanel {
         Thread mThread = new Thread(getMails);
         mThread.start();
     }//GEN-LAST:event_jButtonReceiveMailActionPerformed
+
+    private void jTableMailsFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTableMailsFocusGained
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTableMailsFocusGained
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonDelete;
     private javax.swing.JButton jButtonForward;
@@ -298,11 +323,39 @@ public class MailPanel extends JPanel {
     }
 
     private void setMails(ArrayList<Mail> a) {
-        final MailTableModel model = new MailTableModel();
+        model = new MailTableModel();
         jTableMails.setModel(model);
 
         for (int i = 0; i < a.size(); i++) {
             model.addMail(a.get(i));
         }
     }
-}
+
+    private void setContent(Object content, ContentType contentType, boolean msgType) throws MessagingException, IOException {
+
+       jTextAreaMailBody.setText((String) content);
+    }
+
+        class MySelectionListener implements ListSelectionListener {
+
+            JTable table;
+
+            public MySelectionListener(JTable table) {
+                this.table = table;
+            }
+
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (e.getValueIsAdjusting()) {
+                    return;
+                }
+                try {
+                    setContent(model.getMailAt(table.getSelectedRow()).getContent(), model.getMailAt(table.getSelectedRow()).getContentType(), model.getMailAt(table.getSelectedRow()).getMsgType());
+                } catch (MessagingException ex) {
+                    Logger.getLogger(MailPanel.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(MailPanel.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
