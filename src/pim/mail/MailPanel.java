@@ -4,6 +4,7 @@
  */
 package pim.mail;
 
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.mail.MessagingException;
@@ -170,7 +171,7 @@ public class MailPanel extends JPanel {
                 .addComponent(jButtonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButtonSpam, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 173, Short.MAX_VALUE))
+                .addGap(0, 116, Short.MAX_VALUE))
             .addComponent(jScrollPane1)
         );
         jPanel1Layout.setVerticalGroup(
@@ -207,10 +208,11 @@ public class MailPanel extends JPanel {
                 .addComponent(jButtonWriteMail, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonReceiveMail)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(jLabelSearch)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextFieldSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jTextFieldSearch)
+                .addContainerGap())
             .addComponent(jSplitPane)
             .addGroup(layout.createSequentialGroup()
                 .addGap(1, 1, 1)
@@ -280,19 +282,27 @@ public class MailPanel extends JPanel {
 
         @Override
         public void run() {
+            ArrayList<Mail> receive = null;
             try {
                 jLabelStatus.setText("Empfange Emails...");
-                MailFunction.receive(MailAccounts.GOOGLEMAIL);
+                receive = MailFunction.receive(MailAccounts.GOOGLEMAIL);
             } catch (AddressException ex) {
                 Logger.getLogger(MailPanel.class.getName()).log(Level.SEVERE, null, ex);
             } catch (MessagingException ex) {
                 Logger.getLogger(MailPanel.class.getName()).log(Level.SEVERE, null, ex);
             } finally {
                 jLabelStatus.setText("Statusleiste");
+                setMails(receive);
             }
         }
     }
 
-   
+    private void setMails(ArrayList<Mail> a) {
+        final MailTableModel model = new MailTableModel();
+        jTableMails.setModel(model);
 
+        for (int i = 0; i < a.size(); i++) {
+            model.addMail(a.get(i));
+        }
+    }
 }

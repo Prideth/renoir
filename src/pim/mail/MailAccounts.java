@@ -12,7 +12,7 @@ public enum MailAccounts {
     // Hier bitte die ensprechenden Attribute jeweils anpassen
 
     GOOGLEMAIL("imap.gmail.com", "smtp.gmail.com", 587, 993, "renoirprog3", "pimprog3", "renoirprog3@gmail.com"), // Hier können weitere E-Mail Accounts als ENUM angelegt werden
-    ;
+;
     private String smtpHost;
     private String imapHost;
     private int smtpPort;

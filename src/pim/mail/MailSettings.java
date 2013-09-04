@@ -90,6 +90,11 @@ public class MailSettings extends javax.swing.JDialog {
         });
 
         jButtonSave.setText("Speichern");
+        jButtonSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSaveActionPerformed(evt);
+            }
+        });
 
         jLabel11.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         jLabel11.setText("Internet-E-Mail-Einstellungen");
@@ -116,14 +121,6 @@ public class MailSettings extends javax.swing.JDialog {
                             .add(jLabel4)
                             .add(jLabel8)
                             .add(layout.createSequentialGroup()
-                                .add(jLabel3)
-                                .add(104, 104, 104)
-                                .add(jTextFieldMailAddress))
-                            .add(layout.createSequentialGroup()
-                                .add(jLabel2)
-                                .add(146, 146, 146)
-                                .add(jTextFieldName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 249, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                            .add(layout.createSequentialGroup()
                                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                                     .add(jLabel5)
                                     .add(jLabel6)
@@ -132,11 +129,19 @@ public class MailSettings extends javax.swing.JDialog {
                                     .add(jLabel10))
                                 .add(78, 78, 78)
                                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                    .add(jComboBoxAccountTyp, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .add(jComboBoxAccountTyp, 0, 249, Short.MAX_VALUE)
                                     .add(jTextFieldServerIn)
                                     .add(jTextFieldServerOut)
                                     .add(jTextFieldAccountName)
-                                    .add(jTextFieldPassword)))))
+                                    .add(jTextFieldPassword)))
+                            .add(layout.createSequentialGroup()
+                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                    .add(jLabel3)
+                                    .add(jLabel2))
+                                .add(104, 104, 104)
+                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                                    .add(jTextFieldName, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE)
+                                    .add(jTextFieldMailAddress)))))
                     .add(jLabel11))
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -198,6 +203,11 @@ public class MailSettings extends javax.swing.JDialog {
     private void jButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelActionPerformed
         this.dispose();
     }//GEN-LAST:event_jButtonCancelActionPerformed
+
+    private void jButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSaveActionPerformed
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonSaveActionPerformed
 
     /**
      * @param args the command line arguments
