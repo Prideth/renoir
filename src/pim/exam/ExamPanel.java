@@ -344,6 +344,7 @@ public class ExamPanel extends javax.swing.JPanel {
         return (JFrame) SwingUtilities.getWindowAncestor(this.getParent());
     }
     
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAdd;
     private javax.swing.JButton jButtonChange;
