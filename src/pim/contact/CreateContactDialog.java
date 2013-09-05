@@ -4,6 +4,18 @@
  */
 package pim.contact;
 
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import pim.*;
 
 /**
@@ -26,12 +38,29 @@ public class CreateContactDialog extends javax.swing.JDialog {
         jTextFieldName.addMouseListener(textFieldListener);
         jTextFieldMail.addMouseListener(textFieldListener);
         jTextFieldMobil.addMouseListener(textFieldListener);
+        jTextFieldDescription1.addMouseListener(textFieldListener);
+        jTextFieldDescription2.addMouseListener(textFieldListener);
+        jTextFieldDescription3.addMouseListener(textFieldListener);
+        jTextFieldDescription4.addMouseListener(textFieldListener);
+        jTextFieldContent1.addMouseListener(textFieldListener);
+        jTextFieldContent2.addMouseListener(textFieldListener);
+        jTextFieldContent3.addMouseListener(textFieldListener);
+        jTextFieldContent4.addMouseListener(textFieldListener);
         
         if (contact != null) {
             jTextFieldName.setText(contact.getName());
             jTextFieldMail.setText(contact.getMail());
             jTextFieldMobil.setText(contact.getMobil());
         }
+        
+        jTextFieldDescription1.setDocument(new pim.JTextFieldLimit(10));
+        jTextFieldDescription2.setDocument(new pim.JTextFieldLimit(10));
+        jTextFieldDescription3.setDocument(new pim.JTextFieldLimit(10));
+        jTextFieldDescription4.setDocument(new pim.JTextFieldLimit(10));
+        jTextFieldContent1.setDocument(new pim.JTextFieldLimit(20));
+        jTextFieldContent2.setDocument(new pim.JTextFieldLimit(20));
+        jTextFieldContent3.setDocument(new pim.JTextFieldLimit(20));
+        jTextFieldContent4.setDocument(new pim.JTextFieldLimit(20));
     }
 
     /**
@@ -48,11 +77,24 @@ public class CreateContactDialog extends javax.swing.JDialog {
         jButtonOk = new javax.swing.JButton();
         jLabelMail = new javax.swing.JLabel();
         jLabelMobil = new javax.swing.JLabel();
-        jLabelPhone = new javax.swing.JLabel();
         jTextFieldMail = new javax.swing.JTextField();
         jTextFieldMobil = new javax.swing.JTextField();
-        jTextFieldPhone = new javax.swing.JTextField();
         jButtonCancel = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        jLabelMoreFields = new javax.swing.JLabel();
+        jLabelDescription = new javax.swing.JLabel();
+        jLabelContent = new javax.swing.JLabel();
+        jTextFieldDescription1 = new javax.swing.JTextField();
+        jTextFieldDescription2 = new javax.swing.JTextField();
+        jTextFieldDescription3 = new javax.swing.JTextField();
+        jTextFieldDescription4 = new javax.swing.JTextField();
+        jTextFieldContent1 = new javax.swing.JTextField();
+        jTextFieldContent2 = new javax.swing.JTextField();
+        jTextFieldContent3 = new javax.swing.JTextField();
+        jTextFieldContent4 = new javax.swing.JTextField();
+        jSeparator1 = new javax.swing.JSeparator();
+        jLabelImage = new javax.swing.JLabel();
+        jSeparator2 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -70,8 +112,6 @@ public class CreateContactDialog extends javax.swing.JDialog {
 
         jLabelMobil.setText("Handy:");
 
-        jLabelPhone.setText("Telefon:");
-
         jButtonCancel.setText("Abbrechen");
         jButtonCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -79,30 +119,97 @@ public class CreateContactDialog extends javax.swing.JDialog {
             }
         });
 
+        jLabelMoreFields.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabelMoreFields.setText("Weitere Felder");
+
+        jLabelDescription.setText("Bezeichnung");
+
+        jLabelContent.setText("Inhalt");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelMoreFields)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jTextFieldDescription3, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextFieldDescription2, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextFieldDescription1, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabelDescription, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
+                            .addComponent(jTextFieldDescription4))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jTextFieldContent3)
+                            .addComponent(jLabelContent, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
+                            .addComponent(jTextFieldContent2, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextFieldContent4)
+                            .addComponent(jTextFieldContent1, javax.swing.GroupLayout.Alignment.LEADING))))
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jLabelMoreFields)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelDescription)
+                    .addComponent(jLabelContent))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextFieldDescription1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldContent1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextFieldDescription2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldContent2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextFieldDescription3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldContent3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextFieldDescription4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldContent4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        );
+
+        jLabelImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pim/icons/member.png"))); // NOI18N
+        jLabelImage.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jLabelImage.setOpaque(true);
+        jLabelImage.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabelImageMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(jSeparator2)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabelMail)
-                            .addComponent(jLabelMobil, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabelPhone)
+                            .addComponent(jLabelMobil, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
                             .addComponent(jLabelName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jTextFieldMobil, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jTextFieldMail, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextFieldPhone)
                             .addComponent(jTextFieldName)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButtonOk, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabelImage)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButtonOk, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButtonCancel, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -121,13 +228,18 @@ public class CreateContactDialog extends javax.swing.JDialog {
                     .addComponent(jLabelMobil)
                     .addComponent(jTextFieldMobil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextFieldPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabelPhone))
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonCancel)
-                    .addComponent(jButtonOk))
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelImage)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonOk)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonCancel)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -157,6 +269,34 @@ public class CreateContactDialog extends javax.swing.JDialog {
         contact = null;
         this.dispose();
     }//GEN-LAST:event_jButtonCancelActionPerformed
+
+    private void jLabelImageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelImageMouseClicked
+        JFileChooser fc = new JFileChooser();
+        fc.setFileFilter(new FileNameExtensionFilter(
+                "Bilder", ImageIO.getReaderFileSuffixes()));
+
+
+        if (fc.showOpenDialog(null) == 0) {
+            File file = fc.getSelectedFile();
+            
+            BufferedImage img;
+            try {
+                img = ImageIO.read(file);
+                Image scaled = img.getScaledInstance(64, 64, Image.SCALE_SMOOTH);
+                BufferedImage scalledImage = new BufferedImage(64, 64, BufferedImage.TYPE_INT_RGB);
+                Graphics2D g2d = scalledImage.createGraphics();
+                g2d.drawImage(scaled, 0, 0, null);
+                g2d.dispose();
+
+                Icon icon = new ImageIcon(scalledImage);
+
+                jLabelImage.setIcon(icon);
+
+            } catch (Exception e) {
+                
+            }
+        }
+    }//GEN-LAST:event_jLabelImageMouseClicked
     
     public Contact getContact() {
         return contact;
@@ -166,13 +306,26 @@ public class CreateContactDialog extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonCancel;
     private javax.swing.JButton jButtonOk;
+    private javax.swing.JLabel jLabelContent;
+    private javax.swing.JLabel jLabelDescription;
+    private javax.swing.JLabel jLabelImage;
     private javax.swing.JLabel jLabelMail;
     private javax.swing.JLabel jLabelMobil;
+    private javax.swing.JLabel jLabelMoreFields;
     private javax.swing.JLabel jLabelName;
-    private javax.swing.JLabel jLabelPhone;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JTextField jTextFieldContent1;
+    private javax.swing.JTextField jTextFieldContent2;
+    private javax.swing.JTextField jTextFieldContent3;
+    private javax.swing.JTextField jTextFieldContent4;
+    private javax.swing.JTextField jTextFieldDescription1;
+    private javax.swing.JTextField jTextFieldDescription2;
+    private javax.swing.JTextField jTextFieldDescription3;
+    private javax.swing.JTextField jTextFieldDescription4;
     private javax.swing.JTextField jTextFieldMail;
     private javax.swing.JTextField jTextFieldMobil;
     private javax.swing.JTextField jTextFieldName;
-    private javax.swing.JTextField jTextFieldPhone;
     // End of variables declaration//GEN-END:variables
 }

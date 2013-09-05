@@ -4,6 +4,8 @@
  */
 package pim.contact;
 
+import javax.swing.Icon;
+
 /**
  *
  * @author lk
@@ -14,6 +16,15 @@ public class Contact {
     private String name;
     private String mail;
     private String mobil;
+    private String fieldDescription1;
+    private String fieldDescription2;
+    private String fieldDescription3;
+    private String fieldDescription4;
+    private String fieldContent1;
+    private String fieldContent2;
+    private String fieldContent3;
+    private String fieldContent4;
+    private Icon icon;
 
     public Contact(String name, String mail, String mobil) {
         this.name = name;
