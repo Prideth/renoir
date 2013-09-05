@@ -5,14 +5,19 @@
 package pim.exam;
 
 import java.awt.Component;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableRowSorter;
+import pim.TextFieldListener;
+import pim.TextFieldPopup;
 
 /**
  *
@@ -22,6 +27,7 @@ public class ExamPanel extends javax.swing.JPanel {
     
     private DefaultTableModel model;
     private TableRowSorter sorter;
+    
     
     /**
      * Creates new form ExamPanel
@@ -41,8 +47,12 @@ public class ExamPanel extends javax.swing.JPanel {
             initColumnSizes();
             calculateAverage();
         }
+        
+        jTableExams.getTableHeader().addMouseListener(new HeaderListener());
+        
     }
-  
+    
+    
     private void initColumnSizes() {
         TableColumn column;
         Component comp;
