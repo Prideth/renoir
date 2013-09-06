@@ -146,14 +146,12 @@
                               <Component id="jTextFieldDescription2" alignment="0" max="32767" attributes="0"/>
                               <Component id="jTextFieldDescription1" alignment="0" max="32767" attributes="0"/>
                               <Component id="jLabelDescription" alignment="0" pref="90" max="32767" attributes="0"/>
-                              <Component id="jTextFieldDescription4" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="1" max="-2" attributes="0">
                               <Component id="jTextFieldContent3" max="32767" attributes="0"/>
                               <Component id="jLabelContent" alignment="0" pref="164" max="32767" attributes="0"/>
                               <Component id="jTextFieldContent2" alignment="0" max="32767" attributes="0"/>
-                              <Component id="jTextFieldContent4" max="32767" attributes="0"/>
                               <Component id="jTextFieldContent1" alignment="0" max="32767" attributes="0"/>
                           </Group>
                       </Group>
@@ -186,11 +184,7 @@
                       <Component id="jTextFieldDescription3" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jTextFieldContent3" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jTextFieldDescription4" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jTextFieldContent4" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
+                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -220,15 +214,11 @@
         </Component>
         <Component class="javax.swing.JTextField" name="jTextFieldDescription3">
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextFieldDescription4">
-        </Component>
         <Component class="javax.swing.JTextField" name="jTextFieldContent1">
         </Component>
         <Component class="javax.swing.JTextField" name="jTextFieldContent2">
         </Component>
         <Component class="javax.swing.JTextField" name="jTextFieldContent3">
-        </Component>
-        <Component class="javax.swing.JTextField" name="jTextFieldContent4">
         </Component>
       </SubComponents>
     </Container>

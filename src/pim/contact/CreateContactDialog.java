@@ -8,9 +8,6 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -41,26 +38,28 @@ public class CreateContactDialog extends javax.swing.JDialog {
         jTextFieldDescription1.addMouseListener(textFieldListener);
         jTextFieldDescription2.addMouseListener(textFieldListener);
         jTextFieldDescription3.addMouseListener(textFieldListener);
-        jTextFieldDescription4.addMouseListener(textFieldListener);
         jTextFieldContent1.addMouseListener(textFieldListener);
         jTextFieldContent2.addMouseListener(textFieldListener);
         jTextFieldContent3.addMouseListener(textFieldListener);
-        jTextFieldContent4.addMouseListener(textFieldListener);
+        
+        jTextFieldDescription1.setDocument(new pim.JTextFieldLimit(10));
+        jTextFieldDescription2.setDocument(new pim.JTextFieldLimit(10));
+        jTextFieldDescription3.setDocument(new pim.JTextFieldLimit(10));
+        jTextFieldContent1.setDocument(new pim.JTextFieldLimit(20));
+        jTextFieldContent2.setDocument(new pim.JTextFieldLimit(20));
+        jTextFieldContent3.setDocument(new pim.JTextFieldLimit(20));
         
         if (contact != null) {
             jTextFieldName.setText(contact.getName());
             jTextFieldMail.setText(contact.getMail());
             jTextFieldMobil.setText(contact.getMobil());
+            jTextFieldDescription1.setText(contact.getDescription1());
+            jTextFieldContent1.setText(contact.getContent1());
+            jTextFieldDescription2.setText(contact.getDescription2());
+            jTextFieldContent2.setText(contact.getContent2());
+            jTextFieldDescription3.setText(contact.getDescription3());
+            jTextFieldContent3.setText(contact.getContent3());
         }
-        
-        jTextFieldDescription1.setDocument(new pim.JTextFieldLimit(10));
-        jTextFieldDescription2.setDocument(new pim.JTextFieldLimit(10));
-        jTextFieldDescription3.setDocument(new pim.JTextFieldLimit(10));
-        jTextFieldDescription4.setDocument(new pim.JTextFieldLimit(10));
-        jTextFieldContent1.setDocument(new pim.JTextFieldLimit(20));
-        jTextFieldContent2.setDocument(new pim.JTextFieldLimit(20));
-        jTextFieldContent3.setDocument(new pim.JTextFieldLimit(20));
-        jTextFieldContent4.setDocument(new pim.JTextFieldLimit(20));
     }
 
     /**
@@ -87,11 +86,9 @@ public class CreateContactDialog extends javax.swing.JDialog {
         jTextFieldDescription1 = new javax.swing.JTextField();
         jTextFieldDescription2 = new javax.swing.JTextField();
         jTextFieldDescription3 = new javax.swing.JTextField();
-        jTextFieldDescription4 = new javax.swing.JTextField();
         jTextFieldContent1 = new javax.swing.JTextField();
         jTextFieldContent2 = new javax.swing.JTextField();
         jTextFieldContent3 = new javax.swing.JTextField();
-        jTextFieldContent4 = new javax.swing.JTextField();
         jSeparator1 = new javax.swing.JSeparator();
         jLabelImage = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
@@ -138,14 +135,12 @@ public class CreateContactDialog extends javax.swing.JDialog {
                             .addComponent(jTextFieldDescription3, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jTextFieldDescription2, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jTextFieldDescription1, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabelDescription, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
-                            .addComponent(jTextFieldDescription4))
+                            .addComponent(jLabelDescription, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jTextFieldContent3)
                             .addComponent(jLabelContent, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
                             .addComponent(jTextFieldContent2, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextFieldContent4)
                             .addComponent(jTextFieldContent1, javax.swing.GroupLayout.Alignment.LEADING))))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
@@ -169,10 +164,7 @@ public class CreateContactDialog extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextFieldDescription3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextFieldContent3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextFieldDescription4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextFieldContent4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         jLabelImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pim/icons/member.png"))); // NOI18N
@@ -251,12 +243,27 @@ public class CreateContactDialog extends javax.swing.JDialog {
         if (!name.isEmpty()) {
             String mail = jTextFieldMail.getText().trim();
             String mobil = jTextFieldMobil.getText().trim();
+            String description1 = jTextFieldDescription1.getText().trim();
+            String content1 = jTextFieldContent1.getText().trim();
+            String description2 = jTextFieldDescription2.getText().trim();
+            String content2 = jTextFieldContent2.getText().trim();
+            String description3 = jTextFieldDescription3.getText().trim();
+            String content3 = jTextFieldContent3.getText().trim();
+            Icon icon = jLabelImage.getIcon();
             if (contact == null) {
-                contact = new Contact(name, mail, mobil);
+                contact = new Contact(name, mail, mobil, description1, content1,
+                        description2, content2, description3, content3, icon);
             } else {
                 contact.setName(name);
                 contact.setMail(mail);
                 contact.setMobil(mobil);
+                contact.setDescription1(description1);
+                contact.setContent1(content1);
+                contact.setDescription2(description2);
+                contact.setContent2(content2);
+                contact.setDescription3(description3);
+                contact.setContent3(content3);
+                contact.setIcon(icon);
             }
             this.dispose();
         } else {
@@ -319,11 +326,9 @@ public class CreateContactDialog extends javax.swing.JDialog {
     private javax.swing.JTextField jTextFieldContent1;
     private javax.swing.JTextField jTextFieldContent2;
     private javax.swing.JTextField jTextFieldContent3;
-    private javax.swing.JTextField jTextFieldContent4;
     private javax.swing.JTextField jTextFieldDescription1;
     private javax.swing.JTextField jTextFieldDescription2;
     private javax.swing.JTextField jTextFieldDescription3;
-    private javax.swing.JTextField jTextFieldDescription4;
     private javax.swing.JTextField jTextFieldMail;
     private javax.swing.JTextField jTextFieldMobil;
     private javax.swing.JTextField jTextFieldName;

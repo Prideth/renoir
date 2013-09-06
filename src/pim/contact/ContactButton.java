@@ -25,6 +25,12 @@ public class ContactButton extends javax.swing.JPanel {
         jLabelName.setText(contact.getName());
         jLabelMail.setText(contact.getMail());
         jLabelMobil.setText(contact.getMobil());
+        jLabelDescription1.setText(contact.getDescription1());
+        jLabelContent1.setText(contact.getContent1());
+        jLabelDescription2.setText(contact.getDescription2());
+        jLabelContent2.setText(contact.getContent2());
+        jLabelDescription3.setText(contact.getDescription3());
+        jLabelContent3.setText(contact.getContent3());
     }
 
     public Contact getContact() {
@@ -36,6 +42,13 @@ public class ContactButton extends javax.swing.JPanel {
         jLabelName.setText(contact.getName());
         jLabelMail.setText(contact.getMail());
         jLabelMobil.setText(contact.getMobil());
+        jLabelDescription1.setText(contact.getDescription1());
+        jLabelContent1.setText(contact.getContent1());
+        jLabelDescription2.setText(contact.getDescription2());
+        jLabelContent2.setText(contact.getContent2());
+        jLabelDescription3.setText(contact.getDescription3());
+        jLabelContent3.setText(contact.getContent3());
+        jLabelImage.setIcon(contact.getIcon());
     }
     
     public int getPosition() {
@@ -59,6 +72,13 @@ public class ContactButton extends javax.swing.JPanel {
         jLabelName = new javax.swing.JLabel();
         jLabelMail = new javax.swing.JLabel();
         jLabelMobil = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jLabelContent3 = new javax.swing.JLabel();
+        jLabelDescription3 = new javax.swing.JLabel();
+        jLabelDescription1 = new javax.swing.JLabel();
+        jLabelContent1 = new javax.swing.JLabel();
+        jLabelDescription2 = new javax.swing.JLabel();
+        jLabelContent2 = new javax.swing.JLabel();
 
         setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -74,6 +94,59 @@ public class ContactButton extends javax.swing.JPanel {
 
         jLabelMobil.setText("016378967112");
 
+        jPanel1.setOpaque(false);
+
+        jLabelContent3.setText("Saarbrücken");
+
+        jLabelDescription3.setText("Wohnort:");
+
+        jLabelDescription1.setText("Festnetz:");
+
+        jLabelContent1.setText("068112345");
+
+        jLabelDescription2.setText("Alter:");
+
+        jLabelContent2.setText("23");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(1, 1, 1)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabelDescription1)
+                            .addComponent(jLabelDescription2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabelContent1)
+                            .addComponent(jLabelContent2)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabelDescription3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabelContent3)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelDescription3)
+                    .addComponent(jLabelContent3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelDescription1)
+                    .addComponent(jLabelContent1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelDescription2)
+                    .addComponent(jLabelContent2)))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -83,32 +156,43 @@ public class ContactButton extends javax.swing.JPanel {
                 .addComponent(jLabelImage)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabelName)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(jLabelMobil, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabelMail, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jLabelMail, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabelName))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabelName)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabelMail)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabelMobil))
-                    .addComponent(jLabelImage))
+                    .addComponent(jLabelImage)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabelName)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jLabelMail)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jLabelMobil))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabelContent1;
+    private javax.swing.JLabel jLabelContent2;
+    private javax.swing.JLabel jLabelContent3;
+    private javax.swing.JLabel jLabelDescription1;
+    private javax.swing.JLabel jLabelDescription2;
+    private javax.swing.JLabel jLabelDescription3;
     private javax.swing.JLabel jLabelImage;
     private javax.swing.JLabel jLabelMail;
     private javax.swing.JLabel jLabelMobil;
     private javax.swing.JLabel jLabelName;
+    private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }
