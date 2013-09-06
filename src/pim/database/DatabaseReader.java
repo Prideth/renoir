@@ -84,16 +84,16 @@ public class DatabaseReader {
     public Contact[] getContacts() {
         Contact[] contacts = new Contact[10];
         
-        contacts[0] = new Contact("Eugen Adam", "eugen.adam@gmail.com", "01639918433");
-        contacts[1] = new Contact("Heinrich Amersdorffer", "heinrich.amersdorffer@gmail.com", "01527624202");
-        contacts[2] = new Contact("Heike Kati Barath", "heike.barath@web.de", "01761249599");
-        contacts[3] = new Contact("Karl Axmacher", "karl.axmacher@gmx.net", "01776301189");
-        contacts[4] = new Contact("Hermann Albert", "hermann.albert@gmx.de", "01774523345");
-        contacts[5] = new Contact("Elvira Bach", "elvira.bach@gmail.com", "01621001415");
-        contacts[6] = new Contact("Anna Adam", "anna.adam@web.de", "01779119162");
-        contacts[7] = new Contact("Johannes Maximilian Avenarius", "johannes.avenarius@.web.de", "01667400224");
-        contacts[8] = new Contact("Fritz Bamberger", "fritz.bamberger@yahoo.com", "01909508811");
-        contacts[9] = new Contact("Katharina Bamberg", "katharina.bamberg@gmailcom", "01761135805");
+        contacts[0] = new Contact("Eugen Adam", "eugen.adam@gmail.com", "01639918433", null, null, null, null, null, null, null);
+        contacts[1] = new Contact("Heinrich Amersdorffer", "heinrich.amersdorffer@gmail.com", "01527624202", null, null, null, null, null, null, null);
+        contacts[2] = new Contact("Heike Kati Barath", "heike.barath@web.de", "01761249599", null, null, null, null, null, null, null);
+        contacts[3] = new Contact("Karl Axmacher", "karl.axmacher@gmx.net", "01776301189", null, null, null, null, null, null, null);
+        contacts[4] = new Contact("Hermann Albert", "hermann.albert@gmx.de", "01774523345", null, null, null, null, null, null, null);
+        contacts[5] = new Contact("Elvira Bach", "elvira.bach@gmail.com", "01621001415", null, null, null, null, null, null, null);
+        contacts[6] = new Contact("Anna Adam", "anna.adam@web.de", "01779119162", null, null, null, null, null, null, null);
+        contacts[7] = new Contact("Johannes Maximilian Avenarius", "johannes.avenarius@.web.de", "01667400224", null, null, null, null, null, null, null);
+        contacts[8] = new Contact("Fritz Bamberger", "fritz.bamberger@yahoo.com", "01909508811", null, null, null, null, null, null, null);
+        contacts[9] = new Contact("Katharina Bamberg", "katharina.bamberg@gmailcom", "01761135805", null, null, null, null, null, null, null);
         
         return contacts;
     }
