@@ -6,6 +6,7 @@ package pim.database;
 
 import pim.contact.Contact;
 import pim.exam.Exam;
+import pim.todo.ToDo;
 
 /**
  *
@@ -96,5 +97,12 @@ public class DatabaseReader {
         contacts[9] = new Contact("Katharina Bamberg", "katharina.bamberg@gmailcom", "01761135805");
         
         return contacts;
+    }
+    
+    
+    public ToDo[] getToDos() {
+        ToDo[] toDos = new ToDo[100];
+        
+        return toDos;
     }
 }
