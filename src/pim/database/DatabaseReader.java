@@ -93,7 +93,7 @@ public class DatabaseReader {
         contacts[6] = new Contact("Anna Adam", "anna.adam@web.de", "01779119162", null, null, null, null, null, null, null);
         contacts[7] = new Contact("Johannes Maximilian Avenarius", "johannes.avenarius@.web.de", "01667400224", null, null, null, null, null, null, null);
         contacts[8] = new Contact("Fritz Bamberger", "fritz.bamberger@yahoo.com", "01909508811", null, null, null, null, null, null, null);
-        contacts[9] = new Contact("Katharina Bamberg", "katharina.bamberg@gmailcom", "01761135805", null, null, null, null, null, null, null);
+        contacts[9] = new Contact("Katharina Bamberg", "katharina.bamberg@gmailcom", "01761135805", "Telefon", "01639918433", "Wohnort", "Berlin", "Geschlecht", "männlich", null);
         
         return contacts;
     }
