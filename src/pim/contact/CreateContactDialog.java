@@ -4,15 +4,7 @@
  */
 package pim.contact;
 
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import javax.imageio.ImageIO;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import pim.*;
 
 /**
@@ -59,6 +51,10 @@ public class CreateContactDialog extends javax.swing.JDialog {
             jTextFieldContent2.setText(contact.getContent2());
             jTextFieldDescription3.setText(contact.getDescription3());
             jTextFieldContent3.setText(contact.getContent3());
+            Icon icon = contact.getIcon();
+            if (icon != null) {
+                jLabelImage.setIcon(icon);
+            }
         }
     }
 
@@ -250,22 +246,51 @@ public class CreateContactDialog extends javax.swing.JDialog {
             String description3 = jTextFieldDescription3.getText().trim();
             String content3 = jTextFieldContent3.getText().trim();
             Icon icon = jLabelImage.getIcon();
-            if (contact == null) {
-                contact = new Contact(name, mail, mobil, description1, content1,
-                        description2, content2, description3, content3, icon);
-            } else {
-                contact.setName(name);
-                contact.setMail(mail);
-                contact.setMobil(mobil);
-                contact.setDescription1(description1);
-                contact.setContent1(content1);
-                contact.setDescription2(description2);
-                contact.setContent2(content2);
-                contact.setDescription3(description3);
-                contact.setContent3(content3);
-                contact.setIcon(icon);
+            
+            boolean test = true;
+            if (!description1.isEmpty() && content1.isEmpty()) {
+                jTextFieldContent1.requestFocus();
+                test = false;
             }
-            this.dispose();
+            if (description1.isEmpty() && !content1.isEmpty()) {
+                jTextFieldDescription1.requestFocus();
+                test = false;
+            }
+            if (!description2.isEmpty() && content2.isEmpty()) {
+                jTextFieldContent2.requestFocus();
+                test = false;
+            }
+            if (description2.isEmpty() && !content2.isEmpty()) {
+                jTextFieldDescription2.requestFocus();
+                test = false;
+            }
+            if (!description3.isEmpty() && content3.isEmpty()) {
+                jTextFieldContent3.requestFocus();
+                test = false;
+            }
+            if (description3.isEmpty() && !content3.isEmpty()) {
+                jTextFieldDescription3.requestFocus();
+                test = false;
+            }
+            
+            if (test) {
+                if (contact == null) {
+                    contact = new Contact(name, mail, mobil, description1, content1,
+                            description2, content2, description3, content3, icon);
+                } else {
+                    contact.setName(name);
+                    contact.setMail(mail);
+                    contact.setMobil(mobil);
+                    contact.setDescription1(description1);
+                    contact.setContent1(content1);
+                    contact.setDescription2(description2);
+                    contact.setContent2(content2);
+                    contact.setDescription3(description3);
+                    contact.setContent3(content3);
+                    contact.setIcon(icon);
+                }
+                this.dispose();
+            }
         } else {
             jTextFieldName.setText("");
             jTextFieldName.requestFocus();
@@ -278,30 +303,9 @@ public class CreateContactDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_jButtonCancelActionPerformed
 
     private void jLabelImageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelImageMouseClicked
-        JFileChooser fc = new JFileChooser();
-        fc.setFileFilter(new FileNameExtensionFilter(
-                "Bilder", ImageIO.getReaderFileSuffixes()));
-
-
-        if (fc.showOpenDialog(null) == 0) {
-            File file = fc.getSelectedFile();
-            
-            BufferedImage img;
-            try {
-                img = ImageIO.read(file);
-                Image scaled = img.getScaledInstance(64, 64, Image.SCALE_SMOOTH);
-                BufferedImage scalledImage = new BufferedImage(64, 64, BufferedImage.TYPE_INT_RGB);
-                Graphics2D g2d = scalledImage.createGraphics();
-                g2d.drawImage(scaled, 0, 0, null);
-                g2d.dispose();
-
-                Icon icon = new ImageIcon(scalledImage);
-
+        Icon icon = IconChooser.chooseIcon();
+        if (icon != null) {
                 jLabelImage.setIcon(icon);
-
-            } catch (Exception e) {
-                
-            }
         }
     }//GEN-LAST:event_jLabelImageMouseClicked
     

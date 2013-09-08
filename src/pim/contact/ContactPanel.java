@@ -7,6 +7,7 @@ package pim.contact;
 import java.awt.Color;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Group;
+import javax.swing.Icon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -38,7 +39,7 @@ public class ContactPanel extends javax.swing.JPanel {
                 contactButtons[i] = new ContactButton(contacts[i]);
                 contactButtons[i].addMouseListener(new java.awt.event.MouseAdapter() {
                     @Override
-                    public void mousePressed(java.awt.event.MouseEvent evt) {
+                    public void mouseClicked(java.awt.event.MouseEvent evt) {
                         personPanelMousePressed(evt);
                     }
                 });
@@ -231,6 +232,7 @@ public class ContactPanel extends javax.swing.JPanel {
             contact = dialog.getContact();
             if (contact != null) {
                 contactButtons[selectedIndex].setContact(contact);
+                contactButtons[selectedIndex].update();
             }
         } else {
             JOptionPane.showMessageDialog(getRootWindow(), "Es ist kein Kontakt ausgewählt.");
@@ -238,7 +240,17 @@ public class ContactPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_jButtonEditActionPerformed
 
     private void personPanelMousePressed(java.awt.event.MouseEvent evt) {
-        selectPerson(((ContactButton) evt.getComponent()).getPosition());
+        if (evt.getButton() == 1) {
+            int position = ((ContactButton) evt.getComponent()).getPosition();
+            selectPerson(position);
+            if (evt.getClickCount() == 2) {
+                Icon icon = IconChooser.chooseIcon();
+                if (icon != null) {
+                    contactButtons[position].getContact().setIcon(icon);
+                    contactButtons[position].update();
+                }
+            }
+        }
     }
 
     private void selectPerson(int position) {

@@ -22,15 +22,7 @@ public class ContactButton extends javax.swing.JPanel {
         initComponents();
         this.contact = contact;
         position = 0;
-        jLabelName.setText(contact.getName());
-        jLabelMail.setText(contact.getMail());
-        jLabelMobil.setText(contact.getMobil());
-        jLabelDescription1.setText(contact.getDescription1());
-        jLabelContent1.setText(contact.getContent1());
-        jLabelDescription2.setText(contact.getDescription2());
-        jLabelContent2.setText(contact.getContent2());
-        jLabelDescription3.setText(contact.getDescription3());
-        jLabelContent3.setText(contact.getContent3());
+        update();
     }
 
     public Contact getContact() {
@@ -39,16 +31,37 @@ public class ContactButton extends javax.swing.JPanel {
     
     public void setContact(Contact contact) {
         this.contact = contact;
+    }
+    
+    
+    public void update() {
         jLabelName.setText(contact.getName());
         jLabelMail.setText(contact.getMail());
         jLabelMobil.setText(contact.getMobil());
-        jLabelDescription1.setText(contact.getDescription1());
-        jLabelContent1.setText(contact.getContent1());
-        jLabelDescription2.setText(contact.getDescription2());
-        jLabelContent2.setText(contact.getContent2());
-        jLabelDescription3.setText(contact.getDescription3());
-        jLabelContent3.setText(contact.getContent3());
-        jLabelImage.setIcon(contact.getIcon());
+        if (contact.getDescription1() != null && !contact.getDescription1().isEmpty()) {
+            jLabelDescription1.setText(contact.getDescription1() + ":");
+            jLabelContent1.setText(contact.getContent1());
+        } else {
+            jLabelDescription1.setText("");
+            jLabelContent1.setText("");
+        }
+        if (contact.getDescription2() != null && !contact.getDescription2().isEmpty()) {
+            jLabelDescription2.setText(contact.getDescription2() + ":");
+            jLabelContent2.setText(contact.getContent2());
+        } else {
+            jLabelDescription2.setText("");
+            jLabelContent2.setText("");
+        }
+        if (contact.getDescription3() != null && !contact.getDescription3().isEmpty()) {
+            jLabelDescription3.setText(contact.getDescription3() + ":");
+            jLabelContent3.setText(contact.getContent3());
+        } else {
+            jLabelDescription3.setText("");
+            jLabelContent3.setText("");
+        }
+        if (contact.getIcon() != null) {
+            jLabelImage.setIcon(contact.getIcon());
+        }
     }
     
     public int getPosition() {
@@ -113,38 +126,38 @@ public class ContactButton extends javax.swing.JPanel {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(0, 0, 0)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(1, 1, 1)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabelDescription1)
-                            .addComponent(jLabelDescription2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabelDescription2))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabelContent1)
-                            .addComponent(jLabelContent2)))
+                            .addComponent(jLabelContent1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabelContent2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabelDescription3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabelContent3)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jLabelContent3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelDescription3)
-                    .addComponent(jLabelContent3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(0, 0, 0)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelDescription1)
                     .addComponent(jLabelContent1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelDescription2)
-                    .addComponent(jLabelContent2)))
+                    .addComponent(jLabelContent2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelDescription3)
+                    .addComponent(jLabelContent3))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -170,8 +183,8 @@ public class ContactButton extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabelImage)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(layout.createSequentialGroup()
                             .addComponent(jLabelName)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
