@@ -26,25 +26,94 @@ public class CalendarPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        dateChooserCombo1 = new datechooser.beans.DateChooserCombo();
+        jDateChooserComboCalendar = new datechooser.beans.DateChooserCombo();
+        jLabelChooseDate = new javax.swing.JLabel();
+        jScrollPaneCalendar = new javax.swing.JScrollPane();
+        jTableCalendar = new javax.swing.JTable();
+        jButtonCalendarNew = new javax.swing.JButton();
+        jButtonCalendarChange = new javax.swing.JButton();
+        jButtonCalendarDelete = new javax.swing.JButton();
+
+        jDateChooserComboCalendar.setCalendarPreferredSize(new java.awt.Dimension(350, 200));
+
+        jLabelChooseDate.setText("Wähle ein Datum");
+
+        jTableCalendar.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Datum", "Uhrzeit", "Bezeichnung"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTableCalendar.setColumnSelectionAllowed(true);
+        jTableCalendar.getTableHeader().setReorderingAllowed(false);
+        jScrollPaneCalendar.setViewportView(jTableCalendar);
+        jTableCalendar.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jTableCalendar.getColumnModel().getColumn(0).setMinWidth(70);
+        jTableCalendar.getColumnModel().getColumn(0).setPreferredWidth(70);
+        jTableCalendar.getColumnModel().getColumn(0).setMaxWidth(70);
+        jTableCalendar.getColumnModel().getColumn(1).setMinWidth(70);
+        jTableCalendar.getColumnModel().getColumn(1).setPreferredWidth(70);
+        jTableCalendar.getColumnModel().getColumn(1).setMaxWidth(70);
+        jTableCalendar.getColumnModel().getColumn(2).setResizable(false);
+        jTableCalendar.getColumnModel().getColumn(2).setPreferredWidth(50);
+
+        jButtonCalendarNew.setText("Termin hinzufügen");
+
+        jButtonCalendarChange.setText("Termin ändern");
+
+        jButtonCalendarDelete.setText("Termin löschen");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(dateChooserCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 245, Short.MAX_VALUE))
+                .addGap(5, 5, 5)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButtonCalendarNew)
+                        .addGap(5, 5, 5)
+                        .addComponent(jButtonCalendarChange)
+                        .addGap(5, 5, 5)
+                        .addComponent(jButtonCalendarDelete))
+                    .addComponent(jDateChooserComboCalendar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelChooseDate))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jScrollPaneCalendar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 568, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(dateChooserCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(269, Short.MAX_VALUE))
+                .addGap(6, 6, 6)
+                .addComponent(jLabelChooseDate)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jDateChooserComboCalendar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(3, 3, 3)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonCalendarNew)
+                    .addComponent(jButtonCalendarChange)
+                    .addComponent(jButtonCalendarDelete))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPaneCalendar, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private datechooser.beans.DateChooserCombo dateChooserCombo1;
+    private javax.swing.JButton jButtonCalendarChange;
+    private javax.swing.JButton jButtonCalendarDelete;
+    private javax.swing.JButton jButtonCalendarNew;
+    private datechooser.beans.DateChooserCombo jDateChooserComboCalendar;
+    private javax.swing.JLabel jLabelChooseDate;
+    private javax.swing.JScrollPane jScrollPaneCalendar;
+    private javax.swing.JTable jTableCalendar;
     // End of variables declaration//GEN-END:variables
 }
