@@ -6,6 +6,8 @@ package pim.database;
 
 import pim.contact.Contact;
 import pim.exam.Exam;
+import pim.notes.Note;
+import java.util.Date;  //REMOVE ME
 
 /**
  *
@@ -97,4 +99,23 @@ public class DatabaseReader {
         
         return contacts;
     }
+    
+    public Note[] getNotes() {
+        
+        Note[] notes = new Note[5];
+        
+        Date d = new Date();
+        
+        
+        notes[0] = new Note(0, "Note1", "Content Note 1", d);
+        notes[1] = new Note(0, "Note2", "Content Note 2", d);
+        notes[2] = new Note(0, "Note3", "Content Note 3", d);
+        notes[3] = new Note(0, "Note4", "Content Note 4", d);
+        notes[4] = new Note(0, "Note5", "Content Note 5", d);
+        
+        
+        return notes;
+    }
+
+    
 }

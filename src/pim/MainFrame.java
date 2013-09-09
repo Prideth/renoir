@@ -28,7 +28,7 @@ public class MainFrame extends javax.swing.JFrame {
         contactPanel = new pim.contact.ContactPanel(dr.getContacts());
         calendarPanel = new pim.calendar.CalendarPanel();
         todoPanel = new pim.todo.TodoPanel();
-        notePanel = new pim.notes.NotePanel();
+        notePanel = new pim.notes.NotePanel(dr.getNotes());
         
         initComponents();
         
