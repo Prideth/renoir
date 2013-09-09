@@ -27,7 +27,7 @@ public class MainFrame extends javax.swing.JFrame {
         examPanel = new pim.exam.ExamPanel(dr.getExams());
         contactPanel = new pim.contact.ContactPanel(dr.getContacts());
         calendarPanel = new pim.calendar.CalendarPanel();
-        todoPanel = new pim.todo.TodoPanel();
+        toDoPanel = new pim.todo.ToDoPanel(dr.getToDos());
         notePanel = new pim.notes.NotePanel(dr.getNotes());
         
         initComponents();
@@ -217,7 +217,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonCalendarActionPerformed
 
     private void jButtonToDoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonToDoActionPerformed
-        switchPanel(todoPanel, jButtonToDo);
+        switchPanel(toDoPanel, jButtonToDo);
     }//GEN-LAST:event_jButtonToDoActionPerformed
 
     private void jButtonNotesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNotesActionPerformed
@@ -317,7 +317,7 @@ public class MainFrame extends javax.swing.JFrame {
     private pim.exam.ExamPanel examPanel;
     private pim.contact.ContactPanel contactPanel;
     private pim.calendar.CalendarPanel calendarPanel;
-    private pim.todo.TodoPanel todoPanel;
+    private pim.todo.ToDoPanel toDoPanel;
     private pim.notes.NotePanel notePanel;
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
