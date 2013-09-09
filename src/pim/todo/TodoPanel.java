@@ -4,21 +4,75 @@
  */
 package pim.todo;
 
-import javax.swing.DefaultCellEditor;
-import javax.swing.JComboBox;
-import javax.swing.table.TableColumn;
+import java.awt.Color;
+import javax.swing.GroupLayout;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 /**
- *
- * @author lk
+ * Aufgabenverwaltung fuer PIM
+ * 
+ * @author Joerg Federspiel
  */
-public class TodoPanel extends javax.swing.JPanel {
+public class ToDoPanel extends javax.swing.JPanel {
+    
+    ToDoSlot[] toDoSlots;
+    private int size;
+    private int selectedIndex;
+    private Color backGroundColor;
 
     /**
-     * Creates new form TodoPanel
+     * Creates new form ToDoPanel
      */
-    public TodoPanel() {
+    public ToDoPanel(ToDo[] toDos) {
         initComponents();
+        toDoSlots = new ToDoSlot[100];
+        
+        size = 0;
+        selectedIndex = -1;
+        
+        for (int i=0; i<size; i++) {
+            toDoSlots[i] = new ToDoSlot(toDos[i]);
+            toDoSlots[i].addMouseListener(new java.awt.event.MouseAdapter() {
+                public void mousePressed(java.awt.event.MouseEvent evt) {
+                    toDoPanelMousePressed(evt);
+                }
+            });
+        }
+        
+        initToDoButtons();
+    
+    }
+    
+    private void initToDoButtons() {
+        jPanelContent.removeAll();
+        
+        javax.swing.GroupLayout layout = new GroupLayout(jPanelContent);
+        jPanelContent.setLayout(layout);
+        
+        GroupLayout.Group group1 = layout.createParallelGroup(GroupLayout.Alignment.LEADING);
+        GroupLayout.Group group2 = layout.createSequentialGroup().addGap(5);
+
+        for (int i = size - 1; i >= 0; i--) {
+            toDoSlots[i].setPosition(i);
+            group1.addComponent(toDoSlots[i], GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE);
+            group2.addComponent(toDoSlots[i], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE);
+            group2.addGap(5);
+        }
+
+        layout.setHorizontalGroup(
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(group1)
+                .addContainerGap()));
+
+        layout.setVerticalGroup(
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addGroup(group2));
+        
+        selectToDo(size - 1);
     }
 
     /**
@@ -30,17 +84,166 @@ public class TodoPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jButtonNew = new javax.swing.JButton();
+        jButtonEdit = new javax.swing.JButton();
+        jButtonDelete = new javax.swing.JButton();
+        jPanelContent = new javax.swing.JPanel();
+        jScrollPaneContent = new javax.swing.JScrollPane();
+
+        setPreferredSize(new java.awt.Dimension(518, 355));
+
+        jButtonNew.setText("Erstellen");
+        jButtonNew.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonNewActionPerformed(evt);
+            }
+        });
+
+        jButtonEdit.setText("Bearbeiten");
+        jButtonEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEditActionPerformed(evt);
+            }
+        });
+
+        jButtonDelete.setText("Löschen");
+        jButtonDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonDeleteActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanelContentLayout = new javax.swing.GroupLayout(jPanelContent);
+        jPanelContent.setLayout(jPanelContentLayout);
+        jPanelContentLayout.setHorizontalGroup(
+            jPanelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPaneContent)
+        );
+        jPanelContentLayout.setVerticalGroup(
+            jPanelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelContentLayout.createSequentialGroup()
+                .addComponent(jScrollPaneContent, javax.swing.GroupLayout.DEFAULT_SIZE, 353, Short.MAX_VALUE)
+                .addGap(3, 3, 3))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButtonNew)
+                .addGap(135, 135, 135)
+                .addComponent(jButtonEdit)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 134, Short.MAX_VALUE)
+                .addComponent(jButtonDelete)
+                .addContainerGap())
+            .addComponent(jPanelContent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonNew)
+                    .addComponent(jButtonEdit)
+                    .addComponent(jButtonDelete))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanelContent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButtonEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditActionPerformed
+        if (selectedIndex > -1) {        
+            ToDo toDo = toDoSlots[selectedIndex].getToDo();
+            
+            JFrame rootWindow = getRootWindow();
+            CreateToDoDialog dialog = new CreateToDoDialog(rootWindow, true, toDo);
+            dialog.setTitle("Aufgabe bearbeiten");
+            dialog.setLocationRelativeTo(rootWindow);
+            dialog.setVisible(true);
+            toDo = dialog.getToDo();
+            if (toDo != null) {
+                toDoSlots[selectedIndex].setToDo(toDo);
+            }
+        } else {
+            JOptionPane.showMessageDialog(getRootWindow(), "Es ist keine Aufgabe ausgewählt.");
+        }
+    }//GEN-LAST:event_jButtonEditActionPerformed
+
+    private void jButtonNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNewActionPerformed
+        if (size < toDoSlots.length) {
+            JFrame rootWindow = getRootWindow();
+            CreateToDoDialog dialog = new CreateToDoDialog(rootWindow, true, null);
+            dialog.setTitle("Aufgabe erstellen");
+            dialog.setLocationRelativeTo(rootWindow);
+            dialog.setVisible(true);
+            ToDo toDo = dialog.getToDo();
+            
+            if (toDo != null) {
+                ToDoSlot p = new ToDoSlot (dialog.getToDo());
+                p.addMouseListener(new java.awt.event.MouseAdapter() {
+                    public void mousePressed(java.awt.event.MouseEvent evt) {
+                        toDoPanelMousePressed(evt);
+                    }
+                });
+                toDoSlots[size++] = p;
+                initToDoButtons();
+            }
+        } else {
+            JOptionPane.showMessageDialog(getRootWindow(),
+                    "Es können maximal " + toDoSlots.length + " Aufgaben erstellt werden.");
+        }  
+    }//GEN-LAST:event_jButtonNewActionPerformed
+
+    private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
+        if (selectedIndex > -1) {         
+            
+            Object[] options = {"Ja", "Nein"};
+            int n = JOptionPane.showOptionDialog(null,
+                    "Aufgabe \"" + toDoSlots[selectedIndex].getToDo().getSubject() + "\" löschen?",
+                    "Löschen bestätigen",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    options,
+                    options[0]);
+
+            if (n == 0) {
+                for (int i = selectedIndex; i < size - 1; i++) {
+                    toDoSlots[i] = toDoSlots[i + 1];
+                }
+                toDoSlots[--size] = null;
+                selectedIndex = -1;
+                initToDoButtons();
+            }
+        } else {
+            JOptionPane.showMessageDialog(getRootWindow(), "Es ist keine Aufgabe ausgewählt.");
+        }
+    }//GEN-LAST:event_jButtonDeleteActionPerformed
+    
+    private void toDoPanelMousePressed(java.awt.event.MouseEvent evt) {
+        selectToDo(((ToDoSlot) evt.getComponent()).getPosition());
+    }
+
+    private void selectToDo(int position) {
+        if (size > 0) {
+            if (selectedIndex > -1) {
+                toDoSlots[selectedIndex].setBackground(backGroundColor);
+            }
+            toDoSlots[position].setBackground(new Color(233, 236, 242));
+            selectedIndex = position;
+        }
+    }
+    
+    private JFrame getRootWindow() {
+        return (JFrame) SwingUtilities.getWindowAncestor(this.getParent());
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonDelete;
+    private javax.swing.JButton jButtonEdit;
+    private javax.swing.JButton jButtonNew;
+    private javax.swing.JPanel jPanelContent;
+    private javax.swing.JScrollPane jScrollPaneContent;
     // End of variables declaration//GEN-END:variables
 }
