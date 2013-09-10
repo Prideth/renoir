@@ -5,19 +5,14 @@
 package pim.exam;
 
 import java.awt.Component;
-import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableRowSorter;
-import pim.TextFieldListener;
-import pim.TextFieldPopup;
 
 /**
  *
@@ -251,7 +246,7 @@ public class ExamPanel extends javax.swing.JPanel {
         if (index > -1) {
             Exam exam = (Exam) model.getValueAt(index, 0);
             Object[] options = {"Ja", "Nein"};
-            int n = JOptionPane.showOptionDialog(null,
+            int n = JOptionPane.showOptionDialog(getRootWindow(),
                     "Klausur \"" + exam.getSubject() + "\" löschen?",
                     "Löschen bestätigen",
                     JOptionPane.YES_NO_OPTION,
