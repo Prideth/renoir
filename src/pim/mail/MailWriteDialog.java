@@ -37,17 +37,27 @@ public class MailWriteDialog extends JDialog {
         super(parent, modal);
         initComponents();
 
-        ObjectSerializer so = new ObjectSerializer();
-        f = new File(System.getProperty("user.home") + "/pim/" + "mailaccount.ser");
-        acc = (MailAccount) so.readFromFile(f);
-
         TextFieldListener textFieldListener = new TextFieldListener();
         jTextFieldSender.addMouseListener(textFieldListener);
-        jTextFieldSender.setText(acc.getEmail());
+
         jTextFieldReceiver.addMouseListener(textFieldListener);
         jTextFieldSubject.addMouseListener(textFieldListener);
         jTextAreaBody.addMouseListener(textFieldListener);
-     
+
+        ObjectSerializer so = new ObjectSerializer();
+        f = new File(System.getProperty("user.home") + "/pim/" + "mailaccount.ser");
+
+        if (f.exists()) {
+            acc = (MailAccount) so.readFromFile(f);
+            jTextFieldSender.setText(acc.getEmail());
+        } else {
+            JFrame rootWindow = (JFrame) SwingUtilities.getWindowAncestor(getParent());
+            MailSettings dialog = new MailSettings(rootWindow, true);
+            dialog.setTitle("E-Mail Einstellungen");
+            dialog.setLocationRelativeTo(rootWindow);
+            dialog.setVisible(true);
+        }
+        
     }
 
     /**
