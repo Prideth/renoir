@@ -4,6 +4,8 @@
  */
 package pim.contact;
 
+import javax.swing.ImageIcon;
+
 
 
 /**
@@ -37,7 +39,7 @@ public class ContactButton extends javax.swing.JPanel {
     public void update() {
         jLabelName.setText(contact.getName());
         jLabelMail.setText(contact.getMail());
-        jLabelMobil.setText(contact.getMobil());
+        jLabelMobil.setText(contact.getNumber());
         if (contact.getDescription1() != null && !contact.getDescription1().isEmpty()) {
             jLabelDescription1.setText(contact.getDescription1() + ":");
             jLabelContent1.setText(contact.getContent1());
@@ -59,8 +61,9 @@ public class ContactButton extends javax.swing.JPanel {
             jLabelDescription3.setText("");
             jLabelContent3.setText("");
         }
-        if (contact.getIcon() != null) {
-            jLabelImage.setIcon(contact.getIcon());
+        if (contact.getImage() != null) {
+            ImageIcon icon = new ImageIcon(contact.getImage());
+            jLabelImage.setIcon(icon);
         }
     }
     

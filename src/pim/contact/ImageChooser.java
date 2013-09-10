@@ -18,10 +18,9 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  *
  * @author lk
  */
-public class IconChooser {
+public class ImageChooser {
 
-    public static Icon chooseIcon() {
-        Icon icon = null;
+    public static BufferedImage chooseImage() {
         JFileChooser fc = new JFileChooser();
         fc.setFileFilter(new FileNameExtensionFilter(
                 "Bilder", ImageIO.getReaderFileSuffixes()));
@@ -36,10 +35,11 @@ public class IconChooser {
                 Graphics2D g2d = scalledImage.createGraphics();
                 g2d.drawImage(scaled, 0, 0, null);
                 g2d.dispose();
-                icon = new ImageIcon(scalledImage);
+                //ImageIO.write(scalledImage, "png", new File("C:\\bild.png"));
+                return scalledImage;
             } catch (Exception e) {
             }
         }
-        return icon;
+        return null;
     }
 }

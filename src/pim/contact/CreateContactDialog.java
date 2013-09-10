@@ -4,7 +4,9 @@
  */
 package pim.contact;
 
+import java.awt.image.BufferedImage;
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import pim.*;
 
 /**
@@ -14,6 +16,7 @@ import pim.*;
 public class CreateContactDialog extends javax.swing.JDialog {
 
     private Contact contact;
+    private BufferedImage image;
     
     /**
      * Creates new form CreateContactPanel
@@ -34,26 +37,20 @@ public class CreateContactDialog extends javax.swing.JDialog {
         jTextFieldContent2.addMouseListener(textFieldListener);
         jTextFieldContent3.addMouseListener(textFieldListener);
         
-        jTextFieldDescription1.setDocument(new pim.JTextFieldLimit(10));
-        jTextFieldDescription2.setDocument(new pim.JTextFieldLimit(10));
-        jTextFieldDescription3.setDocument(new pim.JTextFieldLimit(10));
-        jTextFieldContent1.setDocument(new pim.JTextFieldLimit(20));
-        jTextFieldContent2.setDocument(new pim.JTextFieldLimit(20));
-        jTextFieldContent3.setDocument(new pim.JTextFieldLimit(20));
         
         if (contact != null) {
             jTextFieldName.setText(contact.getName());
             jTextFieldMail.setText(contact.getMail());
-            jTextFieldMobil.setText(contact.getMobil());
+            jTextFieldMobil.setText(contact.getNumber());
             jTextFieldDescription1.setText(contact.getDescription1());
             jTextFieldContent1.setText(contact.getContent1());
             jTextFieldDescription2.setText(contact.getDescription2());
             jTextFieldContent2.setText(contact.getContent2());
             jTextFieldDescription3.setText(contact.getDescription3());
             jTextFieldContent3.setText(contact.getContent3());
-            Icon icon = contact.getIcon();
-            if (icon != null) {
-                jLabelImage.setIcon(icon);
+            image = contact.getImage();
+            if (image != null) {
+                jLabelImage.setIcon(new ImageIcon(image));
             }
         }
     }
@@ -119,26 +116,36 @@ public class CreateContactDialog extends javax.swing.JDialog {
 
         jLabelContent.setText("Inhalt");
 
+        jTextFieldContent2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldContent2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jLabelMoreFields)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jTextFieldDescription3, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTextFieldDescription2, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTextFieldDescription1, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelDescription, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabelMoreFields)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jTextFieldDescription3, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextFieldDescription2, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextFieldDescription1, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabelDescription, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jTextFieldContent3)
-                            .addComponent(jLabelContent, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
-                            .addComponent(jTextFieldContent2, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextFieldContent1, javax.swing.GroupLayout.Alignment.LEADING))))
-                .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(jLabelContent)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextFieldContent1)
+                            .addComponent(jTextFieldContent2)
+                            .addComponent(jTextFieldContent3))
+                        .addGap(0, 0, 0))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -189,15 +196,15 @@ public class CreateContactDialog extends javax.swing.JDialog {
                             .addComponent(jLabelName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextFieldMobil, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jTextFieldMail, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextFieldName)))
+                            .addComponent(jTextFieldName, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
+                            .addComponent(jTextFieldMobil, javax.swing.GroupLayout.Alignment.LEADING)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabelImage)
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jButtonOk, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButtonCancel, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE))))
+                            .addComponent(jButtonCancel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -238,14 +245,13 @@ public class CreateContactDialog extends javax.swing.JDialog {
         String name = jTextFieldName.getText().trim();
         if (!name.isEmpty()) {
             String mail = jTextFieldMail.getText().trim();
-            String mobil = jTextFieldMobil.getText().trim();
+            String number = jTextFieldMobil.getText().trim();
             String description1 = jTextFieldDescription1.getText().trim();
             String content1 = jTextFieldContent1.getText().trim();
             String description2 = jTextFieldDescription2.getText().trim();
             String content2 = jTextFieldContent2.getText().trim();
             String description3 = jTextFieldDescription3.getText().trim();
             String content3 = jTextFieldContent3.getText().trim();
-            Icon icon = jLabelImage.getIcon();
             
             boolean test = true;
             if (!description1.isEmpty() && content1.isEmpty()) {
@@ -275,19 +281,19 @@ public class CreateContactDialog extends javax.swing.JDialog {
             
             if (test) {
                 if (contact == null) {
-                    contact = new Contact(name, mail, mobil, description1, content1,
-                            description2, content2, description3, content3, icon);
+                    contact = new Contact(name, mail, number, description1, content1,
+                            description2, content2, description3, content3, image);
                 } else {
                     contact.setName(name);
                     contact.setMail(mail);
-                    contact.setMobil(mobil);
+                    contact.setNumber(number);
                     contact.setDescription1(description1);
                     contact.setContent1(content1);
                     contact.setDescription2(description2);
                     contact.setContent2(content2);
                     contact.setDescription3(description3);
                     contact.setContent3(content3);
-                    contact.setIcon(icon);
+                    contact.setImage(image);
                 }
                 this.dispose();
             }
@@ -303,11 +309,15 @@ public class CreateContactDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_jButtonCancelActionPerformed
 
     private void jLabelImageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelImageMouseClicked
-        Icon icon = IconChooser.chooseIcon();
-        if (icon != null) {
-                jLabelImage.setIcon(icon);
+        image = ImageChooser.chooseImage();
+        if (image != null) {
+            jLabelImage.setIcon(new ImageIcon(image));
         }
     }//GEN-LAST:event_jLabelImageMouseClicked
+
+    private void jTextFieldContent2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldContent2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldContent2ActionPerformed
     
     public Contact getContact() {
         return contact;

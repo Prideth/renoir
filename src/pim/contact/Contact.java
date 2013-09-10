@@ -4,7 +4,7 @@
  */
 package pim.contact;
 
-import javax.swing.Icon;
+import java.awt.image.BufferedImage;
 
 /**
  *
@@ -15,28 +15,28 @@ public class Contact {
     //private int id;
     private String name;
     private String mail;
-    private String mobil;
+    private String number;
     private String description1;
     private String content1;
     private String description2;
     private String content2;
     private String description3;
     private String content3;
-    private Icon icon;
+    private BufferedImage image;
 
-    public Contact(String name, String mail, String mobil, String description1,
+    public Contact(String name, String mail, String number, String description1,
             String content1, String description2, String content2,
-            String description3, String content3, Icon icon) {
+            String description3, String content3, BufferedImage image) {
         this.name = name;
         this.mail = mail;
-        this.mobil = mobil;
+        this.number = number;
         this.description1 = description1;
         this.content1 = content1;
         this.description2 = description2;
         this.content2 = content2;
         this.description3 = description3;
         this.content3 = content3;
-        this.icon = icon;
+        this.image = image;
     }
 
     public String getName() {
@@ -47,8 +47,8 @@ public class Contact {
         return mail;
     }
 
-    public String getMobil() {
-        return mobil;
+    public String getNumber() {
+        return number;
     }
 
     public String getDescription1() {
@@ -75,8 +75,8 @@ public class Contact {
         return content3;
     }
 
-    public Icon getIcon() {
-        return icon;
+    public BufferedImage getImage() {
+        return image;
     }
 
     public void setName(String name) {
@@ -87,8 +87,8 @@ public class Contact {
         this.mail = mail;
     }
 
-    public void setMobil(String mobil) {
-        this.mobil = mobil;
+    public void setNumber(String number) {
+        this.number = number;
     }
 
     public void setDescription1(String description1) {
@@ -115,7 +115,7 @@ public class Contact {
         this.content3 = content3;
     }
 
-    public void setIcon(Icon icon) {
-        this.icon = icon;
+    public void setImage(BufferedImage image) {
+        this.image = image;
     }
 }

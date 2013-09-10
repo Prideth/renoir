@@ -5,9 +5,9 @@
 package pim.contact;
 
 import java.awt.Color;
+import java.awt.image.BufferedImage;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Group;
-import javax.swing.Icon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -244,11 +244,25 @@ public class ContactPanel extends javax.swing.JPanel {
             int position = ((ContactButton) evt.getComponent()).getPosition();
             selectPerson(position);
             if (evt.getClickCount() == 2) {
-                Icon icon = IconChooser.chooseIcon();
-                if (icon != null) {
-                    contactButtons[position].getContact().setIcon(icon);
+                Contact contact = contactButtons[selectedIndex].getContact();
+
+                JFrame rootWindow = getRootWindow();
+                CreateContactDialog dialog = new CreateContactDialog(rootWindow, true, contact);
+                dialog.setTitle(contact.getName());
+                dialog.setLocationRelativeTo(rootWindow);
+                dialog.setVisible(true);
+                contact = dialog.getContact();
+                if (contact != null) {
+                    contactButtons[selectedIndex].setContact(contact);
+                    contactButtons[selectedIndex].update();
+                }
+                /*
+                BufferedImage image = ImageChooser.chooseImage();
+                if (image != null) {
+                    contactButtons[position].getContact().setImage(image);
                     contactButtons[position].update();
                 }
+                * */
             }
         }
     }
@@ -262,6 +276,16 @@ public class ContactPanel extends javax.swing.JPanel {
             selectedIndex = position;
         }
     }
+    
+    
+    public Contact[] getContacts() {
+        Contact[] contacts = new Contact[size];
+        for (int i = 0; i < size; i++) {
+            contacts[i] = contactButtons[i].getContact();
+        }
+        return contacts;
+    }
+    
     
     private JFrame getRootWindow() {
         return (JFrame) SwingUtilities.getWindowAncestor(this.getParent());
