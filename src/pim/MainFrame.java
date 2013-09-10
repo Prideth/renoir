@@ -56,7 +56,8 @@ public class MainFrame extends javax.swing.JFrame {
         jMenuBar = new javax.swing.JMenuBar();
         jMenuFile = new javax.swing.JMenu();
         jMenuSettings = new javax.swing.JMenu();
-        jMenuItemMailSettings = new javax.swing.JMenuItem();
+        jMenuItemDatabase = new javax.swing.JMenuItem();
+        jMenuItemMail = new javax.swing.JMenuItem();
         jMenuInfo = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -157,13 +158,21 @@ public class MainFrame extends javax.swing.JFrame {
 
         jMenuSettings.setText("Einstellungen");
 
-        jMenuItemMailSettings.setText("E-Mail Einstellungen");
-        jMenuItemMailSettings.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItemDatabase.setText("Datenbank");
+        jMenuItemDatabase.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemMailSettingsActionPerformed(evt);
+                jMenuItemDatabaseActionPerformed(evt);
             }
         });
-        jMenuSettings.add(jMenuItemMailSettings);
+        jMenuSettings.add(jMenuItemDatabase);
+
+        jMenuItemMail.setText("E-Mail");
+        jMenuItemMail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemMailActionPerformed(evt);
+            }
+        });
+        jMenuSettings.add(jMenuItemMail);
 
         jMenuBar.add(jMenuSettings);
 
@@ -223,14 +232,20 @@ public class MainFrame extends javax.swing.JFrame {
     private void jButtonNotesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNotesActionPerformed
         switchPanel(notePanel, jButtonNotes);
     }//GEN-LAST:event_jButtonNotesActionPerformed
-
-    private void jMenuItemMailSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemMailSettingsActionPerformed
-      JFrame rootWindow = (JFrame) SwingUtilities.getWindowAncestor(this);
-        MailSettings dialog = new MailSettings(rootWindow, true);
-        dialog.setTitle("E-Mail Einstellungen");
-        dialog.setLocationRelativeTo(rootWindow);
+	
+    private void jMenuItemDatabaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemDatabaseActionPerformed
+        DatabaseSettingsDialog dialog = new DatabaseSettingsDialog(this, true);
+        dialog.setTitle("Datenbankverbindung");
+        dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
-    }//GEN-LAST:event_jMenuItemMailSettingsActionPerformed
+    }//GEN-LAST:event_jMenuItemDatabaseActionPerformed
+
+    private void jMenuItemMailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemMailActionPerformed
+        MailSettings dialog = new MailSettings(this, true);
+        dialog.setTitle("E-Mail Einstellungen");
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+    }//GEN-LAST:event_jMenuItemMailActionPerformed
 
     
     private void switchPanel(javax.swing.JPanel panel, javax.swing.JButton button) {
@@ -330,7 +345,8 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar;
     private javax.swing.JMenu jMenuFile;
     private javax.swing.JMenu jMenuInfo;
-    private javax.swing.JMenuItem jMenuItemMailSettings;
+    private javax.swing.JMenuItem jMenuItemDatabase;
+    private javax.swing.JMenuItem jMenuItemMail;
     private javax.swing.JMenu jMenuSettings;
     private javax.swing.JPanel jPanelContent;
     private javax.swing.JSeparator jSeparator1;
