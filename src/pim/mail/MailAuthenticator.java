@@ -18,9 +18,9 @@ import javax.mail.PasswordAuthentication;
 public class MailAuthenticator extends Authenticator
 {
     private String user;
-    private String password;
+    private char[] password;
      
-    public MailAuthenticator(String user, String password)
+    public MailAuthenticator(String user, char[] password)
     {
         this.user = user;
         this.password = password;
@@ -32,6 +32,6 @@ public class MailAuthenticator extends Authenticator
      */
     @Override
     public PasswordAuthentication getPasswordAuthentication() {
-        return new PasswordAuthentication(user, password);
+        return new PasswordAuthentication(user, String.valueOf(password));
     }
 }

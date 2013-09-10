@@ -4,6 +4,9 @@
  */
 package pim.mail;
 
+import java.io.File;
+import pim.util.ObjectSerializer;
+
 /**
  *
  * @author matthiaskiefer
@@ -16,6 +19,9 @@ public class MailSettings extends javax.swing.JDialog {
     public MailSettings(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+
+
+        setTextToCom();
     }
 
     /**
@@ -43,11 +49,15 @@ public class MailSettings extends javax.swing.JDialog {
         jTextFieldServerIn = new javax.swing.JTextField();
         jTextFieldServerOut = new javax.swing.JTextField();
         jTextFieldAccountName = new javax.swing.JTextField();
-        jTextFieldPassword = new javax.swing.JTextField();
         jButtonCancel = new javax.swing.JButton();
         jButtonSave = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
+        jPasswordFieldPassword = new javax.swing.JPasswordField();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jTextFieldPortIn = new javax.swing.JTextField();
+        jTextFieldPortOut = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -101,6 +111,10 @@ public class MailSettings extends javax.swing.JDialog {
 
         jLabel12.setText("Alle Einstellungen auf dieser Seite sind nötig.");
 
+        jLabel13.setText("Port:");
+
+        jLabel14.setText("Port:");
+
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -129,11 +143,23 @@ public class MailSettings extends javax.swing.JDialog {
                                     .add(jLabel10))
                                 .add(78, 78, 78)
                                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                    .add(jComboBoxAccountTyp, 0, 249, Short.MAX_VALUE)
-                                    .add(jTextFieldServerIn)
-                                    .add(jTextFieldServerOut)
+                                    .add(jComboBoxAccountTyp, 0, 256, Short.MAX_VALUE)
                                     .add(jTextFieldAccountName)
-                                    .add(jTextFieldPassword)))
+                                    .add(jPasswordFieldPassword)
+                                    .add(layout.createSequentialGroup()
+                                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
+                                            .add(org.jdesktop.layout.GroupLayout.LEADING, jTextFieldServerIn, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
+                                            .add(org.jdesktop.layout.GroupLayout.LEADING, jTextFieldServerOut))
+                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                            .add(layout.createSequentialGroup()
+                                                .add(jLabel14)
+                                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                                .add(jTextFieldPortOut))
+                                            .add(layout.createSequentialGroup()
+                                                .add(jLabel13)
+                                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                                .add(jTextFieldPortIn))))))
                             .add(layout.createSequentialGroup()
                                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                                     .add(jLabel3)
@@ -171,11 +197,15 @@ public class MailSettings extends javax.swing.JDialog {
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabel6)
-                    .add(jTextFieldServerIn, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jTextFieldServerIn, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jLabel13)
+                    .add(jTextFieldPortIn, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabel7)
-                    .add(jTextFieldServerOut, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jTextFieldServerOut, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jLabel14)
+                    .add(jTextFieldPortOut, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(jLabel8)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
@@ -185,7 +215,7 @@ public class MailSettings extends javax.swing.JDialog {
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabel10)
-                    .add(jTextFieldPassword, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jPasswordFieldPassword, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .add(59, 59, 59)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jButtonCancel)
@@ -205,51 +235,33 @@ public class MailSettings extends javax.swing.JDialog {
     }//GEN-LAST:event_jButtonCancelActionPerformed
 
     private void jButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSaveActionPerformed
-        
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonSaveActionPerformed
+        String name = jTextFieldName.getText();
+        String mail = jTextFieldMailAddress.getText();
+        String type = (String) jComboBoxAccountTyp.getSelectedItem();
+        String inServer = jTextFieldServerIn.getText();
+        String outServer = jTextFieldServerOut.getText();
+        char[] input = jPasswordFieldPassword.getPassword();
+        String accountname = jTextFieldAccountName.getText();
+        int portIn = Integer.parseInt(jTextFieldPortIn.getText());
+        int portOut = Integer.parseInt(jTextFieldPortOut.getText());
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MailSettings.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MailSettings.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MailSettings.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MailSettings.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
+        MailAccount acc = new MailAccount(inServer, outServer, portOut, portIn, accountname, input, mail, name, type);
+
+        ObjectSerializer so = new ObjectSerializer();
+
+        File dir = new File(System.getProperty("user.home") + "/pim/");
+        File f = new File(System.getProperty("user.home") + "/pim/" + "mailaccount.ser");
+        if (!dir.exists()) {
+            dir.mkdir();
+            System.out.println(dir.getPath() + ", erstellt.");
         }
-        //</editor-fold>
 
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                MailSettings dialog = new MailSettings(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
+        so.save2file(acc, f);
+        System.out.println(f.getPath() + ", erfolgreich gespeichert.");
+        this.dispose();
+
+    }//GEN-LAST:event_jButtonSaveActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonCancel;
     private javax.swing.JButton jButtonSave;
@@ -258,6 +270,8 @@ public class MailSettings extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -266,11 +280,44 @@ public class MailSettings extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JPasswordField jPasswordFieldPassword;
     private javax.swing.JTextField jTextFieldAccountName;
     private javax.swing.JTextField jTextFieldMailAddress;
     private javax.swing.JTextField jTextFieldName;
-    private javax.swing.JTextField jTextFieldPassword;
+    private javax.swing.JTextField jTextFieldPortIn;
+    private javax.swing.JTextField jTextFieldPortOut;
     private javax.swing.JTextField jTextFieldServerIn;
     private javax.swing.JTextField jTextFieldServerOut;
     // End of variables declaration//GEN-END:variables
+
+    private void setTextToCom() {
+        ObjectSerializer so = new ObjectSerializer();
+        File f = new File(System.getProperty("user.home") + "/pim/" + "mailaccount.ser");
+
+        if (!f.exists()) {
+            System.out.println(f.getPath() + ", existiert nicht.");
+        } else {
+            MailAccount acc = (MailAccount) so.readFromFile(f);
+
+            jTextFieldName.setText(acc.getName());
+            jTextFieldMailAddress.setText(acc.getEmail());
+
+            for (int i = 0; i < jComboBoxAccountTyp.getItemCount(); i++) {
+                if (!((String) jComboBoxAccountTyp.getItemAt(i)).equals(acc.getType())) {
+                } else {
+                    jComboBoxAccountTyp.setSelectedIndex(i);
+                    break;
+                }
+            }
+
+            jTextFieldServerIn.setText(acc.getInServer());
+            jTextFieldServerOut.setText(acc.getOutServer());
+            jPasswordFieldPassword.setText(String.copyValueOf(acc.getPassword()));
+            jTextFieldAccountName.setText(acc.getUsername());
+            jTextFieldPortIn.setText(String.valueOf(acc.getSmtpPort()));
+            jTextFieldPortOut.setText(String.valueOf(acc.getImapPort()));
+        }
+
+
+    }
 }

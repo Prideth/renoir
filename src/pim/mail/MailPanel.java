@@ -5,6 +5,7 @@
 package pim.mail;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import pim.*;
+import pim.util.ObjectSerializer;
 
 /**
  *
@@ -310,7 +312,21 @@ public class MailPanel extends JPanel {
             ArrayList<Mail> receive = null;
             try {
                 jLabelStatus.setText("Empfange Emails...");
-                receive = MailFunction.receive(MailAccounts.GOOGLEMAIL);
+
+                ObjectSerializer so = new ObjectSerializer();
+                File f = new File(System.getProperty("user.home") + "/pim/" + "mailaccount.ser");
+
+                if (!f.exists()) {
+                    JFrame rootWindow = (JFrame) SwingUtilities.getWindowAncestor(getParent());
+                    MailSettings dialog = new MailSettings(rootWindow, true);
+                    dialog.setTitle("E-Mail Einstellungen");
+                    dialog.setLocationRelativeTo(rootWindow);
+                    dialog.setVisible(true);
+                } else {
+                    MailAccount acc = (MailAccount) so.readFromFile(f);
+                    receive = MailFunction.receive(acc);
+                }
+                
             } catch (AddressException ex) {
                 Logger.getLogger(MailPanel.class.getName()).log(Level.SEVERE, null, ex);
             } catch (MessagingException ex) {
@@ -333,29 +349,29 @@ public class MailPanel extends JPanel {
 
     private void setContent(Object content, ContentType contentType, boolean msgType) throws MessagingException, IOException {
 
-       jTextAreaMailBody.setText((String) content);
+        jTextAreaMailBody.setText((String) content);
     }
 
-        class MySelectionListener implements ListSelectionListener {
+    class MySelectionListener implements ListSelectionListener {
 
-            JTable table;
+        JTable table;
 
-            public MySelectionListener(JTable table) {
-                this.table = table;
+        public MySelectionListener(JTable table) {
+            this.table = table;
+        }
+
+        @Override
+        public void valueChanged(ListSelectionEvent e) {
+            if (e.getValueIsAdjusting()) {
+                return;
             }
-
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (e.getValueIsAdjusting()) {
-                    return;
-                }
-                try {
-                    setContent(model.getMailAt(table.getSelectedRow()).getContent(), model.getMailAt(table.getSelectedRow()).getContentType(), model.getMailAt(table.getSelectedRow()).getMsgType());
-                } catch (MessagingException ex) {
-                    Logger.getLogger(MailPanel.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (IOException ex) {
-                    Logger.getLogger(MailPanel.class.getName()).log(Level.SEVERE, null, ex);
-                }
+            try {
+                setContent(model.getMailAt(table.getSelectedRow()).getContent(), model.getMailAt(table.getSelectedRow()).getContentType(), model.getMailAt(table.getSelectedRow()).getMsgType());
+            } catch (MessagingException ex) {
+                Logger.getLogger(MailPanel.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(MailPanel.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
+}

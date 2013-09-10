@@ -32,12 +32,12 @@ import javax.mail.internet.MimeMessage;
  */
 public class MailFunction {
 
-    public static void send(MailAccounts acc, String recipient, String subject,
+    public static void send(MailAccount acc, String recipient, String subject,
             String text) throws AddressException, MessagingException {
         // Properties über die Systemeigenschaften anlegen
         Properties properties = System.getProperties();
-        properties.setProperty("mail.smtp.host", acc.getSmtpHost());
-        properties.setProperty("mail.smtp.port", String.valueOf(acc.getPort()));
+        properties.setProperty("mail.smtp.host", acc.getOutServer());
+        properties.setProperty("mail.smtp.port", String.valueOf(acc.getSmtpPort()));
         properties.setProperty("mail.smtp.starttls.enable", "true");
         properties.setProperty("mail.smtp.auth", "true");
 
@@ -58,12 +58,12 @@ public class MailFunction {
         Transport.send(msg);
     }
 
-    public static ArrayList<Mail> receive(MailAccounts acc) throws AddressException, MessagingException {
+    public static ArrayList<Mail> receive(MailAccount acc) throws AddressException, MessagingException {
         ArrayList<Mail> mList;
         mList = new ArrayList<Mail>();
         // Properties über die Systemeigenschaften anlegen
         Properties properties = System.getProperties();
-        properties.setProperty("mail.imaps.host", acc.getImapHost());
+        properties.setProperty("mail.imaps.host", acc.getInServer());
         properties.setProperty("mail.imaps.port", String.valueOf(acc.getImapPort()));
         properties.setProperty("mail.store.protocol", "imaps");
 
