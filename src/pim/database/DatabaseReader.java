@@ -85,22 +85,30 @@ public class DatabaseReader {
     
     
     public Contact[] getContacts() {
-        Contact[] contacts = new Contact[10];
+        Contact[] contacts = new Contact[16];
+
+        contacts[0] = new Contact("Ronald Pofalla", "ronald.pofalla@bundestag.de", "03018 400-0", "Amt", "Besondere Aufgaben", null, null, null, null, null);
+        contacts[1] = new Contact("Dirk Niebel", "dirk.niebel@bundestag.de", "03018 535-0", "Amt", "Wirtschaftliche Zusammenarbeit und Entwicklung", null, null, null, null, null);
+        contacts[2] = new Contact("Johanna Wanka", "johanna.wanka@bundestag.de", "03018 57-0", "Amt", "Bildung und Forschung", null, null, null, null, null);
+        contacts[3] = new Contact("Peter Altmaier", "peter.altmaier@bundestag.de", "03018 305-0", "Amt", "Umwelt, Naturschutz und Reaktorsicherheit", null, null, null, null, null);
+        contacts[4] = new Contact("Peter Ramsauer", "peter.ramsauer@bundestag.de", "03018 300-0", "Amt", "Verkehr, Bau und Stadtentwicklung", null, null, null, null, null);
+        contacts[5] = new Contact("Daniel Bahr", "daniel.bahr@bundestag.de", "03018 441-0", "Amt", "Gesundheit", null, null, null, null, null);
+        contacts[6] = new Contact("Kristina Schröder", "kristina.schröder@bundestag.de", "03018 555-0", "Amt", "Familie, Senioren, Frauen und Jugend", null, null, null, null, null);
+        contacts[7] = new Contact("Thomas de Maizière", "thomas.demaiziere@bundestag.de", "03018 24-000", "Amt", "Verteidigung", null, null, null, null, null);
+        contacts[8] = new Contact("Ilse Aigner", "ilse.aigner@bundestag.de", "022899 529-0", "Amt", "Ernährung, Landwirtschaft und Verbraucherschutz", null, null, null, null, null);
+        contacts[9] = new Contact("Ursula von der Leyen", "ursula.vonderleyen@bundestag.de", "03018 527-0", "Amt", "Arbeit und Soziales", null, null, null, null, null);
+        contacts[10] = new Contact("Wolfgang Schäuble", "wolfgang.schaeuble@bundestag.de", "03018 682-0", "Amt", "Finanzen", null, null, null, null, null);
+        contacts[11] = new Contact("Sabine Leutheusser-Schnarrenberger", "sls@bundestag.de", "03018 580-0", "Amt", "Justiz", null, null, null, null, null);
+        contacts[12] = new Contact("Hans-Peter Friedrich", "hans-peter.friedrich@bundestag.de", "03018 681-0", "Amt", "Inneres", null, null, null, null, null);
+        contacts[13] = new Contact("Guido Westerwelle", "guido.westerwelle@bundestag.de", "03018 17-0", "Amt", "Auswärtiges", null, null, null, null, null);
+        contacts[14] = new Contact("Philipp Rösler", "philipp.roesler@bundestag.de", "03018 615-0", "Amt", "Wirtschaft und Technologie", null, null, null, null, null);
+        contacts[15] = new Contact("Angela Merkel", "angela.merkel@bundestag.de", "03018 400-0", "Amt", "Bundeskanzler", null, null, null, null, null);
+
         
-        contacts[0] = new Contact("Eugen Adam", "eugen.adam@gmail.com", "01639918433", null, null, null, null, null, null, null);
-        contacts[1] = new Contact("Heinrich Amersdorffer", "heinrich.amersdorffer@gmail.com", "01527624202", null, null, null, null, null, null, null);
-        contacts[2] = new Contact("Heike Kati Barath", "heike.barath@web.de", "01761249599", null, null, null, null, null, null, null);
-        contacts[3] = new Contact("Karl Axmacher", "karl.axmacher@gmx.net", "01776301189", null, null, null, null, null, null, null);
-        contacts[4] = new Contact("Hermann Albert", "hermann.albert@gmx.de", "01774523345", null, null, null, null, null, null, null);
-        contacts[5] = new Contact("Elvira Bach", "elvira.bach@gmail.com", "01621001415", null, null, null, null, null, null, null);
-        contacts[6] = new Contact("Anna Adam", "anna.adam@web.de", "01779119162", null, null, null, null, null, null, null);
-        contacts[7] = new Contact("Johannes Maximilian Avenarius", "johannes.avenarius@.web.de", "01667400224", null, null, null, null, null, null, null);
-        contacts[8] = new Contact("Fritz Bamberger", "fritz.bamberger@yahoo.com", "01909508811", null, null, null, null, null, null, null);
-        contacts[9] = new Contact("Katharina Bamberg", "katharina.bamberg@gmailcom", "01761135805", "Telefon", "01639918433", "Wohnort", "Berlin", "Geschlecht", "männlich", null);
         
         return contacts;
     }
-    
+
     public Note[] getNotes() {
         
         Note[] notes = new Note[5];
