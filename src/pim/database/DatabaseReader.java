@@ -4,10 +4,21 @@
  */
 package pim.database;
 
+import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.sql.Blob;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import pim.contact.Contact;
 import pim.exam.Exam;
 import pim.notes.Note;
 import java.util.Date;  //REMOVE ME
+import javax.imageio.ImageIO;
 import pim.todo.ToDo;
 
 /**
@@ -16,7 +27,17 @@ import pim.todo.ToDo;
  */
 public class DatabaseReader {
 
-    public DatabaseReader() {
+     private Connection con;
+    
+    public DatabaseReader() throws SQLException {
+       String database = "db_9a9d99_pim";
+        String connection = "jdbc:mysql://MYSQL5002.Smarterasp.net";
+    	String user = "9a9d99_pim";
+        String password = "pim12345";
+        con = DriverManager.getConnection(connection, user, password);
+        try (Statement stmt = con.createStatement()) {
+            stmt.execute("USE `" + database + "`");
+        }
     }
 
     
@@ -84,9 +105,52 @@ public class DatabaseReader {
     }
     
     
+    public Contact[] getContacts() throws SQLException, IOException {
+        Contact[] contacts = null;
+        
+        Statement stmt = con.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM contacts");
+        rs.last();
+        if (rs.getRow() > 0) {
+            contacts = new Contact[rs.getRow()];
+            rs.beforeFirst();
+            
+            while (rs.next()) {
+                
+                String name = rs.getString(1).isEmpty() ? null : rs.getString(1);
+                String mail = rs.getString(2).isEmpty() ? null : rs.getString(2);
+                String number = rs.getString(3).isEmpty() ? null : rs.getString(3);
+                String description1 = rs.getString(4).isEmpty() ? null : rs.getString(4);
+                String content1 = rs.getString(5).isEmpty() ? null : rs.getString(5);
+                String description2 = rs.getString(6).isEmpty() ? null : rs.getString(6);
+                String content2 = rs.getString(7).isEmpty() ? null : rs.getString(7);
+                String description3 = rs.getString(8).isEmpty() ? null : rs.getString(8);
+                String content3 = rs.getString(9).isEmpty() ? null : rs.getString(9);
+                BufferedImage image = null;
+                
+                Blob blob = rs.getBlob(10);
+                
+                if (blob != null) {
+                    byte[] bytes = blob.getBytes(1, (int) blob.length());
+                    image = ImageIO.read(new ByteArrayInputStream(bytes));
+                }
+ 
+                Contact contact = new Contact(name, mail, number, description1, content1,
+                        description2, content2, description3, content3, image);
+
+                
+                contacts[rs.getRow() - 1] = contact;
+            }
+        }
+        rs.close();
+        stmt.close();
+        return contacts;
+    }
+    
+    
+    /*
     public Contact[] getContacts() {
         Contact[] contacts = new Contact[16];
-
         contacts[0] = new Contact("Ronald Pofalla", "ronald.pofalla@bundestag.de", "03018 400-0", "Amt", "Besondere Aufgaben", null, null, null, null, null);
         contacts[1] = new Contact("Dirk Niebel", "dirk.niebel@bundestag.de", "03018 535-0", "Amt", "Wirtschaftliche Zusammenarbeit und Entwicklung", null, null, null, null, null);
         contacts[2] = new Contact("Johanna Wanka", "johanna.wanka@bundestag.de", "03018 57-0", "Amt", "Bildung und Forschung", null, null, null, null, null);
@@ -103,11 +167,9 @@ public class DatabaseReader {
         contacts[13] = new Contact("Guido Westerwelle", "guido.westerwelle@bundestag.de", "03018 17-0", "Amt", "Auswärtiges", null, null, null, null, null);
         contacts[14] = new Contact("Philipp Rösler", "philipp.roesler@bundestag.de", "03018 615-0", "Amt", "Wirtschaft und Technologie", null, null, null, null, null);
         contacts[15] = new Contact("Angela Merkel", "angela.merkel@bundestag.de", "03018 400-0", "Amt", "Bundeskanzler", null, null, null, null, null);
-
-        
-        
         return contacts;
     }
+    */
 
     public Note[] getNotes() {
         
