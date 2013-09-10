@@ -198,7 +198,7 @@ public class ContactPanel extends javax.swing.JPanel {
         if (selectedIndex > -1) {         
             
             Object[] options = {"Ja", "Nein"};
-            int n = JOptionPane.showOptionDialog(null,
+            int n = JOptionPane.showOptionDialog(getRootWindow(),
                     "Kontakt \"" + contactButtons[selectedIndex].getContact().getName() + "\" löschen?",
                     "Löschen bestätigen",
                     JOptionPane.YES_NO_OPTION,
