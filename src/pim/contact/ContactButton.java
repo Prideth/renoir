@@ -111,12 +111,15 @@ public class ContactButton extends javax.swing.JPanel {
 
         jLabelContent3.setText("Saarbrücken");
 
+        jLabelDescription3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabelDescription3.setText("Wohnort:");
 
+        jLabelDescription1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabelDescription1.setText("Festnetz:");
 
         jLabelContent1.setText("068112345");
 
+        jLabelDescription2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabelDescription2.setText("Alter:");
 
         jLabelContent2.setText("23");

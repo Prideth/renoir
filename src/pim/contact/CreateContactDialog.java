@@ -103,7 +103,7 @@ public class CreateContactDialog extends javax.swing.JDialog {
 
         jLabelMail.setText("E-Mail:");
 
-        jLabelMobil.setText("Handy:");
+        jLabelMobil.setText("Nummer:");
 
         jButtonCancel.setText("Abbrechen");
         jButtonCancel.addActionListener(new java.awt.event.ActionListener() {
@@ -185,7 +185,7 @@ public class CreateContactDialog extends javax.swing.JDialog {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabelMail)
-                            .addComponent(jLabelMobil, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+                            .addComponent(jLabelMobil, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabelName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
