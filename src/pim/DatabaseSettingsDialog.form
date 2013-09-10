@@ -43,12 +43,14 @@
                           <Component id="jLabelUser" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabelServer" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabelPassword" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" max="-2" attributes="0">
                           <Component id="jTextFieldUser" alignment="0" max="32767" attributes="0"/>
                           <Component id="jTextFieldServer" alignment="0" pref="200" max="32767" attributes="0"/>
                           <Component id="jTextFieldPassword" max="32767" attributes="0"/>
+                          <Component id="jTextFieldName" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
@@ -74,6 +76,11 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabelPassword" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jTextFieldPassword" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jTextFieldName" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -108,12 +115,12 @@
     </Component>
     <Component class="javax.swing.JTextField" name="jTextFieldUser">
       <Properties>
-        <Property name="text" type="java.lang.String" value="root"/>
+        <Property name="text" type="java.lang.String" value="9a9d99_pim"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="jTextFieldServer">
       <Properties>
-        <Property name="text" type="java.lang.String" value="localhost"/>
+        <Property name="text" type="java.lang.String" value="MYSQL5002.Smarterasp.net"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="jButtonOk">
@@ -146,6 +153,19 @@
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="jTextFieldPassword">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="pim12345"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Name der DB:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="jTextFieldName">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="db_9a9d99_pim"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

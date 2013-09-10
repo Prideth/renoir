@@ -8,8 +8,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -19,8 +17,7 @@ import javax.swing.JOptionPane;
 public class DatabaseSettingsDialog extends javax.swing.JDialog {
 
     
-    private static final String database = "pim";
-    
+
     /**
      * Creates new form DatabaseSettingsDialog
      */
@@ -53,6 +50,8 @@ public class DatabaseSettingsDialog extends javax.swing.JDialog {
         jButtonTest = new javax.swing.JButton();
         jButtonDelete = new javax.swing.JButton();
         jTextFieldPassword = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jTextFieldName = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -63,9 +62,9 @@ public class DatabaseSettingsDialog extends javax.swing.JDialog {
 
         jLabelPassword.setText("Passwort:");
 
-        jTextFieldUser.setText("root");
+        jTextFieldUser.setText("9a9d99_pim");
 
-        jTextFieldServer.setText("localhost");
+        jTextFieldServer.setText("MYSQL5002.Smarterasp.net");
 
         jButtonOk.setText("OK");
 
@@ -90,6 +89,12 @@ public class DatabaseSettingsDialog extends javax.swing.JDialog {
             }
         });
 
+        jTextFieldPassword.setText("pim12345");
+
+        jLabel1.setText("Name der DB:");
+
+        jTextFieldName.setText("db_9a9d99_pim");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -109,12 +114,14 @@ public class DatabaseSettingsDialog extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabelUser)
                             .addComponent(jLabelServer)
-                            .addComponent(jLabelPassword))
+                            .addComponent(jLabelPassword)
+                            .addComponent(jLabel1))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jTextFieldUser, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jTextFieldServer, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-                            .addComponent(jTextFieldPassword))
+                            .addComponent(jTextFieldPassword)
+                            .addComponent(jTextFieldName))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -133,6 +140,10 @@ public class DatabaseSettingsDialog extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelPassword)
                     .addComponent(jTextFieldPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jTextFieldName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonTest)
@@ -155,19 +166,13 @@ public class DatabaseSettingsDialog extends javax.swing.JDialog {
         String connection = "jdbc:mysql://" + jTextFieldServer.getText();
     	String user = jTextFieldUser.getText();
         String password = jTextFieldPassword.getText();
-        
+        String database = jTextFieldName.getText();
         Connection con;
         Statement stmt;
         
         try {
             con = DriverManager.getConnection(connection, user, password);
             stmt = con.createStatement();
-            try {
-                stmt.execute("USE `" + database + "`");
-            } catch (SQLException e) {
-                stmt.executeUpdate("CREATE SCHEMA `" + database + "`");
-                createNewDatabase(con);
-            }
             stmt.execute("USE `" + database + "`");
             con.close();
             JOptionPane.showMessageDialog(this, "Verbindung erfolgreich.");
@@ -178,7 +183,7 @@ public class DatabaseSettingsDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_jButtonTestActionPerformed
 
     private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
-         
+        /*
         Object[] options = {"Ja", "Nein"};
         int n = JOptionPane.showOptionDialog(this,
                 "Gesamter Inhalt der Datenbank löschen?",
@@ -189,84 +194,28 @@ public class DatabaseSettingsDialog extends javax.swing.JDialog {
                 options,
                 options[0]);
 
-            if (n == 0) {
-                String connection = "jdbc:mysql://" + jTextFieldServer.getText();
-                String user = jTextFieldUser.getText();
-                String password = jTextFieldPassword.getText();
+        if (n == 0) {
+            String connection = "jdbc:mysql://" + jTextFieldServer.getText();
+            String user = jTextFieldUser.getText();
+            String password = jTextFieldPassword.getText();
+            String database = jTextFieldName.getText();
+            Connection con;
 
-                Connection con;
-
-                try {
-                    con = DriverManager.getConnection(connection, user, password);
-                    createNewDatabase(con);
-                    con.close();
-                } catch (SQLException e) {
-                    System.err.println(e.getMessage());
-                    JOptionPane.showMessageDialog(this, "Es konnte keine Verbindung zur Datenbank hergestellt werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
-                }
+            try {
+                con = DriverManager.getConnection(connection, user, password);
+                Statement stmt = con.createStatement();
+                stmt.execute("USE `" + database + "`");
+                stmt.addBatch("TRUNCATE TABLE contacts");
+                stmt.executeBatch();
+                stmt.close();
+                con.close();
+            } catch (SQLException e) {
+                System.err.println(e.getMessage());
+                JOptionPane.showMessageDialog(this, "Es konnte keine Verbindung zur Datenbank hergestellt werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
+            }
         }
+        */
     }//GEN-LAST:event_jButtonDeleteActionPerformed
-    
-    
-    private void createNewDatabase(Connection con) throws SQLException {
-        try (Statement stmt = con.createStatement()) {
-            stmt.execute("DROP SCHEMA IF EXISTS `" + database + "");
-            stmt.executeUpdate("CREATE SCHEMA `" + database + "`");
-
-            stmt.executeUpdate("CREATE TABLE  `pim`.`exams` ( "
-                    + "`subject` varchar(255) COLLATE latin1_general_ci NOT NULL DEFAULT '', "
-                    + "`semester` tinyint(3) unsigned NOT NULL DEFAULT '0', "
-                    + "`ects` tinyint(3) unsigned NOT NULL DEFAULT '0', "
-                    + "`date` varchar(255) COLLATE latin1_general_ci NOT NULL DEFAULT '', "
-                    + "`time` varchar(255) COLLATE latin1_general_ci NOT NULL DEFAULT '', "
-                    + "`room` varchar(255) COLLATE latin1_general_ci NOT NULL DEFAULT '', "
-                    + "`grade` float unsigned NOT NULL DEFAULT '0', "
-                    + "`numbers1` smallint(5) unsigned NOT NULL DEFAULT '0', "
-                    + "`numbers2` smallint(5) unsigned NOT NULL DEFAULT '0', "
-                    + "`numbers3` smallint(5) unsigned NOT NULL DEFAULT '0', "
-                    + "`numbers4` smallint(5) unsigned NOT NULL DEFAULT '0', "
-                    + "`numbers5` smallint(5) unsigned NOT NULL DEFAULT '0', "
-                    + "`numbers6` smallint(5) unsigned NOT NULL DEFAULT '0', "
-                    + "`numbers7` smallint(5) unsigned NOT NULL DEFAULT '0', "
-                    + "`numbers8` smallint(5) unsigned NOT NULL DEFAULT '0', "
-                    + "`numbers9` smallint(5) unsigned NOT NULL DEFAULT '0', "
-                    + "`numbers10` smallint(5) unsigned NOT NULL DEFAULT '0', "
-                    + "`numbers11` smallint(5) unsigned NOT NULL DEFAULT '0', "
-                    + "`numbers12` smallint(5) unsigned NOT NULL DEFAULT '0', "
-                    + "`numbers13` smallint(5) unsigned NOT NULL DEFAULT '0', "
-                    + "`numbers14` smallint(5) unsigned NOT NULL DEFAULT '0', "
-                    + "`numbers15` smallint(5) unsigned NOT NULL DEFAULT '0', "
-                    + "`numbers16` smallint(5) unsigned NOT NULL DEFAULT '0', "
-                    + "`numbers17` smallint(5) unsigned NOT NULL DEFAULT '0', "
-                    + "`numbers18` smallint(5) unsigned NOT NULL DEFAULT '0', "
-                    + "`numbers19` smallint(5) unsigned NOT NULL DEFAULT '0', "
-                    + "`numbers20` smallint(5) unsigned NOT NULL DEFAULT '0', "
-                    + "`numbers21` smallint(5) unsigned NOT NULL DEFAULT '0', "
-                    + "`numbers22` smallint(5) unsigned NOT NULL DEFAULT '0', "
-                    + "`numbers23` smallint(5) unsigned NOT NULL DEFAULT '0', "
-                    + "`numbers24` smallint(5) unsigned NOT NULL DEFAULT '0', "
-                    + "`numbers25` smallint(5) unsigned NOT NULL DEFAULT '0', "
-                    + "`numbers26` smallint(5) unsigned NOT NULL DEFAULT '0', "
-                    + "`numbers27` smallint(5) unsigned NOT NULL DEFAULT '0', "
-                    + "`numbers28` smallint(5) unsigned NOT NULL DEFAULT '0', "
-                    + "`numbers29` smallint(5) unsigned NOT NULL DEFAULT '0', "
-                    + "`numbers30` smallint(5) unsigned NOT NULL DEFAULT '0', "
-                    + "`numbers32` smallint(5) unsigned NOT NULL DEFAULT '0' "
-                    + ") ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci");
-            
-            stmt.executeUpdate("CREATE TABLE  `pim`.`contacts` ( "
-                    + "`name` varchar(255) COLLATE latin1_general_ci NOT NULL DEFAULT '', "
-                    + "`mail` varchar(255) COLLATE latin1_general_ci NOT NULL DEFAULT '', "
-                    + "`number` varchar(255) COLLATE latin1_general_ci NOT NULL DEFAULT '', "
-                    + "`description1` varchar(255) COLLATE latin1_general_ci NOT NULL DEFAULT '', "
-                    + "`content1` varchar(255) COLLATE latin1_general_ci NOT NULL DEFAULT '', "
-                    + "`description2` varchar(255) COLLATE latin1_general_ci NOT NULL DEFAULT '', "
-                    + "`content2` varchar(255) COLLATE latin1_general_ci NOT NULL DEFAULT '', "
-                    + "`description3` varchar(255) COLLATE latin1_general_ci NOT NULL DEFAULT '', "
-                    + "`content3` varchar(255) COLLATE latin1_general_ci NOT NULL DEFAULT '' "
-                    + ") ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci");
-        }
-    }
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -274,9 +223,11 @@ public class DatabaseSettingsDialog extends javax.swing.JDialog {
     private javax.swing.JButton jButtonDelete;
     private javax.swing.JButton jButtonOk;
     private javax.swing.JButton jButtonTest;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabelPassword;
     private javax.swing.JLabel jLabelServer;
     private javax.swing.JLabel jLabelUser;
+    private javax.swing.JTextField jTextFieldName;
     private javax.swing.JTextField jTextFieldPassword;
     private javax.swing.JTextField jTextFieldServer;
     private javax.swing.JTextField jTextFieldUser;

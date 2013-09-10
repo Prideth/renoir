@@ -5,10 +5,18 @@
 package pim;
 
 import java.awt.Color;
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import pim.contact.Contact;
 import pim.database.DatabaseReader;
+import pim.database.DatabaseWriter;
+import pim.exam.Exam;
 import pim.mail.MailSettings;
+import pim.notes.Note;
+import pim.todo.ToDo;
 
 /**
  *
@@ -21,18 +29,31 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public MainFrame() {
         
-        DatabaseReader dr = new DatabaseReader();
+        Exam[] exams = null;
+        Contact[] contacts = null;
+        ToDo[] todos = null;
+        Note[] notes = null;
+        
+        try {
+            DatabaseReader dr = new DatabaseReader();
+            exams = dr.getExams();
+            contacts = dr.getContacts();
+            todos = dr.getToDos();
+            notes = dr.getNotes();
+        } catch (SQLException | IOException e) {
+            System.err.println(e.getMessage());
+        }
         
         mailPanel = new pim.mail.MailPanel();
-        examPanel = new pim.exam.ExamPanel(dr.getExams());
-        contactPanel = new pim.contact.ContactPanel(dr.getContacts());
+        examPanel = new pim.exam.ExamPanel(exams);
+        contactPanel = new pim.contact.ContactPanel(contacts);
         calendarPanel = new pim.calendar.CalendarPanel();
-        toDoPanel = new pim.todo.ToDoPanel(dr.getToDos());
-        notePanel = new pim.notes.NotePanel(dr.getNotes());
+        toDoPanel = new pim.todo.ToDoPanel(todos);
+        notePanel = new pim.notes.NotePanel(notes);
         
         initComponents();
         
-        switchPanel(examPanel, jButtonExams);
+        switchPanel(contactPanel, jButtonContacts);
     }
 
     /**
@@ -55,6 +76,7 @@ public class MainFrame extends javax.swing.JFrame {
         jPanelContent = new javax.swing.JPanel();
         jMenuBar = new javax.swing.JMenuBar();
         jMenuFile = new javax.swing.JMenu();
+        jMenuItemSave = new javax.swing.JMenuItem();
         jMenuSettings = new javax.swing.JMenu();
         jMenuItemDatabase = new javax.swing.JMenuItem();
         jMenuItemMail = new javax.swing.JMenuItem();
@@ -154,6 +176,15 @@ public class MainFrame extends javax.swing.JFrame {
         );
 
         jMenuFile.setText("Datei");
+
+        jMenuItemSave.setText("Speichern");
+        jMenuItemSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemSaveActionPerformed(evt);
+            }
+        });
+        jMenuFile.add(jMenuItemSave);
+
         jMenuBar.add(jMenuFile);
 
         jMenuSettings.setText("Einstellungen");
@@ -246,6 +277,20 @@ public class MainFrame extends javax.swing.JFrame {
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
     }//GEN-LAST:event_jMenuItemMailActionPerformed
+
+    private void jMenuItemSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSaveActionPerformed
+        try {
+            DatabaseWriter dw = new DatabaseWriter();
+            dw.writeContacts(contactPanel.getContacts());
+            dw.closeConnection();
+            JOptionPane.showMessageDialog(this, "Datenbank aktualisiert.");
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            JOptionPane.showMessageDialog(this, "Es konnte keine Verbindung zur Datenbank hergestellt werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
+        } catch (IOException e) {
+            
+        }
+    }//GEN-LAST:event_jMenuItemSaveActionPerformed
 
     
     private void switchPanel(javax.swing.JPanel panel, javax.swing.JButton button) {
@@ -347,6 +392,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenu jMenuInfo;
     private javax.swing.JMenuItem jMenuItemDatabase;
     private javax.swing.JMenuItem jMenuItemMail;
+    private javax.swing.JMenuItem jMenuItemSave;
     private javax.swing.JMenu jMenuSettings;
     private javax.swing.JPanel jPanelContent;
     private javax.swing.JSeparator jSeparator1;
