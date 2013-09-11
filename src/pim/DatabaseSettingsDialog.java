@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -43,7 +45,7 @@ public class DatabaseSettingsDialog extends javax.swing.JDialog {
         props = new Properties();
         
         try {
-            InputStream in = getClass().getResourceAsStream("settings.properties");
+            FileReader in = new FileReader("settings.properties");
             props.load(in);
             in.close();
             jTextFieldServer.setText(props.getProperty("server"));
@@ -240,7 +242,7 @@ public class DatabaseSettingsDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_jButtonDeleteActionPerformed
 
     private void jButtonOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOkActionPerformed
-        String connection = "jdbc:mysql://" + jTextFieldServer.getText();
+        String connection = jTextFieldServer.getText();
         String user = jTextFieldUser.getText();
         String password = new String(jPasswordField.getPassword());
         String database = jTextFieldName.getText();
@@ -248,18 +250,18 @@ public class DatabaseSettingsDialog extends javax.swing.JDialog {
         Statement stmt;
 
         try {
-            con = DriverManager.getConnection(connection, user, password);
+            con = DriverManager.getConnection("jdbc:mysql://" + connection, user, password);
             stmt = con.createStatement();
             stmt.execute("USE `" + database + "`");
             con.close();
-            props.setProperty("server", jTextFieldServer.getText());
-         
-            props.setProperty("user", jTextFieldUser.getText());
-            props.setProperty("password", new String(jPasswordField.getPassword()));
-            props.setProperty("db", jTextFieldName.getText());
-
-            FileOutputStream out = new FileOutputStream("src/pim/settings.properties");
+            props.setProperty("server", connection);
+            props.setProperty("user", user);
+            props.setProperty("password", password);
+            props.setProperty("db", database);
+            FileWriter out = new FileWriter("settings.properties");
             props.store(out, null);
+            out.close();
+            this.dispose(); 
         } catch (SQLException | IOException e) {
             System.err.println(e.getMessage());
             JOptionPane.showMessageDialog(this, "Es konnte keine Verbindung zur Datenbank hergestellt werden.", "Fehler", JOptionPane.ERROR_MESSAGE);

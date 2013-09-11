@@ -5,8 +5,13 @@
 package pim;
 
 import java.awt.Color;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.SQLException;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -29,6 +34,35 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public MainFrame() {
         
+        File f = new File("settings.properties");
+        if (!f.exists()) {
+            Properties props = new Properties();
+            InputStream in = getClass().getResourceAsStream("settings.properties");
+            try {
+                props.load(in);
+                in.close();
+                String database = props.getProperty("db");
+                String connection = props.getProperty("server");
+                String user = props.getProperty("user");
+                String password = props.getProperty("password");
+                FileOutputStream out = new FileOutputStream("settings.properties");
+                props.setProperty("server", connection);
+                props.setProperty("user", user);
+                props.setProperty("password", password);
+                props.setProperty("db", database);
+                props.store(out, null);
+                out.close();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+        
+        try {
+            f.createNewFile();
+        } catch (IOException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         Exam[] exams = null;
         Contact[] contacts = null;
         ToDo[] todos = null;
@@ -40,6 +74,7 @@ public class MainFrame extends javax.swing.JFrame {
             contacts = dr.getContacts();
             todos = dr.getToDos();
             notes = dr.getNotes();
+            dr.closeConnection();
         } catch (SQLException | IOException e) {
             e.printStackTrace();
             System.err.println(e.getMessage());
