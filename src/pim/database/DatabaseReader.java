@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -33,7 +34,7 @@ public class DatabaseReader {
 
     public DatabaseReader() throws SQLException, IOException {
         Properties props = new Properties();
-        FileInputStream in = new FileInputStream("src/pim/settings.properties");
+        InputStream in = getClass().getResourceAsStream("settings.properties");
         props.load(in);
         in.close();
         String database = props.getProperty("db");

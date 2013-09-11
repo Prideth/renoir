@@ -9,6 +9,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -29,7 +30,7 @@ public class DatabaseWriter {
     
     public DatabaseWriter() throws SQLException, IOException {
         Properties props = new Properties();
-        FileInputStream in = new FileInputStream("src/pim/settings.properties");
+        InputStream in = getClass().getResourceAsStream("settings.properties");
         props.load(in);
         in.close();
         String database = props.getProperty("db");
