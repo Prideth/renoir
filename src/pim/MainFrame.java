@@ -45,11 +45,11 @@ public class MainFrame extends javax.swing.JFrame {
                 String connection = props.getProperty("server");
                 String user = props.getProperty("user");
                 String password = props.getProperty("password");
-                FileOutputStream out = new FileOutputStream("settings.properties");
                 props.setProperty("server", connection);
                 props.setProperty("user", user);
                 props.setProperty("password", password);
                 props.setProperty("db", database);
+                FileOutputStream out = new FileOutputStream("settings.properties");
                 props.store(out, null);
                 out.close();
             } catch (IOException ex) {
@@ -57,11 +57,6 @@ public class MainFrame extends javax.swing.JFrame {
             }
         }
         
-        try {
-            f.createNewFile();
-        } catch (IOException ex) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
         
         Exam[] exams = null;
         Contact[] contacts = null;
@@ -77,7 +72,6 @@ public class MainFrame extends javax.swing.JFrame {
             dr.closeConnection();
         } catch (SQLException | IOException e) {
             e.printStackTrace();
-            System.err.println(e.getMessage());
         }
         
         mailPanel = new pim.mail.MailPanel();
