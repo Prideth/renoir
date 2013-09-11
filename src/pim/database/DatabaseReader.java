@@ -36,17 +36,53 @@ public class DatabaseReader {
         props.load(in);
         in.close();
         String database = props.getProperty("db");
-        String connection = "jdbc:mysql://" + props.getProperty("server");
+        String port = props.getProperty("port");
+        String connection = props.getProperty("server");
         String user = props.getProperty("user");
         String password = props.getProperty("password");
-        con = DriverManager.getConnection(connection, user, password);
-        try (Statement stmt = con.createStatement()) {
-            stmt.execute("USE `" + database + "`");
-        }
+        String cstring = "jdbc:mysql://" + connection + ":" + port + "/" + database;
+        con = DriverManager.getConnection(cstring, user, password);
     }
 
     
-    public Exam[] getExams() {
+    public Exam[] getExams() throws SQLException {
+                Exam[] exams = null;
+        
+        Statement stmt = con.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM exams");
+        rs.last();
+        if (rs.getRow() > 0) {
+            exams = new Exam[rs.getRow()];
+            rs.beforeFirst();
+            while (rs.next()) {
+                String subject = rs.getString(1).isEmpty() ? null : rs.getString(1);
+                String semester = rs.getString(2).isEmpty() ? null : rs.getString(2);
+                int ects = rs.getInt(3);
+                String date = rs.getString(4).isEmpty() ? null : rs.getString(2);
+                String time = rs.getString(5).isEmpty() ? null : rs.getString(2);
+                String room = rs.getString(6).isEmpty() ? null : rs.getString(2);
+                double grade =Math.round(rs.getFloat(7) * 10d) / 10d;
+                int numbers[] = new int[32];
+                int students = 0;
+                for (int i = 0; i < 32; i++) {
+                    numbers[i] = rs.getInt(i + 8);
+                    students += numbers[i];
+                }
+                Exam exam;
+                if (students == 0) {
+                    exam = new Exam(subject, semester, ects, date, time, room, grade, null);
+                } else {
+                    exam = new Exam(subject, semester, ects, date, time, room, grade, numbers);
+                }
+                exams[rs.getRow() - 1] = exam;
+            }
+        }
+        return exams;
+    }
+    
+    
+    
+    public Exam[] getExams2() {
         Exam[] exams = new Exam[28];
         
         exams[0] = new Exam("Betriebssystemeinführung", "WS 10/11", 2, null, null, null, 2.6,
