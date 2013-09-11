@@ -202,9 +202,10 @@ public class DatabaseSettingsDialog extends javax.swing.JDialog {
         Connection con;
         
         try {
+            long start = System.currentTimeMillis();
             con = DriverManager.getConnection(cstring, user, password);
             con.close();
-            JOptionPane.showMessageDialog(this, "Verbindung erfolgreich.");
+            JOptionPane.showMessageDialog(this, "Erfolgreich verbunden in " + (System.currentTimeMillis() - start) + " Millisekunden.");
         } catch (SQLException e) {
             System.err.println(e.getMessage());
             JOptionPane.showMessageDialog(this, "Es konnte keine Verbindung zur Datenbank hergestellt werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
