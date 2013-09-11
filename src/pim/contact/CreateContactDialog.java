@@ -37,7 +37,6 @@ public class CreateContactDialog extends javax.swing.JDialog {
         jTextFieldContent2.addMouseListener(textFieldListener);
         jTextFieldContent3.addMouseListener(textFieldListener);
         
-        
         if (contact != null) {
             jTextFieldName.setText(contact.getName());
             jTextFieldMail.setText(contact.getMail());
@@ -52,6 +51,15 @@ public class CreateContactDialog extends javax.swing.JDialog {
             if (image != null) {
                 jLabelImage.setIcon(new ImageIcon(image));
             }
+            jTextFieldName.setCaretPosition(0);
+            jTextFieldMail.setCaretPosition(0);
+            jTextFieldMobil.setCaretPosition(0);
+            jTextFieldDescription1.setCaretPosition(0);
+            jTextFieldContent1.setCaretPosition(0);
+            jTextFieldDescription2.setCaretPosition(0);
+            jTextFieldContent2.setCaretPosition(0);
+            jTextFieldDescription3.setCaretPosition(0);
+            jTextFieldContent3.setCaretPosition(0);
         }
     }
 
