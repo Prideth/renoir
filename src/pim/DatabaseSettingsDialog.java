@@ -4,10 +4,18 @@
  */
 package pim;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -16,7 +24,7 @@ import javax.swing.JOptionPane;
  */
 public class DatabaseSettingsDialog extends javax.swing.JDialog {
 
-    
+    private Properties props;
 
     /**
      * Creates new form DatabaseSettingsDialog
@@ -28,7 +36,22 @@ public class DatabaseSettingsDialog extends javax.swing.JDialog {
         TextFieldListener textFieldListener = new TextFieldListener();
         jTextFieldServer.addMouseListener(textFieldListener);
         jTextFieldUser.addMouseListener(textFieldListener);
-        jTextFieldPassword.addMouseListener(textFieldListener);
+        jTextFieldName.addMouseListener(textFieldListener);
+        jPasswordField.addMouseListener(textFieldListener);
+        
+        props = new Properties();
+        try {
+            FileInputStream in = new FileInputStream("src/pim/settings.properties");
+            props.load(in);
+            in.close();
+            jTextFieldServer.setText(props.getProperty("server"));
+            jTextFieldUser.setText(props.getProperty("user"));
+            jPasswordField.setText(props.getProperty("password"));
+            jTextFieldName.setText(props.getProperty("db"));
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
     }
 
     /**
@@ -49,9 +72,9 @@ public class DatabaseSettingsDialog extends javax.swing.JDialog {
         jButtonCancel = new javax.swing.JButton();
         jButtonTest = new javax.swing.JButton();
         jButtonDelete = new javax.swing.JButton();
-        jTextFieldPassword = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jTextFieldName = new javax.swing.JTextField();
+        jPasswordField = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -62,11 +85,12 @@ public class DatabaseSettingsDialog extends javax.swing.JDialog {
 
         jLabelPassword.setText("Passwort:");
 
-        jTextFieldUser.setText("9a9d99_pim");
-
-        jTextFieldServer.setText("MYSQL5002.Smarterasp.net");
-
         jButtonOk.setText("OK");
+        jButtonOk.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonOkActionPerformed(evt);
+            }
+        });
 
         jButtonCancel.setText("Abbrechen");
         jButtonCancel.addActionListener(new java.awt.event.ActionListener() {
@@ -89,11 +113,7 @@ public class DatabaseSettingsDialog extends javax.swing.JDialog {
             }
         });
 
-        jTextFieldPassword.setText("pim12345");
-
         jLabel1.setText("Name der DB:");
-
-        jTextFieldName.setText("db_9a9d99_pim");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -106,7 +126,7 @@ public class DatabaseSettingsDialog extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jButtonTest, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jButtonDelete, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jButtonOk, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButtonCancel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -120,8 +140,8 @@ public class DatabaseSettingsDialog extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jTextFieldUser, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jTextFieldServer, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-                            .addComponent(jTextFieldPassword)
-                            .addComponent(jTextFieldName))
+                            .addComponent(jTextFieldName)
+                            .addComponent(jPasswordField))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -139,7 +159,7 @@ public class DatabaseSettingsDialog extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelPassword)
-                    .addComponent(jTextFieldPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
@@ -165,7 +185,7 @@ public class DatabaseSettingsDialog extends javax.swing.JDialog {
     private void jButtonTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTestActionPerformed
         String connection = "jdbc:mysql://" + jTextFieldServer.getText();
     	String user = jTextFieldUser.getText();
-        String password = jTextFieldPassword.getText();
+        String password = new String(jPasswordField.getPassword());
         String database = jTextFieldName.getText();
         Connection con;
         Statement stmt;
@@ -216,6 +236,33 @@ public class DatabaseSettingsDialog extends javax.swing.JDialog {
         }
         */
     }//GEN-LAST:event_jButtonDeleteActionPerformed
+
+    private void jButtonOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOkActionPerformed
+        String connection = "jdbc:mysql://" + jTextFieldServer.getText();
+        String user = jTextFieldUser.getText();
+        String password = new String(jPasswordField.getPassword());
+        String database = jTextFieldName.getText();
+        Connection con;
+        Statement stmt;
+
+        try {
+            con = DriverManager.getConnection(connection, user, password);
+            stmt = con.createStatement();
+            stmt.execute("USE `" + database + "`");
+            con.close();
+            props.setProperty("server", jTextFieldServer.getText());
+         
+            props.setProperty("user", jTextFieldUser.getText());
+            props.setProperty("password", new String(jPasswordField.getPassword()));
+            props.setProperty("db", jTextFieldName.getText());
+
+            FileOutputStream out = new FileOutputStream("src/pim/settings.properties");
+            props.store(out, null);
+        } catch (SQLException | IOException e) {
+            System.err.println(e.getMessage());
+            JOptionPane.showMessageDialog(this, "Es konnte keine Verbindung zur Datenbank hergestellt werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButtonOkActionPerformed
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -227,8 +274,8 @@ public class DatabaseSettingsDialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabelPassword;
     private javax.swing.JLabel jLabelServer;
     private javax.swing.JLabel jLabelUser;
+    private javax.swing.JPasswordField jPasswordField;
     private javax.swing.JTextField jTextFieldName;
-    private javax.swing.JTextField jTextFieldPassword;
     private javax.swing.JTextField jTextFieldServer;
     private javax.swing.JTextField jTextFieldUser;
     // End of variables declaration//GEN-END:variables

@@ -32,7 +32,7 @@
                           <Component id="jButtonTest" alignment="0" max="32767" attributes="0"/>
                           <Component id="jButtonDelete" alignment="0" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace pref="24" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jButtonOk" alignment="1" min="-2" pref="130" max="-2" attributes="0"/>
                           <Component id="jButtonCancel" alignment="1" min="-2" pref="130" max="-2" attributes="0"/>
@@ -49,8 +49,8 @@
                       <Group type="103" groupAlignment="1" max="-2" attributes="0">
                           <Component id="jTextFieldUser" alignment="0" max="32767" attributes="0"/>
                           <Component id="jTextFieldServer" alignment="0" pref="200" max="32767" attributes="0"/>
-                          <Component id="jTextFieldPassword" max="32767" attributes="0"/>
                           <Component id="jTextFieldName" max="32767" attributes="0"/>
+                          <Component id="jPasswordField" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
@@ -75,7 +75,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabelPassword" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jTextFieldPassword" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jPasswordField" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -114,19 +114,16 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="jTextFieldUser">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="9a9d99_pim"/>
-      </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="jTextFieldServer">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="MYSQL5002.Smarterasp.net"/>
-      </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="jButtonOk">
       <Properties>
         <Property name="text" type="java.lang.String" value="OK"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonOkActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jButtonCancel">
       <Properties>
@@ -152,20 +149,14 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonDeleteActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextFieldPassword">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="pim12345"/>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
         <Property name="text" type="java.lang.String" value="Name der DB:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="jTextFieldName">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="db_9a9d99_pim"/>
-      </Properties>
+    </Component>
+    <Component class="javax.swing.JPasswordField" name="jPasswordField">
     </Component>
   </SubComponents>
 </Form>

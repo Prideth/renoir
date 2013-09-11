@@ -41,6 +41,7 @@ public class MainFrame extends javax.swing.JFrame {
             todos = dr.getToDos();
             notes = dr.getNotes();
         } catch (SQLException | IOException e) {
+            e.printStackTrace();
             System.err.println(e.getMessage());
         }
         
