@@ -4,12 +4,10 @@
  */
 package pim.database;
 
-import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -34,7 +32,7 @@ public class DatabaseReader {
 
     public DatabaseReader() throws SQLException, IOException {
         Properties props = new Properties();
-        InputStream in = getClass().getResourceAsStream("settings.properties");
+        FileReader in = new FileReader("settings.properties");
         props.load(in);
         in.close();
         String database = props.getProperty("db");
@@ -198,5 +196,10 @@ public class DatabaseReader {
         ToDo[] toDos = new ToDo[100];
         
         return toDos;
+    }
+    
+    
+     public void closeConnection() throws SQLException {
+        con.close();
     }
 }

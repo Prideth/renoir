@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -30,7 +31,7 @@ public class DatabaseWriter {
     
     public DatabaseWriter() throws SQLException, IOException {
         Properties props = new Properties();
-        InputStream in = getClass().getResourceAsStream("settings.properties");
+        FileReader in = new FileReader("settings.properties");
         props.load(in);
         in.close();
         String database = props.getProperty("db");
@@ -82,6 +83,4 @@ public class DatabaseWriter {
     public void closeConnection() throws SQLException {
         con.close();
     }
-        
-    
 }
