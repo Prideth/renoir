@@ -7,13 +7,10 @@ package pim;
 import java.awt.Color;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import pim.contact.Contact;
 import pim.database.DatabaseReader;
@@ -41,14 +38,6 @@ public class MainFrame extends javax.swing.JFrame {
             try {
                 props.load(in);
                 in.close();
-                String database = props.getProperty("db");
-                String connection = props.getProperty("server");
-                String user = props.getProperty("user");
-                String password = props.getProperty("password");
-                props.setProperty("server", connection);
-                props.setProperty("user", user);
-                props.setProperty("password", password);
-                props.setProperty("db", database);
                 FileOutputStream out = new FileOutputStream("settings.properties");
                 props.store(out, null);
                 out.close();
@@ -57,7 +46,6 @@ public class MainFrame extends javax.swing.JFrame {
             }
         }
         
-        
         Exam[] exams = null;
         Contact[] contacts = null;
         ToDo[] todos = null;
@@ -65,8 +53,15 @@ public class MainFrame extends javax.swing.JFrame {
         
         try {
             DatabaseReader dr = new DatabaseReader();
+            
+            long start = System.currentTimeMillis();
             exams = dr.getExams();
+            System.out.println("Read Exams: " + (System.currentTimeMillis() - start));
+
+            start = System.currentTimeMillis();
             contacts = dr.getContacts();
+            System.out.println("Read Contacts: " + (System.currentTimeMillis() - start));
+            
             todos = dr.getToDos();
             notes = dr.getNotes();
             dr.closeConnection();
@@ -311,7 +306,15 @@ public class MainFrame extends javax.swing.JFrame {
     private void jMenuItemSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSaveActionPerformed
         try {
             DatabaseWriter dw = new DatabaseWriter();
+            
+            long start = System.currentTimeMillis();
             dw.writeContacts(contactPanel.getContacts());
+            System.out.println("Write Contacts: " + (System.currentTimeMillis() - start));
+            
+            start = System.currentTimeMillis();
+            dw.writeExams(examPanel.getExams());
+            System.out.println("Write Exams: " + (System.currentTimeMillis() - start));
+            
             dw.closeConnection();
             JOptionPane.showMessageDialog(this, "Datenbank aktualisiert.");
         } catch (SQLException e) {
