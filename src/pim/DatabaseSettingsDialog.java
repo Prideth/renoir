@@ -9,6 +9,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -40,8 +41,9 @@ public class DatabaseSettingsDialog extends javax.swing.JDialog {
         jPasswordField.addMouseListener(textFieldListener);
         
         props = new Properties();
+        
         try {
-            FileInputStream in = new FileInputStream("src/pim/settings.properties");
+            InputStream in = getClass().getResourceAsStream("settings.properties");
             props.load(in);
             in.close();
             jTextFieldServer.setText(props.getProperty("server"));
