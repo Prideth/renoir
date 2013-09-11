@@ -7,6 +7,7 @@ package pim.database;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Blob;
 import java.sql.Connection;
@@ -18,6 +19,7 @@ import pim.contact.Contact;
 import pim.exam.Exam;
 import pim.notes.Note;
 import java.util.Date;  //REMOVE ME
+import java.util.Properties;
 import javax.imageio.ImageIO;
 import pim.todo.ToDo;
 
@@ -27,13 +29,17 @@ import pim.todo.ToDo;
  */
 public class DatabaseReader {
 
-     private Connection con;
-    
-    public DatabaseReader() throws SQLException {
-       String database = "db_9a9d99_pim";
-        String connection = "jdbc:mysql://MYSQL5002.Smarterasp.net";
-    	String user = "9a9d99_pim";
-        String password = "pim12345";
+    private Connection con;
+
+    public DatabaseReader() throws SQLException, IOException {
+        Properties props = new Properties();
+        FileInputStream in = new FileInputStream("src/pim/settings.properties");
+        props.load(in);
+        in.close();
+        String database = props.getProperty("db");
+        String connection = "jdbc:mysql://" + props.getProperty("server");
+        String user = props.getProperty("user");
+        String password = props.getProperty("password");
         con = DriverManager.getConnection(connection, user, password);
         try (Statement stmt = con.createStatement()) {
             stmt.execute("USE `" + database + "`");
@@ -126,10 +132,9 @@ public class DatabaseReader {
                 String content2 = rs.getString(7).isEmpty() ? null : rs.getString(7);
                 String description3 = rs.getString(8).isEmpty() ? null : rs.getString(8);
                 String content3 = rs.getString(9).isEmpty() ? null : rs.getString(9);
-                BufferedImage image = null;
                 
                 Blob blob = rs.getBlob(10);
-                
+                BufferedImage image = null;
                 if (blob != null) {
                     byte[] bytes = blob.getBytes(1, (int) blob.length());
                     image = ImageIO.read(new ByteArrayInputStream(bytes));
