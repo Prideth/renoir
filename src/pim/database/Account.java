@@ -36,7 +36,6 @@ public class Account {
             user = new User(userid, username, password);
         }
         stmt.close();
-        con.close();
         return user;
     }
     
