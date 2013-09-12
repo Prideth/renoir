@@ -35,6 +35,9 @@ public class LoginDialog extends javax.swing.JDialog {
     
         jTextFieldUser.setDocument(new pim.JTextFieldLimit(12, false));
         jPasswordField.setDocument(new pim.JTextFieldLimit(12, false));
+        
+        jTextFieldUser.setText("renoir");
+        jPasswordField.setText("test");
     }
 
     /**
