@@ -24,6 +24,19 @@ public class Account {
         this.con = con;
     }
     
+    /*
+    CREATE FUNCTION `insertUser` (u VARCHAR(12), p VARCHAR(12)) RETURNS INT
+    BEGIN
+        DECLARE userid INT;
+        IF EXISTS (SELECT * FROM users WHERE username = u) THEN
+            SET userid = 0;
+        ELSE
+            INSERT INTO users (username, password) VALUES (u, p);
+            SET userid = (SELECT id FROM users WHERE username = u AND password = p);
+        END IF;
+        RETURN userid;
+    END
+    */
     public User createNewUser(String username, String password) throws SQLException {
         User user = null;
         CallableStatement stmt = con.prepareCall("{? = call insertUser (?, ?)}");
