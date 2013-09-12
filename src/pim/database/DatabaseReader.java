@@ -135,45 +135,43 @@ public class DatabaseReader {
     
     public Contact[] getContacts(int userid) throws SQLException {
         Contact[] contacts = null;
-        
-        Statement stmt = con.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM contacts WHERE userid = '" + userid + "'");
-        rs.last();
-        if (rs.getRow() > 0) {
-            contacts = new Contact[rs.getRow()];
-            rs.beforeFirst();
-            
-            while (rs.next()) {
+        String sql =  "SELECT * FROM contacts WHERE userid = '" + userid + "'";
+        try (Statement stmt = con.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+            rs.last();
+            if (rs.getRow() > 0) {
+                contacts = new Contact[rs.getRow()];
+                rs.beforeFirst();
                 
-                String name = rs.getString(2).isEmpty() ? null : rs.getString(2);
-                String mail = rs.getString(3).isEmpty() ? null : rs.getString(3);
-                String number = rs.getString(4).isEmpty() ? null : rs.getString(4);
-                String description1 = rs.getString(5).isEmpty() ? null : rs.getString(5);
-                String content1 = rs.getString(6).isEmpty() ? null : rs.getString(6);
-                String description2 = rs.getString(7).isEmpty() ? null : rs.getString(7);
-                String content2 = rs.getString(8).isEmpty() ? null : rs.getString(8);
-                String description3 = rs.getString(9).isEmpty() ? null : rs.getString(9);
-                String content3 = rs.getString(10).isEmpty() ? null : rs.getString(10);
-                
-                Blob blob = rs.getBlob(11);
-                BufferedImage image = null;
-                if (blob != null) {
-                    byte[] bytes = blob.getBytes(1, (int) blob.length());
-                    try {
-                        image = ImageIO.read(new ByteArrayInputStream(bytes));
-                    } catch (IOException e) {
-                        System.err.println(e.getMessage());
+                while (rs.next()) {
+                    
+                    String name = rs.getString(2).isEmpty() ? null : rs.getString(2);
+                    String mail = rs.getString(3).isEmpty() ? null : rs.getString(3);
+                    String number = rs.getString(4).isEmpty() ? null : rs.getString(4);
+                    String description1 = rs.getString(5).isEmpty() ? null : rs.getString(5);
+                    String content1 = rs.getString(6).isEmpty() ? null : rs.getString(6);
+                    String description2 = rs.getString(7).isEmpty() ? null : rs.getString(7);
+                    String content2 = rs.getString(8).isEmpty() ? null : rs.getString(8);
+                    String description3 = rs.getString(9).isEmpty() ? null : rs.getString(9);
+                    String content3 = rs.getString(10).isEmpty() ? null : rs.getString(10);
+                    
+                    Blob blob = rs.getBlob(11);
+                    BufferedImage image = null;
+                    if (blob != null) {
+                        byte[] bytes = blob.getBytes(1, (int) blob.length());
+                        try {
+                            image = ImageIO.read(new ByteArrayInputStream(bytes));
+                        } catch (IOException e) {
+                            System.err.println(e.getMessage());
+                        }
                     }
+                    
+                    Contact contact = new Contact(name, mail, number, description1, content1,
+                            description2, content2, description3, content3, image);
+                    
+                    contacts[rs.getRow() - 1] = contact;
                 }
-                
-                Contact contact = new Contact(name, mail, number, description1, content1,
-                        description2, content2, description3, content3, image);
-                
-                contacts[rs.getRow() - 1] = contact;
             }
         }
-        rs.close();
-        stmt.close();
         return contacts;
     }
     

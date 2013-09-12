@@ -39,29 +39,28 @@ public class Account {
     */
     public User createNewUser(String username, String password) throws SQLException {
         User user = null;
-        CallableStatement stmt = con.prepareCall("{? = call insertUser (?, ?)}");
-        stmt.registerOutParameter(1, Types.INTEGER);
-        stmt.setString(2, username);
-        stmt.setString(3, password);
-        stmt.execute();
-        int userid = stmt.getInt(1);
-        if (userid != 0) {
-            user = new User(userid, username, password);
+        try (CallableStatement stmt = con.prepareCall("{? = call insertUser (?, ?)}")) {
+            stmt.registerOutParameter(1, Types.INTEGER);
+            stmt.setString(2, username);
+            stmt.setString(3, password);
+            stmt.execute();
+            int userid = stmt.getInt(1);
+            if (userid != 0) {
+                user = new User(userid, username, password);
+            }
         }
-        stmt.close();
         return user;
     }
     
     
     public User login(String username, String password) throws SQLException {
         User user = null;
-        Statement stmt = con.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM users WHERE username = '" + username + "' AND password = '" + password + "'");
-        if (rs.next()) {
-            user = new User(rs.getInt(1), rs.getString(2), rs.getString(3));
+        String sql = "SELECT * FROM users WHERE username = '" + username + "' AND password = '" + password + "'";
+        try (Statement stmt = con.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+            if (rs.next()) {
+                user = new User(rs.getInt(1), rs.getString(2), rs.getString(3));
+            }
         }
-        rs.close();
-        stmt.close();
         return user;
     }
 }

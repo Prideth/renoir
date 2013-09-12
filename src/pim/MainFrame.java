@@ -18,8 +18,6 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import pim.contact.ContactPanel;
 import pim.database.Account;
@@ -54,21 +52,22 @@ public class MainFrame extends javax.swing.JFrame {
             try {
                 props.load(in);
                 in.close();
-                FileOutputStream out = new FileOutputStream(CONFIG_FILE);
-                props.store(out, null);
-                out.close();
+                try (FileOutputStream out = new FileOutputStream(CONFIG_FILE)) {
+                    props.store(out, null);
+                }
             } catch (IOException e) {}
         } else {
             try {
-                FileReader in = new FileReader(CONFIG_FILE);
-                props.load(in);
-                in.close();
+                try (FileReader in = new FileReader(CONFIG_FILE)) {
+                    props.load(in);
+                }
             } catch (IOException e) {}
         }
         
         initComponents();
         
         this.addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent evt) {
                 dispose();
                 if (con != null) {
@@ -418,7 +417,8 @@ public class MainFrame extends javax.swing.JFrame {
             try {
                 dw.writeContacts(contactPanel.getContacts(), user.getId());
                 System.out.println(System.currentTimeMillis() - start);
-            } catch (SQLException ex) {
+            } catch (SQLException e) {
+                e.printStackTrace();
                 System.out.println("error");
             }
             
@@ -427,7 +427,7 @@ public class MainFrame extends javax.swing.JFrame {
             try {
                 dw.writeExams(examPanel.getExams(), user.getId());
                 System.out.println(System.currentTimeMillis() - start);
-            } catch (SQLException ex) {
+            } catch (SQLException e) {
                 System.out.println("error");
             }
             
@@ -555,19 +555,14 @@ public class MainFrame extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new MainFrame().setVisible(true);
             }
