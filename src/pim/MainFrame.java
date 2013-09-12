@@ -36,6 +36,8 @@ import pim.todo.ToDo;
  */
 public class MainFrame extends javax.swing.JFrame {
 
+    private static final String CONFIG_FILE = "settings.properties";
+    
     private Properties props;
     private User user;
     private Connection con;
@@ -46,19 +48,19 @@ public class MainFrame extends javax.swing.JFrame {
     public MainFrame() {
         con = null;
         props = new Properties();
-        File f = new File("settings.properties");
+        File f = new File(CONFIG_FILE);
         if (!f.exists()) {
-            InputStream in = getClass().getResourceAsStream("settings.properties");
+            InputStream in = getClass().getResourceAsStream(CONFIG_FILE);
             try {
                 props.load(in);
                 in.close();
-                FileOutputStream out = new FileOutputStream("settings.properties");
+                FileOutputStream out = new FileOutputStream(CONFIG_FILE);
                 props.store(out, null);
                 out.close();
             } catch (IOException e) {}
         } else {
             try {
-                FileReader in = new FileReader("settings.properties");
+                FileReader in = new FileReader(CONFIG_FILE);
                 props.load(in);
                 in.close();
             } catch (IOException e) {}
