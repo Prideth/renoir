@@ -34,6 +34,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private Properties props;
     private User user;
+    private Connection con;
     
     /**
      * Creates new form NewJFrame
@@ -59,11 +60,12 @@ public class MainFrame extends javax.swing.JFrame {
         }
         
         String username = props.getProperty("username");
-        Connection con = null;
+        
+        con = null;
         
         if (!username.isEmpty()) {
             String password = props.getProperty("password");
-            con = DatabaseConnector.getConnection(props);
+            con = DatabaseConnector.getConnection(props, con);
             if (con != null) {
                 Account account = new Account(con);
                 try {
@@ -80,15 +82,7 @@ public class MainFrame extends javax.swing.JFrame {
         if (user != null) {
             updatePanels(con);
         }
-        
-        if (con != null) {
-            try {
-                con.close();
-            } catch (SQLException e) {
-                System.err.println(e.getMessage());
-            }
-        }
-        
+               
         ToDo[] todos = null;
         Note[] notes = null;
         
@@ -111,11 +105,10 @@ public class MainFrame extends javax.swing.JFrame {
     
     private void updatePanels(Connection con) {
         if (con == null) {
-            con = DatabaseConnector.getConnection(props);
+            con = DatabaseConnector.getConnection(props, con);
         }
         if (con != null) {
             DatabaseReader dr = new DatabaseReader(con);
-            
             
             System.out.print("read exams... ");
             long start = System.currentTimeMillis();
@@ -399,7 +392,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemMailActionPerformed
 
     private void jMenuItemSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSaveActionPerformed
-        Connection con = DatabaseConnector.getConnection(props);
+        con = DatabaseConnector.getConnection(props, con);
 
         if (con != null) {
             DatabaseWriter dw = new DatabaseWriter(con);
@@ -428,7 +421,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemSaveActionPerformed
 
     private void jMenuItemLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemLoginActionPerformed
-        LoginDialog dialog = new LoginDialog(this, true, props);
+        LoginDialog dialog = new LoginDialog(this, true, props, con);
         dialog.setTitle("Login");
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
@@ -449,18 +442,18 @@ public class MainFrame extends javax.swing.JFrame {
             jMenuItemDelete.setEnabled(true);
             jMenuItemSave.setEnabled(true);
             this.setTitle("Personal Information Manager - " + user.getUsername());
-   
-            Connection con = dialog.getConnection();
+            con = dialog.getConnection();
             updatePanels(con);
-            
-            try {
-                con.close();
-            } catch (SQLException e) {}
         }
     }//GEN-LAST:event_jMenuItemLoginActionPerformed
 
     private void jMenuItemExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemExitActionPerformed
         this.dispose();
+        if (con != null) {
+            try {
+                con.close();
+            } catch (SQLException ex) {}
+        }
         System.exit(0);
     }//GEN-LAST:event_jMenuItemExitActionPerformed
 

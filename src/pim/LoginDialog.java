@@ -24,9 +24,10 @@ public class LoginDialog extends javax.swing.JDialog {
     /**
      * Creates new form LoginDialog
      */
-    public LoginDialog(java.awt.Frame parent, boolean modal, Properties props) {
+    public LoginDialog(java.awt.Frame parent, boolean modal, Properties props, Connection con) {
         super(parent, modal);
         user = null;
+        this.con = con;
         this.props = props;
         initComponents();
         
@@ -158,14 +159,13 @@ public class LoginDialog extends javax.swing.JDialog {
         }
        
         try {
-            con = DatabaseConnector.getConnection(props);
+            con = DatabaseConnector.getConnection(props, con);
             if (con != null) {
                 Account account = new Account(con);
                 user = account.createNewUser(username, password);
                 if (user != null) {
                     dispose();
                 } else {
-                    con.close();
                     JOptionPane.showMessageDialog(this, "Dieser Benutzername existiert bereits.", "Fehler", JOptionPane.ERROR_MESSAGE);
                 }
             }
@@ -187,14 +187,13 @@ public class LoginDialog extends javax.swing.JDialog {
         }
         
         try {
-            con = DatabaseConnector.getConnection(props);
+            con = DatabaseConnector.getConnection(props, con);
             if (con != null) {
                 Account account = new Account(con);
                 user = account.login(username, password);
                 if (user != null) {
                     dispose();
                 } else {
-                    con.close();
                     JOptionPane.showMessageDialog(null, "Dieser Benutzer existiert nicht oder das Passwort ist falsch.", "Fehler", JOptionPane.ERROR_MESSAGE);
                 }
             }

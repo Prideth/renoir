@@ -16,10 +16,7 @@ import pim.contact.Contact;
 import pim.exam.Exam;
 import pim.notes.Note;
 import java.util.Date;  //REMOVE ME
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
-import pim.DatabaseConnector;
 import pim.todo.ToDo;
 
 /**
