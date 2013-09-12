@@ -14,6 +14,8 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import pim.contact.ContactPanel;
 import pim.database.Account;
@@ -448,7 +450,12 @@ public class MainFrame extends javax.swing.JFrame {
             jMenuItemSave.setEnabled(true);
             this.setTitle("Personal Information Manager - " + user.getUsername());
    
-            updatePanels(null);
+            Connection con = dialog.getConnection();
+            updatePanels(con);
+            
+            try {
+                con.close();
+            } catch (SQLException e) {}
         }
     }//GEN-LAST:event_jMenuItemLoginActionPerformed
 

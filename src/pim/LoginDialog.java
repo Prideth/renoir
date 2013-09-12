@@ -4,12 +4,9 @@
  */
 package pim;
 
-import java.sql.CallableStatement;
+
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Types;
 import java.util.Properties;
 import javax.swing.JOptionPane;
 import pim.database.Account;
@@ -22,6 +19,7 @@ public class LoginDialog extends javax.swing.JDialog {
 
     private User user;
     private Properties props;
+    private Connection con;
     
     /**
      * Creates new form LoginDialog
@@ -160,14 +158,14 @@ public class LoginDialog extends javax.swing.JDialog {
         }
        
         try {
-            Connection con = DatabaseConnector.getConnection(props);
+            con = DatabaseConnector.getConnection(props);
             if (con != null) {
                 Account account = new Account(con);
                 user = account.createNewUser(username, password);
-                con.close();
                 if (user != null) {
                     dispose();
                 } else {
+                    con.close();
                     JOptionPane.showMessageDialog(this, "Dieser Benutzername existiert bereits.", "Fehler", JOptionPane.ERROR_MESSAGE);
                 }
             }
@@ -189,14 +187,14 @@ public class LoginDialog extends javax.swing.JDialog {
         }
         
         try {
-            Connection con = DatabaseConnector.getConnection(props);
+            con = DatabaseConnector.getConnection(props);
             if (con != null) {
                 Account account = new Account(con);
                 user = account.login(username, password);
-                con.close();
                 if (user != null) {
                     dispose();
                 } else {
+                    con.close();
                     JOptionPane.showMessageDialog(null, "Dieser Benutzer existiert nicht oder das Passwort ist falsch.", "Fehler", JOptionPane.ERROR_MESSAGE);
                 }
             }
@@ -212,6 +210,10 @@ public class LoginDialog extends javax.swing.JDialog {
     
     public boolean getRemember() {
         return jCheckBoxRemember.isSelected();
+    }
+    
+    public Connection getConnection() {
+        return con;
     }
     
     
