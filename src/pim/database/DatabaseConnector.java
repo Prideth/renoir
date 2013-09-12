@@ -26,9 +26,10 @@ public class DatabaseConnector {
             try {
                 System.out.print("ping... ");
                 long start = System.currentTimeMillis();
-                Statement stmt = con.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT 1");
-                rs.close();
+                try (Statement stmt = con.createStatement()) {
+                    ResultSet rs = stmt.executeQuery("SELECT 1");
+                    rs.close();
+                }
                 System.out.println(System.currentTimeMillis() - start);
             } catch (SQLException e) {
                 con = connect(props);
