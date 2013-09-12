@@ -15,7 +15,6 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
-import pim.DatabaseConnector;
 import pim.contact.Contact;
 import pim.exam.Exam;
 

@@ -5,6 +5,7 @@
 package pim;
 
 
+import pim.database.DatabaseConnector;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
