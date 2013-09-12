@@ -27,7 +27,7 @@ public class DatabaseWriter {
     private Connection con;
     
     public DatabaseWriter() {
-        con = DatabaseConnector.getInstance().getConnection();
+        con = DatabaseConnector.getConnection();
     }
 
     public void writeContacts(Contact[] contacts, int userid) throws SQLException, IOException {
@@ -108,5 +108,12 @@ public class DatabaseWriter {
         stmt.executeBatch();
         stmt.close();
         
+    }
+    
+    public void closeConnection() {
+        try {
+            con.close();
+        } catch (SQLException e) {
+        }
     }
 }

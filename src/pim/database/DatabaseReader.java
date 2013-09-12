@@ -19,6 +19,8 @@ import pim.exam.Exam;
 import pim.notes.Note;
 import java.util.Date;  //REMOVE ME
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import pim.DatabaseConnector;
 import pim.todo.ToDo;
@@ -32,7 +34,7 @@ public class DatabaseReader {
     private Connection con;
     
     public DatabaseReader() {
-        con = DatabaseConnector.getInstance().getConnection();
+        con = DatabaseConnector.getConnection();
     }
 
     
@@ -224,4 +226,12 @@ public class DatabaseReader {
         
         return toDos;
     }
+    
+    
+    public void closeConnection() {
+        try {
+            con.close();
+        } catch (SQLException e) {}
+    }
+    
 }
