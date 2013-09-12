@@ -32,7 +32,6 @@ public class DatabaseWriter {
     }
 
     public void writeContacts(Contact[] contacts, int userid) throws SQLException {
-  
         Statement stmt = con.createStatement();
         stmt.executeUpdate("DELETE FROM contacts WHERE userid = '" + userid + "'");
         stmt.close();
@@ -74,44 +73,56 @@ public class DatabaseWriter {
         }
     }
     
+    
     public void writeExams(Exam[] exams, int userid) throws SQLException {
-        Statement stmt = con.createStatement();
-        stmt.addBatch("DELETE FROM exams WHERE userid = '" + userid + "'");
+ 
+        StringBuilder sb = new StringBuilder("INSERT INTO exams VALUES ");
         
         for (int i = 0; i < exams.length; i++) {
             
-            String subject = exams[i].getSubject().replaceAll("'","\\\\'");
-            String semester = exams[i].getSemester().replaceAll("'","\\\\'");
-            int ects = exams[i].getEcts();
-            String date = exams[i].getDate() == null ? "" : exams[i].getDate().replaceAll("'", "\\\\'");
-            String time = exams[i].getTime() == null ? "" : exams[i].getTime().replaceAll("'", "\\\\'");
-            String room = exams[i].getRoom() == null ? "" : exams[i].getRoom().replaceAll("'", "\\\\'");
-            double grade = exams[i].getGrade();
+            sb.append("(")
+              .append(userid)
+              .append(",'")
+              .append(exams[i].getSubject().replaceAll("'", "\\\\'"))
+              .append("','")
+              .append(exams[i].getSemester().replaceAll("'", "\\\\'"))
+              .append("',")
+              .append(exams[i].getEcts())
+              .append(",'")
+              .append(exams[i].getDate() == null ? "" : exams[i].getDate().replaceAll("'", "\\\\'"))
+              .append("','")
+              .append(exams[i].getTime() == null ? "" : exams[i].getTime().replaceAll("'", "\\\\'"))
+              .append("','")
+              .append(exams[i].getRoom() == null ? "" : exams[i].getRoom().replaceAll("'", "\\\\'"))
+              .append("',")
+              .append(exams[i].getGrade())
+              .append(",");
+
             int[] numbers = exams[i].getNumbers();
-            
             if (numbers == null) {
-                 numbers = new int[32];
-                 for (int j = 0; j < numbers.length; j++) {
-                     numbers[j] = 0;
-                 }
+                sb.append("0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0");
+            } else {
+                for (int j = 0; j < numbers.length; j++) {
+                    sb.append(numbers[j]);
+                    if (j < numbers.length - 1) {
+                        sb.append(",");
+                    }
+                }
             }
             
-            stmt.addBatch("INSERT INTO exams VALUES ('"
-                    + userid + "', '" + subject + "', '" + semester + "', '"  + ects + "', '"
-                    + date + "', '" + time + "', '" + room + "', '" + grade + "', '"
-                    + numbers[0] + "', '" + numbers[1] + "', '" + numbers[2] + "', '"
-                    + numbers[3] + "', '" + numbers[4] + "', '" + numbers[5] + "', '"
-                    + numbers[6] + "', '" + numbers[7] + "', '" + numbers[8] + "', '"
-                    + numbers[9] + "', '" + numbers[10] + "', '" + numbers[11] + "', '"
-                    + numbers[12] + "', '" + numbers[13] + "', '" + numbers[14] + "', '"
-                    + numbers[15] + "', '" + numbers[16] + "', '" + numbers[17] + "', '"
-                    + numbers[18] + "', '" + numbers[19] + "', '" + numbers[20] + "', '"
-                    + numbers[21] + "', '" + numbers[22] + "', '" + numbers[23] + "', '"
-                    + numbers[24] + "', '" + numbers[25] + "', '" + numbers[26] + "', '"
-                    + numbers[27] + "', '" + numbers[28] + "', '" + numbers[29] + "', '"
-                    + numbers[30] + "', '" + numbers[31] + "')"); 
+            if (i < exams.length - 1) {
+                sb.append("),");
+            } else {
+                sb.append(")");
+            }
         }
+
+        Statement stmt = con.createStatement();
+        stmt.addBatch("DELETE FROM exams WHERE userid = '" + userid + "'");
+        stmt.addBatch(sb.toString());
         stmt.executeBatch();
         stmt.close();
     }
+    
+    
 }
