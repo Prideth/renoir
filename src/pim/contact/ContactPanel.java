@@ -31,6 +31,9 @@ public class ContactPanel extends javax.swing.JPanel {
         TextFieldListener textFieldListener = new TextFieldListener();
         jTextFieldSearch.addMouseListener(textFieldListener);
         bgColor = this.getBackground();
+        contactButtons = new ContactButton[100];
+        size = 0;
+        selectedIndex = -1;
     }
     
     public void updateContacts(Contact[] contacts) {
