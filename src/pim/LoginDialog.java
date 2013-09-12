@@ -10,7 +10,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
+import java.util.Properties;
 import javax.swing.JOptionPane;
+import pim.database.Account;
 
 /**
  *
@@ -19,13 +21,15 @@ import javax.swing.JOptionPane;
 public class LoginDialog extends javax.swing.JDialog {
 
     private User user;
+    private Properties props;
     
     /**
      * Creates new form LoginDialog
      */
-    public LoginDialog(java.awt.Frame parent, boolean modal) {
+    public LoginDialog(java.awt.Frame parent, boolean modal, Properties props) {
         super(parent, modal);
         user = null;
+        this.props = props;
         initComponents();
         
         TextFieldListener textFieldListener = new TextFieldListener();
@@ -146,73 +150,60 @@ public class LoginDialog extends javax.swing.JDialog {
     private void jButtonNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNewActionPerformed
         String username = jTextFieldUser.getText().trim();
         String password = new String(jPasswordField.getPassword());
-        boolean test = true;
+        
         if (username.isEmpty()) {
             jTextFieldUser.requestFocus();
-            test = false;
+            return;
         } else if (password.isEmpty()) {
             jPasswordField.requestFocus();
-            test = false;
+            return;
         }
-        if (test) {
-            try {            
-                Connection con = DatabaseConnector.getConnection();
-                if (con != null) {
-                    CallableStatement stmt = con.prepareCall("{? = call insertUser (?, ?)}");
-                    stmt.registerOutParameter(1, Types.INTEGER);
-                    stmt.setString(2, username);
-                    stmt.setString(3, password);
-                    stmt.execute();
-                    int userid = stmt.getInt(1);
-                    if (userid == 0) {
-                           JOptionPane.showMessageDialog(this, "Dieser Benutzername existiert bereits.", "Fehler", JOptionPane.ERROR_MESSAGE);
-                           jTextFieldUser.requestFocus();
-                           jTextFieldUser.setSelectionStart(0);
-                           jTextFieldUser.setSelectionEnd(jTextFieldUser.getText().length());
-                    } else {
-                        user = new User(userid, username, password);
-                        dispose();
-                    }
-                    stmt.close();
-                    con.close();
+       
+        try {
+            Connection con = DatabaseConnector.getConnection(props);
+            if (con != null) {
+                Account account = new Account(con);
+                user = account.createNewUser(username, password);
+                con.close();
+                if (user != null) {
+                    dispose();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Dieser Benutzername existiert bereits.", "Fehler", JOptionPane.ERROR_MESSAGE);
                 }
-            } catch (SQLException e) {
-                e.printStackTrace();
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }//GEN-LAST:event_jButtonNewActionPerformed
 
     private void jButtonLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLoginActionPerformed
         String username = jTextFieldUser.getText();
         String password = new String(jPasswordField.getPassword());
-        boolean test = true;
+        
         if (username.isEmpty()) {
             jTextFieldUser.requestFocus();
-            test = false;
+            return;
         } else if (password.isEmpty()) {
             jPasswordField.requestFocus();
-            test = false;
+            return;
         }
-        if (test) {
-            try {
-                Connection con = DatabaseConnector.getConnection();
-                if (con != null) {
-                    Statement stmt = con.createStatement();
-                    ResultSet rs = stmt.executeQuery("SELECT * FROM users WHERE username = '" + username + "' AND password = '" + password + "'");
-                    if (rs.next()) {
-                        user = new User(rs.getInt(1), rs.getString(2), rs.getString(3));
-                        dispose();
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Dieser Benutzername existiert nicht oder das Passwort ist falsch.", "Fehler", JOptionPane.ERROR_MESSAGE);
-                    }
-                    rs.close();
-                    stmt.close();
-                    con.close();
+        
+        try {
+            Connection con = DatabaseConnector.getConnection(props);
+            if (con != null) {
+                Account account = new Account(con);
+                user = account.login(username, password);
+                con.close();
+                if (user != null) {
+                    dispose();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Dieser Benutzer existiert nicht oder das Passwort ist falsch.", "Fehler", JOptionPane.ERROR_MESSAGE);
                 }
-            } catch (SQLException e) {
-                
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+
     }//GEN-LAST:event_jButtonLoginActionPerformed
     
     public User getUser() {

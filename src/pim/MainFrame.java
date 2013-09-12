@@ -12,15 +12,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Properties;
 import javax.swing.JOptionPane;
 import pim.contact.ContactPanel;
+import pim.database.Account;
 import pim.database.DatabaseReader;
 import pim.database.DatabaseWriter;
-import pim.exam.Exam;
+import pim.exam.ExamPanel;
 import pim.mail.MailSettings;
 import pim.notes.Note;
 import pim.todo.ToDo;
@@ -58,23 +57,33 @@ public class MainFrame extends javax.swing.JFrame {
         }
         
         String username = props.getProperty("username");
+        Connection con = null;
+        
         if (!username.isEmpty()) {
             String password = props.getProperty("password");
-            user = getUser(username, password);
+            con = DatabaseConnector.getConnection(props);
+            if (con != null) {
+                Account account = new Account(con);
+                try {
+                    user = account.login(username, password);
+                } catch (SQLException e) {
+                    System.err.println(e.getMessage());
+                }
+            }
         }
         
-        
         contactPanel = new ContactPanel();
-        examPanel = new pim.exam.ExamPanel();
+        examPanel = new ExamPanel();
         
         if (user != null) {
-            DatabaseReader dr = new DatabaseReader();
+            updatePanels(con);
+        }
+        
+        if (con != null) {
             try {
-                contactPanel.updateContacts(dr.getContacts(user.getId()));
-                examPanel.updateExams(dr.getExams(user.getId()));
-                dr.closeConnection();
-            } catch (SQLException | IOException e) {
-                e.printStackTrace();
+                con.close();
+            } catch (SQLException e) {
+                System.err.println(e.getMessage());
             }
         }
         
@@ -97,6 +106,35 @@ public class MainFrame extends javax.swing.JFrame {
         
         switchPanel(contactPanel, jButtonContacts);
     }
+    
+    private void updatePanels(Connection con) {
+        if (con == null) {
+            con = DatabaseConnector.getConnection(props);
+        }
+        if (con != null) {
+            DatabaseReader dr = new DatabaseReader(con);
+            
+            
+            System.out.print("read exams... ");
+            long start = System.currentTimeMillis();
+            try {
+                examPanel.updateExams(dr.getExams(user.getId()));
+                System.out.println(System.currentTimeMillis() - start);
+            } catch (SQLException e) {
+                System.err.println("error");
+            }
+
+            System.out.print("read contacts... ");
+            start = System.currentTimeMillis();
+            try {
+                contactPanel.updateContacts(dr.getContacts(user.getId()));
+                System.out.println(System.currentTimeMillis() - start);
+            } catch (SQLException e) {
+                System.err.println("error");
+            }
+        }
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -359,30 +397,36 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemMailActionPerformed
 
     private void jMenuItemSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSaveActionPerformed
-        try {
-            DatabaseWriter dw = new DatabaseWriter();
+        Connection con = DatabaseConnector.getConnection(props);
+
+        if (con != null) {
+            DatabaseWriter dw = new DatabaseWriter(con);
             
+            System.out.print("write contacts... ");
             long start = System.currentTimeMillis();
-            dw.writeContacts(contactPanel.getContacts(), user.getId());
-            System.out.println("Write Contacts: " + (System.currentTimeMillis() - start));
+            try {
+                dw.writeContacts(contactPanel.getContacts(), user.getId());
+                System.out.println(System.currentTimeMillis() - start);
+            } catch (SQLException ex) {
+                System.out.println("error");
+            }
             
+            System.out.print("write exams... ");
             start = System.currentTimeMillis();
-            dw.writeExams(examPanel.getExams(), user.getId());
-            System.out.println("Write Exams: " + (System.currentTimeMillis() - start));
+            try {
+                dw.writeExams(examPanel.getExams(), user.getId());
+                System.out.println(System.currentTimeMillis() - start);
+            } catch (SQLException ex) {
+                System.out.println("error");
+            }
             
-            dw.closeConnection();
             JOptionPane.showMessageDialog(this, "Datenbank aktualisiert.");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.err.println(e.getMessage());
-            JOptionPane.showMessageDialog(this, "Es konnte keine Verbindung zur Datenbank hergestellt werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
-        } catch (IOException e) {
-            
         }
+        
     }//GEN-LAST:event_jMenuItemSaveActionPerformed
 
     private void jMenuItemLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemLoginActionPerformed
-        LoginDialog dialog = new LoginDialog(this, true);
+        LoginDialog dialog = new LoginDialog(this, true, props);
         dialog.setTitle("Login");
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
@@ -404,15 +448,7 @@ public class MainFrame extends javax.swing.JFrame {
             jMenuItemSave.setEnabled(true);
             this.setTitle("Personal Information Manager - " + user.getUsername());
    
-            DatabaseReader dr = new DatabaseReader();
-            try {
-                contactPanel.updateContacts(dr.getContacts(user.getId()));
-                examPanel.updateExams(dr.getExams(user.getId()));
-                dr.closeConnection();
-            } catch (SQLException | IOException e) {
-                e.printStackTrace();
-            }
-
+            updatePanels(null);
         }
     }//GEN-LAST:event_jMenuItemLoginActionPerformed
 
@@ -434,32 +470,13 @@ public class MainFrame extends javax.swing.JFrame {
             props.store(out, null);
             out.close();
         } catch (IOException e) {
+            System.err.println(e.getMessage());
         }
         contactPanel.updateContacts(null);
         examPanel.updateExams(null);
         this.setTitle("Personal Information Manager");
     }//GEN-LAST:event_jMenuItemLogoutActionPerformed
 
-    
-    private User getUser(String username, String password) {
-        User user = null;
-        try {
-            Connection con = DatabaseConnector.getConnection();
-            if (con != null) {
-                Statement stmt = con.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT * FROM users WHERE username = '" + username + "' AND password = '" + password + "'");
-                if (rs.next()) {
-                    user = new User(rs.getInt(1), rs.getString(2), rs.getString(3));
-                }
-                rs.close();
-                stmt.close();
-                con.close();
-            }
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-        }
-        return user;
-    }
     
     private void switchPanel(javax.swing.JPanel panel, javax.swing.JButton button) {
         

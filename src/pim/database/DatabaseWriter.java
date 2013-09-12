@@ -12,6 +12,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import pim.DatabaseConnector;
 import pim.contact.Contact;
@@ -26,11 +28,11 @@ public class DatabaseWriter {
     
     private Connection con;
     
-    public DatabaseWriter() {
-        con = DatabaseConnector.getConnection();
+    public DatabaseWriter(Connection con) {
+        this.con = con;
     }
 
-    public void writeContacts(Contact[] contacts, int userid) throws SQLException, IOException {
+    public void writeContacts(Contact[] contacts, int userid) throws SQLException {
   
         Statement stmt = con.createStatement();
         stmt.executeUpdate("DELETE FROM contacts WHERE userid = '" + userid + "'");
@@ -55,10 +57,15 @@ public class DatabaseWriter {
             BufferedImage image = contacts[i].getImage();
             if (image != null) {
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
-                ImageIO.write(image, "png", out);
-                byte[] buf = out.toByteArray();
-                ByteArrayInputStream inStream = new ByteArrayInputStream(buf);
-                pstmt.setBinaryStream(11, inStream, out.size());
+                try {
+                    ImageIO.write(image, "png", out);
+                    byte[] buf = out.toByteArray();
+                    ByteArrayInputStream inStream = new ByteArrayInputStream(buf);
+                    pstmt.setBinaryStream(11, inStream, out.size());
+                } catch (IOException e) {
+                    System.err.println(e.getMessage());
+                    pstmt.setBinaryStream(11, null, 0);
+                }
             } else {
                 pstmt.setBinaryStream(11, null, 0);
             }
@@ -68,7 +75,7 @@ public class DatabaseWriter {
         }
     }
     
-    public void writeExams(Exam[] exams, int userid) throws SQLException, IOException {
+    public void writeExams(Exam[] exams, int userid) throws SQLException {
         Statement stmt = con.createStatement();
         stmt.addBatch("DELETE FROM exams WHERE userid = '" + userid + "'");
         
@@ -107,13 +114,5 @@ public class DatabaseWriter {
         }
         stmt.executeBatch();
         stmt.close();
-        
-    }
-    
-    public void closeConnection() {
-        try {
-            con.close();
-        } catch (SQLException e) {
-        }
     }
 }

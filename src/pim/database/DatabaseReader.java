@@ -6,11 +6,9 @@ package pim.database;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Blob;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -18,7 +16,6 @@ import pim.contact.Contact;
 import pim.exam.Exam;
 import pim.notes.Note;
 import java.util.Date;  //REMOVE ME
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -33,8 +30,8 @@ public class DatabaseReader {
 
     private Connection con;
     
-    public DatabaseReader() {
-        con = DatabaseConnector.getConnection();
+    public DatabaseReader(Connection con) {
+        this.con = con;
     }
 
     
@@ -139,7 +136,7 @@ public class DatabaseReader {
     }
     */
     
-    public Contact[] getContacts(int userid) throws SQLException, IOException {
+    public Contact[] getContacts(int userid) throws SQLException {
         Contact[] contacts = null;
         
         Statement stmt = con.createStatement();
@@ -165,12 +162,15 @@ public class DatabaseReader {
                 BufferedImage image = null;
                 if (blob != null) {
                     byte[] bytes = blob.getBytes(1, (int) blob.length());
-                    image = ImageIO.read(new ByteArrayInputStream(bytes));
+                    try {
+                        image = ImageIO.read(new ByteArrayInputStream(bytes));
+                    } catch (IOException e) {
+                        System.err.println(e.getMessage());
+                    }
                 }
- 
+                
                 Contact contact = new Contact(name, mail, number, description1, content1,
                         description2, content2, description3, content3, image);
-
                 
                 contacts[rs.getRow() - 1] = contact;
             }
@@ -226,12 +226,4 @@ public class DatabaseReader {
         
         return toDos;
     }
-    
-    
-    public void closeConnection() {
-        try {
-            con.close();
-        } catch (SQLException e) {}
-    }
-    
 }

@@ -10,8 +10,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -20,25 +18,23 @@ import javax.swing.JOptionPane;
  */
 public class DatabaseConnector {
     
-    public static Connection getConnection() {
+    public static Connection getConnection(Properties props) {
         Connection con = null;
         try {
-            Properties props = new Properties();
-            FileReader in = new FileReader("settings.properties");
-            props.load(in);
-            in.close();
             String database = props.getProperty("dbname");
             String port = props.getProperty("dbport");
             String connection = props.getProperty("dbserver");
             String user = props.getProperty("dbusername");
             String password = props.getProperty("dbpassword");
             String cstring = "jdbc:mysql://" + connection + ":" + port + "/" + database;
+            
+            System.out.print("connect... ");
+            long start = System.currentTimeMillis();
             con = DriverManager.getConnection(cstring, user, password);
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
-            //JOptionPane.showMessageDialog(null, "Die Datei settings.properties konnte nicht geladen werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
+            System.out.println(System.currentTimeMillis() - start);
+            
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            System.out.println("error");
             JOptionPane.showMessageDialog(null, "Es konnte keine Verbindung zur Datenbank hergestellt werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
         }
         return con;
