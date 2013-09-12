@@ -264,9 +264,9 @@ public class DatabaseSettingsDialog extends javax.swing.JDialog {
             props.setProperty("dbusername", username);
             props.setProperty("dbpassword", password);
             props.setProperty("dbname", database);
-            FileWriter out = new FileWriter("settings.properties");
-            props.store(out, null);
-            out.close();
+            try (FileWriter out = new FileWriter("settings.properties")) {
+                props.store(out, null);
+            }
             dispose();
         } catch (SQLException e) {
             System.err.println(e.getMessage());
