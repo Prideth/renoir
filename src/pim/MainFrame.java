@@ -4,6 +4,7 @@
  */
 package pim;
 
+import pim.database.DatabaseSettingsDialog;
 import pim.database.DatabaseConnector;
 import java.awt.Color;
 import java.awt.event.WindowAdapter;

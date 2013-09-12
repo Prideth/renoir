@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package pim;
+package pim.database;
 
 
 import java.io.FileWriter;
@@ -12,6 +12,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 import javax.swing.JOptionPane;
+import pim.TextFieldListener;
 
 /**
  *
