@@ -33,7 +33,7 @@ public class MailWriteDialog extends JDialog {
     /**
      * Creates new form MailWriteDialog
      */
-    public MailWriteDialog(JFrame parent, boolean modal) {
+    public MailWriteDialog(JFrame parent, boolean modal, Mail mail) {
         super(parent, modal);
         initComponents();
 
@@ -50,6 +50,16 @@ public class MailWriteDialog extends JDialog {
         if (f.exists()) {
             acc = (MailAccount) so.readFromFile(f);
             jTextFieldSender.setText(acc.getEmail());
+            
+            if (mail != null) {
+                jTextFieldReceiver.setText(mail.getRecipientsTo()[0].toString());
+                jTextFieldSubject.setText("AW: " + mail.getSubject());
+                jTextAreaBody.setText("____________________________________________________________\n\n");
+                //getContent
+            }
+    
+            
+            
         } else {
             JFrame rootWindow = (JFrame) SwingUtilities.getWindowAncestor(getParent());
             MailSettings dialog = new MailSettings(rootWindow, true);
