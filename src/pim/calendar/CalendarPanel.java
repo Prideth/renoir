@@ -4,11 +4,18 @@
  */
 package pim.calendar;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author lk
  */
 public class CalendarPanel extends javax.swing.JPanel {
+    
+    private DefaultTableModel model;
 
     /**
      * Creates new form CalendarPanel
@@ -68,10 +75,25 @@ public class CalendarPanel extends javax.swing.JPanel {
         jTableCalendar.getColumnModel().getColumn(2).setPreferredWidth(50);
 
         jButtonCalendarNew.setText("Termin hinzufügen");
+        jButtonCalendarNew.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCalendarNewActionPerformed(evt);
+            }
+        });
 
         jButtonCalendarChange.setText("Termin ändern");
+        jButtonCalendarChange.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCalendarChangeActionPerformed(evt);
+            }
+        });
 
         jButtonCalendarDelete.setText("Termin löschen");
+        jButtonCalendarDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCalendarDeleteActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -107,6 +129,61 @@ public class CalendarPanel extends javax.swing.JPanel {
                 .addComponent(jScrollPaneCalendar, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButtonCalendarNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCalendarNewActionPerformed
+        JFrame rootWindow = getRootWindow();
+        CreateDateDialog dialog = new CreateDateDialog(rootWindow, true, null);
+        dialog.setTitle("Termin erstellen");
+        dialog.setLocationRelativeTo(rootWindow);
+        dialog.setVisible(true);
+        Date date = dialog.getDate();
+        if (date != null) {
+            model.addRow(date.getTableRow());
+            jTableCalendar.changeSelection(jTableCalendar.convertRowIndexToView(model.getRowCount() - 1), 0, true, false);
+        }
+    }//GEN-LAST:event_jButtonCalendarNewActionPerformed
+
+    private void jButtonCalendarChangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCalendarChangeActionPerformed
+        int index = jTableCalendar.getSelectedRow();
+        if (index > -1) {
+            Date date = (Date) model.getValueAt(index, 0);
+            JFrame rootWindow = getRootWindow();
+            CreateDateDialog dialog = new CreateDateDialog(rootWindow, true, date);
+            dialog.setTitle("Termin ändern");
+            dialog.setLocationRelativeTo(rootWindow);
+            dialog.setVisible(true);
+            date = dialog.getDate();
+            if (date != null) {
+                model.removeRow(index);
+                model.insertRow(index, date.getTableRow());
+                jTableCalendar.changeSelection(jTableCalendar.convertRowIndexToView(index), 0, true, false);
+            }
+        }
+    }//GEN-LAST:event_jButtonCalendarChangeActionPerformed
+
+    private void jButtonCalendarDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCalendarDeleteActionPerformed
+        int index = jTableCalendar.getSelectedRow();
+        if (index > -1) {
+            Date exam = (Date) model.getValueAt(index, 0);
+            Object[] options = {"Ja", "Nein"};
+            int n = JOptionPane.showOptionDialog(getRootWindow(),
+                    "Termin wirklich löschen?",
+                    "Löschen bestätigen",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    options,
+                    options[0]);
+            
+            if (n == 0) {
+                model.removeRow(index);
+            }
+        }
+    }//GEN-LAST:event_jButtonCalendarDeleteActionPerformed
+    
+    private JFrame getRootWindow() {
+        return (JFrame) SwingUtilities.getWindowAncestor(this.getParent());
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonCalendarChange;
     private javax.swing.JButton jButtonCalendarDelete;

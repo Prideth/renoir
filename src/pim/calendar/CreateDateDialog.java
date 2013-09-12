@@ -4,18 +4,37 @@
  */
 package pim.calendar;
 
+import pim.*;
+
 /**
  *
  * @author Faluwen
  */
 public class CreateDateDialog extends javax.swing.JDialog {
+    
+    private Date date;
+    private boolean changed;
 
     /**
      * Creates new form CreateDateDialog
      */
-    public CreateDateDialog(java.awt.Frame parent, boolean modal) {
+    
+    public CreateDateDialog(java.awt.Frame parent, boolean modal, Date date) {
         super(parent, modal);
+        this.date = date;
+        changed = false;
         initComponents();
+        
+        TextFieldListener textFieldListener = new TextFieldListener();
+        jDateChooserCombo.addMouseListener(textFieldListener);
+        jTextFieldTime.addMouseListener(textFieldListener);
+        jTextArea1.addMouseListener(textFieldListener);
+        
+        if (date != null) {
+            jDateChooserCombo.setText(date.getDate());
+            jTextFieldTime.setText(date.getTime());
+            jTextArea1.setText(date.getDesc());
+        }
     }
 
     /**
@@ -52,8 +71,18 @@ public class CreateDateDialog extends javax.swing.JDialog {
         jScrollPane1.setViewportView(jTextArea1);
 
         jButtonSave.setText("Speichern");
+        jButtonSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSaveActionPerformed(evt);
+            }
+        });
 
         jButtonCancel.setText("Abbrechen");
+        jButtonCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCancelActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -105,9 +134,38 @@ public class CreateDateDialog extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
+    private void jButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSaveActionPerformed
+        String datum = jDateChooserCombo.getText().trim();
+        if (!datum.isEmpty()) {
+            String time = jTextFieldTime.getText().trim();
+            String desc = jTextArea1.getText();
+            if (date == null) {
+                date = new Date(datum, time, desc);
+            } else {
+                date.setDate(datum);
+                date.setTime(time);
+                date.setDesc(desc);
+            }
+            changed = true;
+            this.dispose();
+        }
+        else {
+            jDateChooserCombo.setText("");
+            jDateChooserCombo.requestFocus();
+        }
+    }//GEN-LAST:event_jButtonSaveActionPerformed
+
+    private void jButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jButtonCancelActionPerformed
+    
+    public Date getDate() {
+        if (changed) {
+            return date;
+        } else {
+            return null;
+        }     
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonCancel;
