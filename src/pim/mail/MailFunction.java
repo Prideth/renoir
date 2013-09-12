@@ -97,8 +97,8 @@ public class MailFunction {
                     mList.add(new Mail(Arrays.toString(msg.getFrom()), msg.getRecipients(Message.RecipientType.TO), msg.getSubject(), msg.getSentDate(), new ContentType(msg.getContentType()), msg.getContent(), msg.isMimeType("text/plain")));
                 } else {
                     Multipart mp = (Multipart) msg.getContent();
-                  
-                     StringBuilder sb = new StringBuilder();
+
+                    StringBuilder sb = new StringBuilder();
                     for (int j = 0; j < mp.getCount(); j++) {
                         Part part = mp.getBodyPart(j);
                         String disposition = part.getDisposition();
@@ -108,7 +108,7 @@ public class MailFunction {
 
                             if (mimePart.isMimeType("text/plain")) {
                                 BufferedReader in = new BufferedReader(new InputStreamReader(mimePart.getInputStream()));
-                                
+
                                 for (String line; (line = in.readLine()) != null;) {
                                     sb.append(line);
                                     sb.append("\n");
@@ -117,7 +117,7 @@ public class MailFunction {
                             }
                         }
                     }
-                      mList.add(new Mail(Arrays.toString(msg.getFrom()), msg.getRecipients(Message.RecipientType.TO), msg.getSubject(), msg.getSentDate(), new ContentType(msg.getContentType()), sb.toString(), msg.isMimeType("text/plain")));
+                    mList.add(new Mail(Arrays.toString(msg.getFrom()), msg.getRecipients(Message.RecipientType.TO), msg.getSubject(), msg.getSentDate(), new ContentType(msg.getContentType()), sb.toString(), msg.isMimeType("text/plain")));
                 }//if Multipart
             } catch (IOException ex) {
                 Logger.getLogger(MailFunction.class.getName()).log(Level.SEVERE, null, ex);
