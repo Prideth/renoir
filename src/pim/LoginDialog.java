@@ -154,23 +154,25 @@ public class LoginDialog extends javax.swing.JDialog {
         if (test) {
             try {            
                 Connection con = DatabaseConnector.getConnection();
-                CallableStatement stmt = con.prepareCall("{? = call insertUser (?, ?)}");
-                stmt.registerOutParameter(1, Types.INTEGER);
-                stmt.setString(2, username);
-                stmt.setString(3, password);
-                stmt.execute();
-                int userid = stmt.getInt(1);
-                if (userid == 0) {
-                       JOptionPane.showMessageDialog(this, "Dieser Benutzername existiert bereits.", "Fehler", JOptionPane.ERROR_MESSAGE);
-                       jTextFieldUser.requestFocus();
-                       jTextFieldUser.setSelectionStart(0);
-                       jTextFieldUser.setSelectionEnd(jTextFieldUser.getText().length());
-                } else {
-                    user = new User(userid, username, password);
-                    dispose();
+                if (con != null) {
+                    CallableStatement stmt = con.prepareCall("{? = call insertUser (?, ?)}");
+                    stmt.registerOutParameter(1, Types.INTEGER);
+                    stmt.setString(2, username);
+                    stmt.setString(3, password);
+                    stmt.execute();
+                    int userid = stmt.getInt(1);
+                    if (userid == 0) {
+                           JOptionPane.showMessageDialog(this, "Dieser Benutzername existiert bereits.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                           jTextFieldUser.requestFocus();
+                           jTextFieldUser.setSelectionStart(0);
+                           jTextFieldUser.setSelectionEnd(jTextFieldUser.getText().length());
+                    } else {
+                        user = new User(userid, username, password);
+                        dispose();
+                    }
+                    stmt.close();
+                    con.close();
                 }
-                stmt.close();
-                con.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -191,19 +193,21 @@ public class LoginDialog extends javax.swing.JDialog {
         if (test) {
             try {
                 Connection con = DatabaseConnector.getConnection();
-                Statement stmt = con.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT * FROM users WHERE username = '" + username + "' AND password = '" + password + "'");
-                if (rs.next()) {
-                    user = new User(rs.getInt(1), rs.getString(2), rs.getString(3));
-                    dispose();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Dieser Benutzername existiert nicht oder das Passwort ist falsch.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                if (con != null) {
+                    Statement stmt = con.createStatement();
+                    ResultSet rs = stmt.executeQuery("SELECT * FROM users WHERE username = '" + username + "' AND password = '" + password + "'");
+                    if (rs.next()) {
+                        user = new User(rs.getInt(1), rs.getString(2), rs.getString(3));
+                        dispose();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Dieser Benutzername existiert nicht oder das Passwort ist falsch.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                    }
+                    rs.close();
+                    stmt.close();
+                    con.close();
                 }
-                rs.close();
-                stmt.close();
-                con.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                
             }
         }
     }//GEN-LAST:event_jButtonLoginActionPerformed

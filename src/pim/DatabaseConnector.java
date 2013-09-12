@@ -39,7 +39,7 @@ public class DatabaseConnector {
             //JOptionPane.showMessageDialog(null, "Die Datei settings.properties konnte nicht geladen werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
         } catch (SQLException e) {
             System.err.println(e.getMessage());
-           // JOptionPane.showMessageDialog(null, "Es konnte keine Verbindung zur Datenbank hergestellt werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Es konnte keine Verbindung zur Datenbank hergestellt werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
         }
         return con;
     }
