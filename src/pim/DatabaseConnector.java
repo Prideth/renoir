@@ -36,11 +36,11 @@ public class DatabaseConnector {
             String cstring = "jdbc:mysql://" + connection + ":" + port + "/" + database;
             con = DriverManager.getConnection(cstring, user, password);
         } catch (IOException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Die Datei settings.properties konnte nicht geladen werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
+            System.err.println(e.getMessage());
+            //JOptionPane.showMessageDialog(null, "Die Datei settings.properties konnte nicht geladen werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
         } catch (SQLException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Es konnte keine Verbindung zur Datenbank hergestellt werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
+            System.err.println(e.getMessage());
+           // JOptionPane.showMessageDialog(null, "Es konnte keine Verbindung zur Datenbank hergestellt werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
         }
     }
     

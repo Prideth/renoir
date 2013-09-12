@@ -469,15 +469,17 @@ public class MainFrame extends javax.swing.JFrame {
         User user = null;
         try {
             Connection con = DatabaseConnector.getInstance().getConnection();
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM users WHERE username = '" + username + "' AND password = '" + password + "'");
-            if (rs.next()) {
-                user = new User(rs.getInt(1), rs.getString(2), rs.getString(3));
+            if (con != null) {
+                Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * FROM users WHERE username = '" + username + "' AND password = '" + password + "'");
+                if (rs.next()) {
+                    user = new User(rs.getInt(1), rs.getString(2), rs.getString(3));
+                }
+                rs.close();
+                stmt.close();
             }
-            rs.close();
-            stmt.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
         return user;
     }
