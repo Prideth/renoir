@@ -57,9 +57,12 @@ public class MainFrame extends javax.swing.JFrame {
             } catch (IOException e) {}
         }
         
-        user = getUser();
+        String username = props.getProperty("username");
+        if (!username.isEmpty()) {
+            String password = props.getProperty("password");
+            user = getUser(username, password);
+        }
         
-
         
         contactPanel = new ContactPanel();
         examPanel = new pim.exam.ExamPanel();
@@ -75,30 +78,6 @@ public class MainFrame extends javax.swing.JFrame {
             }
         }
         
-        /*
-        try {
-            
-            long start = System.currentTimeMillis();
-            DatabaseReader dr = new DatabaseReader();
-            System.out.println("Connect to Server: " + (System.currentTimeMillis() - start) + " ms");
-            
-            start = System.currentTimeMillis();
-            exams = dr.getExams();
-            System.out.println("Read Exams: " + (System.currentTimeMillis() - start) + " ms");
-            
-            start = System.currentTimeMillis();
-            contacts = dr.getContacts();
-            System.out.println("Read Contacts: " + (System.currentTimeMillis() - start) + " ms");
-            
-            todos = dr.getToDos();
-            notes = dr.getNotes();
-            
-        } catch (SQLException | IOException e) {
-            e.printStackTrace();
-        }
-        */
-        
-        Exam[] exams = null;
         ToDo[] todos = null;
         Note[] notes = null;
         
@@ -462,22 +441,19 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemLogoutActionPerformed
 
     
-    private User getUser() {
-        String username = props.getProperty("username");
-        String password = props.getProperty("password");
+    private User getUser(String username, String password) {
         User user = null;
         try {
             Connection con = DatabaseConnector.getConnection();
-            if (con != null) {
-                Statement stmt = con.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT * FROM users WHERE username = '" + username + "' AND password = '" + password + "'");
-                if (rs.next()) {
-                    user = new User(rs.getInt(1), rs.getString(2), rs.getString(3));
-                }
-                rs.close();
-                stmt.close();
-                con.close();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM users WHERE username = '" + username + "' AND password = '" + password + "'");
+            if (rs.next()) {
+                user = new User(rs.getInt(1), rs.getString(2), rs.getString(3));
             }
+            rs.close();
+            stmt.close();
+            con.close();
+
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
