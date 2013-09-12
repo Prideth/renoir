@@ -6,6 +6,8 @@ package pim;
 
 import pim.database.DatabaseConnector;
 import java.awt.Color;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -41,6 +43,7 @@ public class MainFrame extends javax.swing.JFrame {
      * Creates new form NewJFrame
      */
     public MainFrame() {
+        con = null;
         props = new Properties();
         File f = new File("settings.properties");
         if (!f.exists()) {
@@ -60,10 +63,21 @@ public class MainFrame extends javax.swing.JFrame {
             } catch (IOException e) {}
         }
         
+        initComponents();
+        
+        this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent evt) {
+                dispose();
+                if (con != null) {
+                    try {
+                        con.close();
+                    } catch (SQLException e) {}
+                }
+                System.exit(0);
+            }
+        });
+        
         String username = props.getProperty("username");
-        
-        con = null;
-        
         if (!username.isEmpty()) {
             String password = props.getProperty("password");
             con = DatabaseConnector.getConnection(props, con);
@@ -91,8 +105,6 @@ public class MainFrame extends javax.swing.JFrame {
         calendarPanel = new pim.calendar.CalendarPanel();
         toDoPanel = new pim.todo.ToDoPanel(todos);
         notePanel = new pim.notes.NotePanel(notes);
-        
-        initComponents();
         
         if (user != null) {
             setTitle("Personal Information Manager - " + user.getUsername());
