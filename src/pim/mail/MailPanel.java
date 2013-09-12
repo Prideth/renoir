@@ -32,7 +32,7 @@ import pim.util.ObjectSerializer;
 public class MailPanel extends JPanel {
 
     MailTableModel model;
-
+Mail selectedMail;
     /**
      * Creates new form MailForm
      */
@@ -73,6 +73,11 @@ public class MailPanel extends JPanel {
         jButtonReceiveMail = new javax.swing.JButton();
 
         jComboBoxFolder.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Posteingang", "Gesendet", "Entwürfe", "Spam", "Papierkorb" }));
+        jComboBoxFolder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxFolderActionPerformed(evt);
+            }
+        });
 
         jButtonWriteMail.setText("Verfassen");
         jButtonWriteMail.addActionListener(new java.awt.event.ActionListener() {
@@ -155,6 +160,11 @@ public class MailPanel extends JPanel {
         jSplitPane.setLeftComponent(jScrollPane);
 
         jButtonReply.setText("Antworten");
+        jButtonReply.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonReplyActionPerformed(evt);
+            }
+        });
 
         jButtonForward.setText("Weiterleiten");
         jButtonForward.addActionListener(new java.awt.event.ActionListener() {
@@ -207,7 +217,7 @@ public class MailPanel extends JPanel {
                     .addComponent(jButtonDelete)
                     .addComponent(jButtonSpam))
                 .addGap(4, 4, 4)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE))
         );
 
         jSplitPane.setRightComponent(jPanel1);
@@ -258,7 +268,11 @@ public class MailPanel extends JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonForwardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonForwardActionPerformed
-        // TODO add your handling code here:
+      JFrame rootWindow = (JFrame) SwingUtilities.getWindowAncestor(this.getParent());
+        MailWriteDialog dialog = new MailWriteDialog(rootWindow, true, selectedMail);
+        dialog.setTitle("Email weiterleiten");
+        dialog.setLocationRelativeTo(rootWindow);
+        dialog.setVisible(true);
     }//GEN-LAST:event_jButtonForwardActionPerformed
 
     private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
@@ -271,7 +285,7 @@ public class MailPanel extends JPanel {
 
     private void jButtonWriteMailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonWriteMailActionPerformed
         JFrame rootWindow = (JFrame) SwingUtilities.getWindowAncestor(this.getParent());
-        MailWriteDialog dialog = new MailWriteDialog(rootWindow, true);
+        MailWriteDialog dialog = new MailWriteDialog(rootWindow, true, null);
         dialog.setTitle("Email verfassen");
         dialog.setLocationRelativeTo(rootWindow);
         dialog.setVisible(true);
@@ -286,6 +300,19 @@ public class MailPanel extends JPanel {
     private void jTableMailsFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTableMailsFocusGained
         // TODO add your handling code here:
     }//GEN-LAST:event_jTableMailsFocusGained
+
+    private void jButtonReplyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReplyActionPerformed
+       JFrame rootWindow = (JFrame) SwingUtilities.getWindowAncestor(this.getParent());
+        MailWriteDialog dialog = new MailWriteDialog(rootWindow, true, selectedMail);
+        dialog.setTitle("Email antworten");
+        dialog.setLocationRelativeTo(rootWindow);
+        dialog.setVisible(true);
+    }//GEN-LAST:event_jButtonReplyActionPerformed
+
+    private void jComboBoxFolderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxFolderActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxFolderActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonDelete;
     private javax.swing.JButton jButtonForward;
@@ -342,6 +369,7 @@ public class MailPanel extends JPanel {
         model = new MailTableModel();
         jTableMails.setModel(model);
 
+        if (a.size() > 0)
         for (int i = 0; i < a.size(); i++) {
             model.addMail(a.get(i));
         }
@@ -351,7 +379,7 @@ public class MailPanel extends JPanel {
 
         jTextAreaMailBody.setText((String) content);
     }
-
+    
     class MySelectionListener implements ListSelectionListener {
 
         JTable table;
@@ -366,6 +394,7 @@ public class MailPanel extends JPanel {
                 return;
             }
             try {
+                selectedMail = model.getMailAt(table.getSelectedRow());
                 setContent(model.getMailAt(table.getSelectedRow()).getContent(), model.getMailAt(table.getSelectedRow()).getContentType(), model.getMailAt(table.getSelectedRow()).getMsgType());
             } catch (MessagingException ex) {
                 Logger.getLogger(MailPanel.class.getName()).log(Level.SEVERE, null, ex);
