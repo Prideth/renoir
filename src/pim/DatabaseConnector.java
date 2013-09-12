@@ -20,9 +20,8 @@ import javax.swing.JOptionPane;
  */
 public class DatabaseConnector {
     
-    private Connection con;
-    
-    private DatabaseConnector() {
+    public static Connection getConnection() {
+        Connection con = null;
         try {
             Properties props = new Properties();
             FileReader in = new FileReader("settings.properties");
@@ -42,23 +41,8 @@ public class DatabaseConnector {
             System.err.println(e.getMessage());
            // JOptionPane.showMessageDialog(null, "Es konnte keine Verbindung zur Datenbank hergestellt werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
         }
-    }
-    
-    public Connection getConnection() {
         return con;
     }
     
-    public void close() {
-        try {
-            con.close();
-        } catch (SQLException e) {}
-    }
     
-    public static DatabaseConnector getInstance() {
-        return DatabaseConnectorHolder.INSTANCE;
-    }
-    
-    private static class DatabaseConnectorHolder {
-        private static final DatabaseConnector INSTANCE = new DatabaseConnector();
-    }
 }

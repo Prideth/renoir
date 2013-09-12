@@ -153,7 +153,7 @@ public class LoginDialog extends javax.swing.JDialog {
         }
         if (test) {
             try {            
-                Connection con = DatabaseConnector.getInstance().getConnection();
+                Connection con = DatabaseConnector.getConnection();
                 CallableStatement stmt = con.prepareCall("{? = call insertUser (?, ?)}");
                 stmt.registerOutParameter(1, Types.INTEGER);
                 stmt.setString(2, username);
@@ -169,6 +169,8 @@ public class LoginDialog extends javax.swing.JDialog {
                     user = new User(userid, username, password);
                     dispose();
                 }
+                stmt.close();
+                con.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -188,7 +190,7 @@ public class LoginDialog extends javax.swing.JDialog {
         }
         if (test) {
             try {
-                Connection con = DatabaseConnector.getInstance().getConnection();
+                Connection con = DatabaseConnector.getConnection();
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery("SELECT * FROM users WHERE username = '" + username + "' AND password = '" + password + "'");
                 if (rs.next()) {
@@ -199,6 +201,7 @@ public class LoginDialog extends javax.swing.JDialog {
                 }
                 rs.close();
                 stmt.close();
+                con.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }

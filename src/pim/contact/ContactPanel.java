@@ -261,13 +261,6 @@ public class ContactPanel extends javax.swing.JPanel {
                     contactButtons[selectedIndex].setContact(contact);
                     contactButtons[selectedIndex].update();
                 }
-                /*
-                BufferedImage image = ImageChooser.chooseImage();
-                if (image != null) {
-                    contactButtons[position].getContact().setImage(image);
-                    contactButtons[position].update();
-                }
-                * */
             }
         }
     }

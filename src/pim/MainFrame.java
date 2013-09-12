@@ -33,7 +33,6 @@ public class MainFrame extends javax.swing.JFrame {
 
     private Properties props;
     private User user;
-    private DatabaseReader dr;
     
     /**
      * Creates new form NewJFrame
@@ -66,10 +65,11 @@ public class MainFrame extends javax.swing.JFrame {
         examPanel = new pim.exam.ExamPanel();
         
         if (user != null) {
-            dr = new DatabaseReader();
+            DatabaseReader dr = new DatabaseReader();
             try {
                 contactPanel.updateContacts(dr.getContacts(user.getId()));
                 examPanel.updateExams(dr.getExams(user.getId()));
+                dr.closeConnection();
             } catch (SQLException | IOException e) {
                 e.printStackTrace();
             }
@@ -391,6 +391,7 @@ public class MainFrame extends javax.swing.JFrame {
             dw.writeExams(examPanel.getExams(), user.getId());
             System.out.println("Write Exams: " + (System.currentTimeMillis() - start));
             
+            dw.closeConnection();
             JOptionPane.showMessageDialog(this, "Datenbank aktualisiert.");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -423,13 +424,12 @@ public class MainFrame extends javax.swing.JFrame {
             jMenuItemDelete.setEnabled(true);
             jMenuItemSave.setEnabled(true);
             this.setTitle("Personal Information Manager - " + user.getUsername());
-
-            if (dr == null) {
-                dr = new DatabaseReader();
-            }
+   
+            DatabaseReader dr = new DatabaseReader();
             try {
                 contactPanel.updateContacts(dr.getContacts(user.getId()));
                 examPanel.updateExams(dr.getExams(user.getId()));
+                dr.closeConnection();
             } catch (SQLException | IOException e) {
                 e.printStackTrace();
             }
@@ -439,7 +439,6 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void jMenuItemExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemExitActionPerformed
         this.dispose();
-        DatabaseConnector.getInstance().close();
         System.exit(0);
     }//GEN-LAST:event_jMenuItemExitActionPerformed
 
@@ -468,7 +467,7 @@ public class MainFrame extends javax.swing.JFrame {
         String password = props.getProperty("password");
         User user = null;
         try {
-            Connection con = DatabaseConnector.getInstance().getConnection();
+            Connection con = DatabaseConnector.getConnection();
             if (con != null) {
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery("SELECT * FROM users WHERE username = '" + username + "' AND password = '" + password + "'");
@@ -477,6 +476,7 @@ public class MainFrame extends javax.swing.JFrame {
                 }
                 rs.close();
                 stmt.close();
+                con.close();
             }
         } catch (SQLException e) {
             System.err.println(e.getMessage());
