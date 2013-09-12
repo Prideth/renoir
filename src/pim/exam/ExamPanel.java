@@ -27,24 +27,33 @@ public class ExamPanel extends javax.swing.JPanel {
     /**
      * Creates new form ExamPanel
      */
-    public ExamPanel(Exam[] exams) {
+    public ExamPanel() {
         initComponents();
-        
         model = (DefaultTableModel) jTableExams.getModel();
         sorter = new TableRowSorter(model);
         sorter.setComparator(1, new sortBySemester());
         jTableExams.setRowSorter(sorter);
-        
+        jTableExams.getTableHeader().addMouseListener(new HeaderListener());
+    }
+    
+    
+    public void updateExams(Exam[] exams) {
         if (exams != null) {
+            for (int i = jTableExams.getRowCount() - 1; i >= 0; i--) {
+                model.removeRow(i);
+            }
             for (int i = 0; i < exams.length; i++) {
                 model.addRow(exams[i].getTableRow());
             }
             initColumnSizes();
             calculateAverage();
+        } else { 
+            for (int i = jTableExams.getRowCount() - 1; i >= 0; i--) {
+                model.removeRow(i);
+            }
+            jLabelEcts.setText("0");
+            jLabelAverage.setText("0.0 / 0.0");
         }
-        
-        jTableExams.getTableHeader().addMouseListener(new HeaderListener());
-        
     }
     
     
@@ -73,6 +82,11 @@ public class ExamPanel extends javax.swing.JPanel {
             }
             column.setPreferredWidth(Math.max(headWidth, cellWidth));
         }
+    }
+    
+    
+    public void activateButtons(boolean activate) {
+        
     }
     
     
@@ -152,7 +166,7 @@ public class ExamPanel extends javax.swing.JPanel {
 
         jLabelAverageTitle.setText("Notendurchschnitt:");
 
-        jLabelAverage.setText("0,0");
+        jLabelAverage.setText("0,0 / 0,0");
 
         jButtonResult.setText("Ergebnis");
         jButtonResult.addActionListener(new java.awt.event.ActionListener() {
@@ -184,7 +198,7 @@ public class ExamPanel extends javax.swing.JPanel {
                 .addComponent(jLabelView)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jComboBoxView, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 568, Short.MAX_VALUE)
+            .addComponent(jScrollPane1)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(1, 1, 1)
                 .addComponent(jLabelEctsTitle)
@@ -349,6 +363,15 @@ public class ExamPanel extends javax.swing.JPanel {
         return (JFrame) SwingUtilities.getWindowAncestor(this.getParent());
     }
     
+    
+    public Exam[] getExams() {
+        Exam[] exams = new Exam[model.getRowCount()];
+        for (int i = 0; i < exams.length; i++) {
+            exams[i] = (Exam) model.getValueAt(i, 0);
+        }
+        return exams;
+    }
+
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAdd;

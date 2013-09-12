@@ -20,6 +20,7 @@ import pim.notes.Note;
 import java.util.Date;  //REMOVE ME
 import java.util.Properties;
 import javax.imageio.ImageIO;
+import pim.DatabaseConnector;
 import pim.todo.ToDo;
 
 /**
@@ -29,43 +30,33 @@ import pim.todo.ToDo;
 public class DatabaseReader {
 
     private Connection con;
-
-    public DatabaseReader() throws SQLException, IOException {
-        Properties props = new Properties();
-        FileReader in = new FileReader("settings.properties");
-        props.load(in);
-        in.close();
-        String database = props.getProperty("db");
-        String port = props.getProperty("port");
-        String connection = props.getProperty("server");
-        String user = props.getProperty("user");
-        String password = props.getProperty("password");
-        String cstring = "jdbc:mysql://" + connection + ":" + port + "/" + database;
-        con = DriverManager.getConnection(cstring, user, password);
+    
+    public DatabaseReader() {
+        con = DatabaseConnector.getInstance().getConnection();
     }
 
     
-    public Exam[] getExams() throws SQLException {
+    public Exam[] getExams(int userid) throws SQLException {
                 Exam[] exams = null;
         
         Statement stmt = con.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM exams");
+        ResultSet rs = stmt.executeQuery("SELECT * FROM exams WHERE userid = '" + userid + "'");
         rs.last();
         if (rs.getRow() > 0) {
             exams = new Exam[rs.getRow()];
             rs.beforeFirst();
             while (rs.next()) {
-                String subject = rs.getString(1).isEmpty() ? null : rs.getString(1);
-                String semester = rs.getString(2).isEmpty() ? null : rs.getString(2);
-                int ects = rs.getInt(3);
-                String date = rs.getString(4).isEmpty() ? null : rs.getString(2);
-                String time = rs.getString(5).isEmpty() ? null : rs.getString(2);
-                String room = rs.getString(6).isEmpty() ? null : rs.getString(2);
-                double grade =Math.round(rs.getFloat(7) * 10d) / 10d;
+                String subject = rs.getString(2).isEmpty() ? null : rs.getString(2);
+                String semester = rs.getString(3).isEmpty() ? null : rs.getString(3);
+                int ects = rs.getInt(4);
+                String date = rs.getString(5).isEmpty() ? null : rs.getString(5);
+                String time = rs.getString(6).isEmpty() ? null : rs.getString(6);
+                String room = rs.getString(7).isEmpty() ? null : rs.getString(7);
+                double grade =Math.round(rs.getFloat(8) * 10d) / 10d;
                 int numbers[] = new int[32];
                 int students = 0;
                 for (int i = 0; i < 32; i++) {
-                    numbers[i] = rs.getInt(i + 8);
+                    numbers[i] = rs.getInt(i + 9);
                     students += numbers[i];
                 }
                 Exam exam;
@@ -81,8 +72,8 @@ public class DatabaseReader {
     }
     
     
-    
-    public Exam[] getExams2() {
+    /*
+    public Exam[] getExams() {
         Exam[] exams = new Exam[28];
         
         exams[0] = new Exam("Betriebssystemeinführung", "WS 10/11", 2, null, null, null, 2.6,
@@ -144,13 +135,13 @@ public class DatabaseReader {
 
         return exams;
     }
+    */
     
-    
-    public Contact[] getContacts() throws SQLException, IOException {
+    public Contact[] getContacts(int userid) throws SQLException, IOException {
         Contact[] contacts = null;
         
         Statement stmt = con.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM contacts");
+        ResultSet rs = stmt.executeQuery("SELECT * FROM contacts WHERE userid = '" + userid + "'");
         rs.last();
         if (rs.getRow() > 0) {
             contacts = new Contact[rs.getRow()];
@@ -158,17 +149,17 @@ public class DatabaseReader {
             
             while (rs.next()) {
                 
-                String name = rs.getString(1).isEmpty() ? null : rs.getString(1);
-                String mail = rs.getString(2).isEmpty() ? null : rs.getString(2);
-                String number = rs.getString(3).isEmpty() ? null : rs.getString(3);
-                String description1 = rs.getString(4).isEmpty() ? null : rs.getString(4);
-                String content1 = rs.getString(5).isEmpty() ? null : rs.getString(5);
-                String description2 = rs.getString(6).isEmpty() ? null : rs.getString(6);
-                String content2 = rs.getString(7).isEmpty() ? null : rs.getString(7);
-                String description3 = rs.getString(8).isEmpty() ? null : rs.getString(8);
-                String content3 = rs.getString(9).isEmpty() ? null : rs.getString(9);
+                String name = rs.getString(2).isEmpty() ? null : rs.getString(2);
+                String mail = rs.getString(3).isEmpty() ? null : rs.getString(3);
+                String number = rs.getString(4).isEmpty() ? null : rs.getString(4);
+                String description1 = rs.getString(5).isEmpty() ? null : rs.getString(5);
+                String content1 = rs.getString(6).isEmpty() ? null : rs.getString(6);
+                String description2 = rs.getString(7).isEmpty() ? null : rs.getString(7);
+                String content2 = rs.getString(8).isEmpty() ? null : rs.getString(8);
+                String description3 = rs.getString(9).isEmpty() ? null : rs.getString(9);
+                String content3 = rs.getString(10).isEmpty() ? null : rs.getString(10);
                 
-                Blob blob = rs.getBlob(10);
+                Blob blob = rs.getBlob(11);
                 BufferedImage image = null;
                 if (blob != null) {
                     byte[] bytes = blob.getBytes(1, (int) blob.length());
@@ -232,10 +223,5 @@ public class DatabaseReader {
         ToDo[] toDos = new ToDo[100];
         
         return toDos;
-    }
-    
-    
-     public void closeConnection() throws SQLException {
-        con.close();
     }
 }

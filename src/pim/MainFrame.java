@@ -7,12 +7,17 @@ package pim;
 import java.awt.Color;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Properties;
 import javax.swing.JOptionPane;
-import pim.contact.Contact;
+import pim.contact.ContactPanel;
 import pim.database.DatabaseReader;
 import pim.database.DatabaseWriter;
 import pim.exam.Exam;
@@ -26,14 +31,17 @@ import pim.todo.ToDo;
  */
 public class MainFrame extends javax.swing.JFrame {
 
+    private Properties props;
+    private User user;
+    private DatabaseReader dr;
+    
     /**
      * Creates new form NewJFrame
      */
     public MainFrame() {
-        
+        props = new Properties();
         File f = new File("settings.properties");
         if (!f.exists()) {
-            Properties props = new Properties();
             InputStream in = getClass().getResourceAsStream("settings.properties");
             try {
                 props.load(in);
@@ -41,42 +49,72 @@ public class MainFrame extends javax.swing.JFrame {
                 FileOutputStream out = new FileOutputStream("settings.properties");
                 props.store(out, null);
                 out.close();
-            } catch (IOException ex) {
-                ex.printStackTrace();
+            } catch (IOException e) {}
+        } else {
+            try {
+                FileReader in = new FileReader("settings.properties");
+                props.load(in);
+                in.close();
+            } catch (IOException e) {}
+        }
+        
+        user = getUser();
+        
+
+        
+        contactPanel = new ContactPanel();
+        examPanel = new pim.exam.ExamPanel();
+        
+        if (user != null) {
+            dr = new DatabaseReader();
+            try {
+                contactPanel.updateContacts(dr.getContacts(user.getId()));
+                examPanel.updateExams(dr.getExams(user.getId()));
+            } catch (SQLException | IOException e) {
+                e.printStackTrace();
             }
         }
         
-        Exam[] exams = null;
-        Contact[] contacts = null;
-        ToDo[] todos = null;
-        Note[] notes = null;
-        
+        /*
         try {
-            DatabaseReader dr = new DatabaseReader();
             
             long start = System.currentTimeMillis();
+            DatabaseReader dr = new DatabaseReader();
+            System.out.println("Connect to Server: " + (System.currentTimeMillis() - start) + " ms");
+            
+            start = System.currentTimeMillis();
             exams = dr.getExams();
-            System.out.println("Read Exams: " + (System.currentTimeMillis() - start));
-
+            System.out.println("Read Exams: " + (System.currentTimeMillis() - start) + " ms");
+            
             start = System.currentTimeMillis();
             contacts = dr.getContacts();
-            System.out.println("Read Contacts: " + (System.currentTimeMillis() - start));
+            System.out.println("Read Contacts: " + (System.currentTimeMillis() - start) + " ms");
             
             todos = dr.getToDos();
             notes = dr.getNotes();
-            dr.closeConnection();
+            
         } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
+        */
+        
+        Exam[] exams = null;
+        ToDo[] todos = null;
+        Note[] notes = null;
         
         mailPanel = new pim.mail.MailPanel();
-        examPanel = new pim.exam.ExamPanel(exams);
-        contactPanel = new pim.contact.ContactPanel(contacts);
         calendarPanel = new pim.calendar.CalendarPanel();
         toDoPanel = new pim.todo.ToDoPanel(todos);
         notePanel = new pim.notes.NotePanel(notes);
         
         initComponents();
+        
+        if (user != null) {
+            setTitle("Personal Information Manager - " + user.getUsername());
+            jMenuItemLogout.setEnabled(true);
+            jMenuItemDelete.setEnabled(true);
+            jMenuItemSave.setEnabled(true);
+        }
         
         switchPanel(contactPanel, jButtonContacts);
     }
@@ -101,7 +139,13 @@ public class MainFrame extends javax.swing.JFrame {
         jPanelContent = new javax.swing.JPanel();
         jMenuBar = new javax.swing.JMenuBar();
         jMenuFile = new javax.swing.JMenu();
+        jMenuItemLogin = new javax.swing.JMenuItem();
+        jMenuItemLogout = new javax.swing.JMenuItem();
+        jMenuItemDelete = new javax.swing.JMenuItem();
+        jSeparator2 = new javax.swing.JPopupMenu.Separator();
         jMenuItemSave = new javax.swing.JMenuItem();
+        jSeparator3 = new javax.swing.JPopupMenu.Separator();
+        jMenuItemExit = new javax.swing.JMenuItem();
         jMenuSettings = new javax.swing.JMenu();
         jMenuItemDatabase = new javax.swing.JMenuItem();
         jMenuItemMail = new javax.swing.JMenuItem();
@@ -202,13 +246,45 @@ public class MainFrame extends javax.swing.JFrame {
 
         jMenuFile.setText("Datei");
 
+        jMenuItemLogin.setText("Login");
+        jMenuItemLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemLoginActionPerformed(evt);
+            }
+        });
+        jMenuFile.add(jMenuItemLogin);
+
+        jMenuItemLogout.setText("Logout");
+        jMenuItemLogout.setEnabled(false);
+        jMenuItemLogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemLogoutActionPerformed(evt);
+            }
+        });
+        jMenuFile.add(jMenuItemLogout);
+
+        jMenuItemDelete.setText("Account löschen");
+        jMenuItemDelete.setEnabled(false);
+        jMenuFile.add(jMenuItemDelete);
+        jMenuFile.add(jSeparator2);
+
         jMenuItemSave.setText("Speichern");
+        jMenuItemSave.setEnabled(false);
         jMenuItemSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemSaveActionPerformed(evt);
             }
         });
         jMenuFile.add(jMenuItemSave);
+        jMenuFile.add(jSeparator3);
+
+        jMenuItemExit.setText("Beenden");
+        jMenuItemExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemExitActionPerformed(evt);
+            }
+        });
+        jMenuFile.add(jMenuItemExit);
 
         jMenuBar.add(jMenuFile);
 
@@ -290,7 +366,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonNotesActionPerformed
 	
     private void jMenuItemDatabaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemDatabaseActionPerformed
-        DatabaseSettingsDialog dialog = new DatabaseSettingsDialog(this, true);
+        DatabaseSettingsDialog dialog = new DatabaseSettingsDialog(this, true, props);
         dialog.setTitle("Datenbankverbindung");
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
@@ -308,16 +384,16 @@ public class MainFrame extends javax.swing.JFrame {
             DatabaseWriter dw = new DatabaseWriter();
             
             long start = System.currentTimeMillis();
-            dw.writeContacts(contactPanel.getContacts());
+            dw.writeContacts(contactPanel.getContacts(), user.getId());
             System.out.println("Write Contacts: " + (System.currentTimeMillis() - start));
             
             start = System.currentTimeMillis();
-            dw.writeExams(examPanel.getExams());
+            dw.writeExams(examPanel.getExams(), user.getId());
             System.out.println("Write Exams: " + (System.currentTimeMillis() - start));
             
-            dw.closeConnection();
             JOptionPane.showMessageDialog(this, "Datenbank aktualisiert.");
         } catch (SQLException e) {
+            e.printStackTrace();
             System.err.println(e.getMessage());
             JOptionPane.showMessageDialog(this, "Es konnte keine Verbindung zur Datenbank hergestellt werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
         } catch (IOException e) {
@@ -325,6 +401,86 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMenuItemSaveActionPerformed
 
+    private void jMenuItemLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemLoginActionPerformed
+        LoginDialog dialog = new LoginDialog(this, true);
+        dialog.setTitle("Login");
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+        
+        if (dialog.getUser() != null) {
+            user = dialog.getUser();
+            if (dialog.getRemember()) {
+                props.setProperty("username", user.getUsername());
+                props.setProperty("password", user.getPassword());
+                FileWriter out;
+                try {
+                    out = new FileWriter("settings.properties");
+                    props.store(out, null);
+                    out.close();
+                } catch (IOException e) {}
+            }
+            jMenuItemLogout.setEnabled(true);
+            jMenuItemDelete.setEnabled(true);
+            jMenuItemSave.setEnabled(true);
+            this.setTitle("Personal Information Manager - " + user.getUsername());
+
+            if (dr == null) {
+                dr = new DatabaseReader();
+            }
+            try {
+                contactPanel.updateContacts(dr.getContacts(user.getId()));
+                examPanel.updateExams(dr.getExams(user.getId()));
+            } catch (SQLException | IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }//GEN-LAST:event_jMenuItemLoginActionPerformed
+
+    private void jMenuItemExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemExitActionPerformed
+        this.dispose();
+        DatabaseConnector.getInstance().close();
+        System.exit(0);
+    }//GEN-LAST:event_jMenuItemExitActionPerformed
+
+    private void jMenuItemLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemLogoutActionPerformed
+        user = null;
+        jMenuItemLogout.setEnabled(false);
+        jMenuItemDelete.setEnabled(false);
+        jMenuItemSave.setEnabled(false);
+        props.setProperty("username", "");
+        props.setProperty("password", "");
+        FileWriter out;
+        try {
+            out = new FileWriter("settings.properties");
+            props.store(out, null);
+            out.close();
+        } catch (IOException e) {
+        }
+        contactPanel.updateContacts(null);
+        examPanel.updateExams(null);
+        this.setTitle("Personal Information Manager");
+    }//GEN-LAST:event_jMenuItemLogoutActionPerformed
+
+    
+    private User getUser() {
+        String username = props.getProperty("username");
+        String password = props.getProperty("password");
+        User user = null;
+        try {
+            Connection con = DatabaseConnector.getInstance().getConnection();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM users WHERE username = '" + username + "' AND password = '" + password + "'");
+            if (rs.next()) {
+                user = new User(rs.getInt(1), rs.getString(2), rs.getString(3));
+            }
+            rs.close();
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
     
     private void switchPanel(javax.swing.JPanel panel, javax.swing.JButton button) {
         
@@ -424,11 +580,17 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenu jMenuFile;
     private javax.swing.JMenu jMenuInfo;
     private javax.swing.JMenuItem jMenuItemDatabase;
+    private javax.swing.JMenuItem jMenuItemDelete;
+    private javax.swing.JMenuItem jMenuItemExit;
+    private javax.swing.JMenuItem jMenuItemLogin;
+    private javax.swing.JMenuItem jMenuItemLogout;
     private javax.swing.JMenuItem jMenuItemMail;
     private javax.swing.JMenuItem jMenuItemSave;
     private javax.swing.JMenu jMenuSettings;
     private javax.swing.JPanel jPanelContent;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JPopupMenu.Separator jSeparator2;
+    private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JToolBar jToolBar;
     // End of variables declaration//GEN-END:variables
 }

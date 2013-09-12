@@ -5,7 +5,6 @@
 package pim.contact;
 
 import java.awt.Color;
-import java.awt.image.BufferedImage;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Group;
 import javax.swing.JFrame;
@@ -27,10 +26,15 @@ public class ContactPanel extends javax.swing.JPanel {
     /**
      * Creates new form ContactPanel
      */
-    public ContactPanel(Contact[] contacts) {
+    public ContactPanel() {
         initComponents();
+        TextFieldListener textFieldListener = new TextFieldListener();
+        jTextFieldSearch.addMouseListener(textFieldListener);
+        bgColor = this.getBackground();
+    }
+    
+    public void updateContacts(Contact[] contacts) {
         contactButtons = new ContactButton[100];
-        
         size = 0;
         selectedIndex = -1;
         if (contacts != null) {
@@ -46,10 +50,8 @@ public class ContactPanel extends javax.swing.JPanel {
             }
         }
         initContactButtons();
-        TextFieldListener textFieldListener = new TextFieldListener();
-        jTextFieldSearch.addMouseListener(textFieldListener);
-        bgColor = this.getBackground();
     }
+    
 
     private void initContactButtons() {
         jPanel1.removeAll();
