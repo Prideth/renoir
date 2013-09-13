@@ -105,7 +105,7 @@ public class MainFrame extends javax.swing.JFrame {
         
         mailPanel = new pim.mail.MailPanel();
         calendarPanel = new pim.calendar.CalendarPanel();
-        toDoPanel = new pim.todo.ToDoPanel(todos);
+        toDoPanel = new pim.todo.TodoPanel(todos);
         notePanel = new pim.notes.NotePanel(notes);
         
         if (user != null) {
@@ -573,7 +573,7 @@ public class MainFrame extends javax.swing.JFrame {
     private pim.exam.ExamPanel examPanel;
     private pim.contact.ContactPanel contactPanel;
     private pim.calendar.CalendarPanel calendarPanel;
-    private pim.todo.ToDoPanel toDoPanel;
+    private pim.todo.TodoPanel toDoPanel;
     private pim.notes.NotePanel notePanel;
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

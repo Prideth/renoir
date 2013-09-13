@@ -15,7 +15,7 @@ import javax.swing.SwingUtilities;
  * 
  * @author Joerg Federspiel
  */
-public class ToDoPanel extends javax.swing.JPanel {
+public class TodoPanel extends javax.swing.JPanel {
     
     ToDoSlot[] toDoSlots;
     private int size;
@@ -25,7 +25,7 @@ public class ToDoPanel extends javax.swing.JPanel {
     /**
      * Creates new form ToDoPanel
      */
-    public ToDoPanel(ToDo[] toDos) {
+    public TodoPanel(ToDo[] toDos) {
         initComponents();
         toDoSlots = new ToDoSlot[100];
         
@@ -87,26 +87,26 @@ public class ToDoPanel extends javax.swing.JPanel {
         jButtonNew = new javax.swing.JButton();
         jButtonEdit = new javax.swing.JButton();
         jButtonDelete = new javax.swing.JButton();
-        jPanelContent = new javax.swing.JPanel();
         jScrollPaneContent = new javax.swing.JScrollPane();
+        jPanelContent = new javax.swing.JPanel();
 
         setPreferredSize(new java.awt.Dimension(518, 355));
 
-        jButtonNew.setText("Erstellen");
+        jButtonNew.setText("Aufgabe hinzufügen");
         jButtonNew.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonNewActionPerformed(evt);
             }
         });
 
-        jButtonEdit.setText("Bearbeiten");
+        jButtonEdit.setText("Aufgabe bearbeiten");
         jButtonEdit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonEditActionPerformed(evt);
             }
         });
 
-        jButtonDelete.setText("Löschen");
+        jButtonDelete.setText("Aufgabe löschen");
         jButtonDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonDeleteActionPerformed(evt);
@@ -117,14 +117,14 @@ public class ToDoPanel extends javax.swing.JPanel {
         jPanelContent.setLayout(jPanelContentLayout);
         jPanelContentLayout.setHorizontalGroup(
             jPanelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPaneContent)
+            .addGap(0, 518, Short.MAX_VALUE)
         );
         jPanelContentLayout.setVerticalGroup(
             jPanelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelContentLayout.createSequentialGroup()
-                .addComponent(jScrollPaneContent, javax.swing.GroupLayout.DEFAULT_SIZE, 353, Short.MAX_VALUE)
-                .addGap(3, 3, 3))
+            .addGap(0, 320, Short.MAX_VALUE)
         );
+
+        jScrollPaneContent.setViewportView(jPanelContent);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -132,23 +132,28 @@ public class ToDoPanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButtonNew)
-                .addGap(135, 135, 135)
-                .addComponent(jButtonEdit)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 134, Short.MAX_VALUE)
-                .addComponent(jButtonDelete)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButtonNew)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonEdit)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonDelete)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPaneContent, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 506, Short.MAX_VALUE))
                 .addContainerGap())
-            .addComponent(jPanelContent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonNew)
                     .addComponent(jButtonEdit)
                     .addComponent(jButtonDelete))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanelContent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPaneContent, javax.swing.GroupLayout.DEFAULT_SIZE, 308, Short.MAX_VALUE)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 

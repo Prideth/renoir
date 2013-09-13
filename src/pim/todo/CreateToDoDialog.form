@@ -27,29 +27,31 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jScrollPane1" max="32767" attributes="0"/>
-                  <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jLabelPriority" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabelEndDate" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabelBeginDate" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabelSubject" alignment="0" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jTextFieldBeginDate" alignment="1" max="32767" attributes="0"/>
-                          <Component id="jTextFieldEndDate" alignment="1" pref="328" max="32767" attributes="0"/>
-                          <Component id="jTextFieldSubject" max="32767" attributes="0"/>
-                          <Group type="102" attributes="0">
-                              <Component id="jComboBoxPriority" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                          </Group>
-                      </Group>
-                  </Group>
+                  <Component id="jScrollPane1" pref="406" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jButtonSave" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="jButtonCancel" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jLabelSubject" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabelEndDate" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabelBeginDate" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabelPriority" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jTextFieldSubject" max="32767" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="jComboBoxPriority" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jDateChooserBeginDate" alignment="0" pref="140" max="32767" attributes="0"/>
+                                  <Component id="jDateChooserEndDate" alignment="0" max="32767" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -65,19 +67,22 @@
                   <Component id="jTextFieldSubject" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jLabelBeginDate" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jTextFieldBeginDate" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Component id="jLabelBeginDate" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jLabelEndDate" min="-2" pref="28" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <Component id="jDateChooserBeginDate" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jDateChooserEndDate" min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jLabelEndDate" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jTextFieldEndDate" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jLabelPriority" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jComboBoxPriority" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Component id="jComboBoxPriority" max="32767" attributes="0"/>
+                  <Component id="jLabelPriority" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jScrollPane1" pref="181" max="32767" attributes="0"/>
@@ -115,10 +120,6 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="jTextFieldSubject">
-    </Component>
-    <Component class="javax.swing.JTextField" name="jTextFieldBeginDate">
-    </Component>
-    <Component class="javax.swing.JTextField" name="jTextFieldEndDate">
     </Component>
     <Component class="javax.swing.JButton" name="jButtonSave">
       <Properties>
@@ -163,5 +164,9 @@
         </Component>
       </SubComponents>
     </Container>
+    <Component class="com.toedter.calendar.JDateChooser" name="jDateChooserBeginDate">
+    </Component>
+    <Component class="com.toedter.calendar.JDateChooser" name="jDateChooserEndDate">
+    </Component>
   </SubComponents>
 </Form>

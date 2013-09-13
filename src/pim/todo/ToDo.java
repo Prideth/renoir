@@ -4,6 +4,8 @@
  */
 package pim.todo;
 
+import java.util.Date;
+
 /**
  * Class ToDo to generate ToDos 
  * 
@@ -12,69 +14,62 @@ package pim.todo;
 public class ToDo {
     
     private String subject;
-    private String beginDate;
-    private String endDate;
-    private String priorityString;
+    private Date beginDate;
+    private Date endDate;
+    private Object priority;
     private String comments;
-    private Object priorityObject;
-    
-    public ToDo(String subject, String beginDate, String endDate, String priorityString, String comments, Object priorityObject) {
+
+    public ToDo(String subject, Date beginDate, Date endDate, Object priority, String comments) {
         this.subject = subject;
         this.beginDate = beginDate;
         this.endDate = endDate;
-        this.priorityString = priorityString;
+        this.priority = priority;
         this.comments = comments;
-        this.priorityObject = priorityObject;
     }
 
     public String getSubject() {
         return subject;
     }
 
-    public String getBeginDate() {
+    public Date getBeginDate() {
         return beginDate;
     }
 
-    public String getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
+    public Object getPriority() {
+        return priority;
+    }
+    
     public String getPriorityString() {
-        return priorityString;
+        return priority.toString();
     }
 
     public String getComments() {
         return comments;
     }
 
-    public Object getPriorityObject() {
-        return priorityObject;
-    }
-
     public void setSubject(String subject) {
         this.subject = subject;
     }
 
-    public void setBeginDate(String beginDate) {
+    public void setBeginDate(Date beginDate) {
         this.beginDate = beginDate;
     }
 
-    public void setEndDate(String endDate) {
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 
-    public void setPriorityString(String priorityString) {
-        this.priorityString = priorityString;
+    public void setPriority(Object priority) {
+        this.priority = priority;
     }
 
     public void setComments(String comments) {
         this.comments = comments;
     }
-
-    public void setPriorityObject(Object priorityObject) {
-        this.priorityObject = priorityObject;
-    }
-
     
     
 }

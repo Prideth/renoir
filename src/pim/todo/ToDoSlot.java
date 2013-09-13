@@ -5,8 +5,9 @@
 package pim.todo;
 
 /**
- *
- * @author Jörg
+ * Class ToDoSlot shows todos in panel
+ * 
+ * @author Joerg Federspiel
  */
 public class ToDoSlot extends javax.swing.JPanel {
     
@@ -20,9 +21,9 @@ public class ToDoSlot extends javax.swing.JPanel {
         this.toDo = toDo;
         position = 0;
         jLabelSubject.setText(toDo.getSubject());
-        jLabelBeginDate.setText(toDo.getBeginDate());
-        jLabelEndDate.setText(toDo.getEndDate());
-        jLabelPriority.setText(toDo.getPriorityString());
+        jLabelBeginDate.setText(toDo.getBeginDate().toString());
+        jLabelEndDate.setText(toDo.getEndDate().toString());
+        jLabelPriority.setText(toDo.getPriority().toString());
         jLabelComments.setText(toDo.getComments());
     }
     
@@ -33,9 +34,9 @@ public class ToDoSlot extends javax.swing.JPanel {
     public void setToDo(ToDo toDo) {
         this.toDo = toDo;
         jLabelSubject.setText(toDo.getSubject());
-        jLabelBeginDate.setText(toDo.getBeginDate());
-        jLabelEndDate.setText(toDo.getEndDate());
-        jLabelPriority.setText(toDo.getPriorityString());
+        jLabelBeginDate.setText(toDo.getBeginDate().toString());
+        jLabelEndDate.setText(toDo.getEndDate().toString());
+        jLabelPriority.setText(toDo.getPriority().toString());
         jLabelComments.setText(toDo.getComments());
     }
     

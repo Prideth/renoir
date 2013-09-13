@@ -4,9 +4,7 @@
  */
 package pim.todo;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
+import java.util.Date;
 import pim.*;
 
 /**
@@ -17,8 +15,11 @@ import pim.*;
 public class CreateToDoDialog extends javax.swing.JDialog {
     
     private ToDo toDo;
-    Object priorityObject;
-    String priorityString ;
+    String subject;
+    Date beginDate;
+    Date endDate;    
+    Object priority;
+    String comments;
 
     /**
      * Creates new form createToDo
@@ -30,23 +31,12 @@ public class CreateToDoDialog extends javax.swing.JDialog {
         
         TextFieldListener textFieldListener = new TextFieldListener();
         jTextFieldSubject.addMouseListener(textFieldListener);
-        jTextFieldBeginDate.addMouseListener(textFieldListener);
-        jTextFieldEndDate.addMouseListener(textFieldListener);
-        jTextAreaComments.addMouseListener(textFieldListener);
-        
-        jComboBoxPriority.addActionListener(new ActionListener() {
-            public void actionPerformed (ActionEvent event) {
-                priorityObject = event.getSource();
-                priorityString = priorityObject.toString();
-            }
-        });
-        
-               
+                       
         if (toDo != null) {
             jTextFieldSubject.setText(toDo.getSubject());
-            jTextFieldBeginDate.setText(toDo.getBeginDate());
-            jTextFieldEndDate.setText(toDo.getEndDate());
-            jComboBoxPriority.setSelectedItem(priorityObject);
+            jDateChooserBeginDate.setDate(toDo.getBeginDate());
+            jDateChooserEndDate.setDate(toDo.getEndDate());
+            jComboBoxPriority.setSelectedItem(toDo.getPriority());
             jTextAreaComments.setText(toDo.getComments());
         }
     }
@@ -65,13 +55,13 @@ public class CreateToDoDialog extends javax.swing.JDialog {
         jLabelEndDate = new javax.swing.JLabel();
         jLabelPriority = new javax.swing.JLabel();
         jTextFieldSubject = new javax.swing.JTextField();
-        jTextFieldBeginDate = new javax.swing.JTextField();
-        jTextFieldEndDate = new javax.swing.JTextField();
         jButtonSave = new javax.swing.JButton();
         jButtonCancel = new javax.swing.JButton();
         jComboBoxPriority = new javax.swing.JComboBox();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextAreaComments = new javax.swing.JTextArea();
+        jDateChooserBeginDate = new com.toedter.calendar.JDateChooser();
+        jDateChooserEndDate = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -112,25 +102,26 @@ public class CreateToDoDialog extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabelPriority)
-                            .addComponent(jLabelEndDate)
-                            .addComponent(jLabelBeginDate)
-                            .addComponent(jLabelSubject))
-                        .addGap(10, 10, 10)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextFieldBeginDate, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextFieldEndDate, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 328, Short.MAX_VALUE)
-                            .addComponent(jTextFieldSubject)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jComboBoxPriority, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 406, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButtonSave)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButtonCancel)))
+                        .addComponent(jButtonCancel))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabelSubject)
+                            .addComponent(jLabelEndDate)
+                            .addComponent(jLabelBeginDate)
+                            .addComponent(jLabelPriority))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextFieldSubject)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jComboBoxPriority, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jDateChooserBeginDate, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
+                                    .addComponent(jDateChooserEndDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -141,17 +132,19 @@ public class CreateToDoDialog extends javax.swing.JDialog {
                     .addComponent(jLabelSubject)
                     .addComponent(jTextFieldSubject, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelBeginDate)
-                    .addComponent(jTextFieldBeginDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabelBeginDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabelEndDate, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jDateChooserBeginDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jDateChooserEndDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelEndDate)
-                    .addComponent(jTextFieldEndDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelPriority)
-                    .addComponent(jComboBoxPriority, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jComboBoxPriority)
+                    .addComponent(jLabelPriority, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -166,21 +159,22 @@ public class CreateToDoDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSaveActionPerformed
-        String subject = jTextFieldSubject.getText().trim();
+        subject = jTextFieldSubject.getText().trim();
+        beginDate = jDateChooserBeginDate.getDate();
+        endDate = jDateChooserEndDate.getDate();
+        priority = jComboBoxPriority.getSelectedItem();
+        comments = jTextAreaComments.getText();
+                
         if (!subject.isEmpty()) {
-            String beginDate = jTextFieldBeginDate.getText().trim();
-            String endDate = jTextFieldEndDate.getText().trim();
-            String comments = jTextAreaComments.getText().trim();
             
             if (toDo == null) {
-                toDo = new ToDo(subject, beginDate, endDate, priorityString, comments, priorityObject);
+                toDo = new ToDo(subject, beginDate, endDate, priority, comments);
             } else {
                 toDo.setSubject(subject);
                 toDo.setBeginDate(beginDate);
                 toDo.setEndDate(endDate);
-                toDo.setPriorityString(priorityString);
-                toDo.setComments(comments);
-                toDo.setPriorityObject(priorityObject);
+                toDo.setPriority(priority);
+                toDo.setComments(comments);                
             }
             this.dispose();
         } else {
@@ -202,14 +196,15 @@ public class CreateToDoDialog extends javax.swing.JDialog {
     private javax.swing.JButton jButtonCancel;
     private javax.swing.JButton jButtonSave;
     private javax.swing.JComboBox jComboBoxPriority;
+    private com.toedter.calendar.JDateChooser jDateChooserBeginDate;
+    private com.toedter.calendar.JDateChooser jDateChooserEndDate;
     private javax.swing.JLabel jLabelBeginDate;
     private javax.swing.JLabel jLabelEndDate;
     private javax.swing.JLabel jLabelPriority;
     private javax.swing.JLabel jLabelSubject;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextAreaComments;
-    private javax.swing.JTextField jTextFieldBeginDate;
-    private javax.swing.JTextField jTextFieldEndDate;
     private javax.swing.JTextField jTextFieldSubject;
     // End of variables declaration//GEN-END:variables
 }
+
