@@ -10,10 +10,12 @@ import java.util.Date;
  *
  * @author Beware
  */
-public class NoteItem extends javax.swing.JPanel {
+public class NoteItem extends javax.swing.JPanel implements Comparable<NoteItem>{
 
     private int pos;
     private Note note;
+    private String title;
+    private String date;
 
     
     /**
@@ -23,9 +25,12 @@ public class NoteItem extends javax.swing.JPanel {
         initComponents();
         this.note = note;
         pos = 0;
-        jLabelTitle.setText(note.getTitle());
+        title = note.getTitle();
+        date = note.getCreateDate().toString();
+        
+        jLabelTitle.setText(title);
         jLabelNote.setText(note.getNoteContent());
-        jLableDate.setText(note.getCreateDate().toString());
+        jLableDate.setText(date);
     }
     
     public Note getNote() {
@@ -34,9 +39,11 @@ public class NoteItem extends javax.swing.JPanel {
 
     public void setNote(Note note) {
         this.note = note;
-        jLabelTitle.setText(note.getTitle());
+        setTitle(note.getTitle());
+        setDate(note.getCreateDate().toString());
+        jLabelTitle.setText(getTitle());
         jLabelNote.setText(note.getNoteContent());
-        jLableDate.setText(note.getCreateDate().toString());
+        jLableDate.setText(getDate());
     }
     
     public int getPosition() {
@@ -61,8 +68,10 @@ public class NoteItem extends javax.swing.JPanel {
 
         jLableDate = new javax.swing.JLabel();
         jLabelNote = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
         jLabelTitle = new javax.swing.JLabel();
 
+        setBackground(new java.awt.Color(236, 227, 159));
         setMaximumSize(new java.awt.Dimension(100, 100));
 
         jLableDate.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -71,46 +80,102 @@ public class NoteItem extends javax.swing.JPanel {
         jLabelNote.setText("Inhalt");
         jLabelNote.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
+        jPanel1.setBackground(new java.awt.Color(120, 68, 41));
+
+        jLabelTitle.setBackground(new java.awt.Color(120, 68, 41));
         jLabelTitle.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabelTitle.setForeground(new java.awt.Color(255, 255, 255));
         jLabelTitle.setText("Titel");
         jLabelTitle.setToolTipText("");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabelTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabelTitle, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        jLabelTitle.getAccessibleContext().setAccessibleName("");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabelTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 150, Short.MAX_VALUE)
-                        .addComponent(jLableDate, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addGap(114, 114, 114)
                 .addComponent(jLabelNote, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(120, Short.MAX_VALUE)
+                .addComponent(jLableDate, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(40, 40, 40))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabelTitle)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(22, 22, 22)
                 .addComponent(jLabelNote, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLableDate))
         );
 
         jLabelNote.getAccessibleContext().setAccessibleName("Notiz");
-        jLabelTitle.getAccessibleContext().setAccessibleName("");
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabelNote;
     private javax.swing.JLabel jLabelTitle;
     private javax.swing.JLabel jLableDate;
+    private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public int compareTo(NoteItem o) {
+        System.out.println("Debug:StartComPareTo");
+        if (o.getTitle( ).isEmpty() && this.getTitle().isEmpty()) {
+          return 0;
+        }
+        if (o.getTitle().isEmpty()) {
+          return 1;
+        }
+        if (note.getTitle().isEmpty()) {
+          return -1;
+        }
+        return this.getTitle().compareTo(o.getTitle());
+    }
+
+    /**
+     * @return the title
+     */
+    public String getTitle() {
+        return title;
+    }
+
+    
+    /**
+     * @param title the title to set
+     */
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    /**
+     * @return the date
+     */
+    public String getDate() {
+        return date;
+    }
+
+    /**
+     * @param date the date to set
+     */
+    public void setDate(String date) {
+        this.date = date;
+    }
 }
