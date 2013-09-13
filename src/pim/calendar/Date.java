@@ -4,6 +4,8 @@
  */
 package pim.calendar;
 
+import java.util.Calendar;
+
 /**
  *
  * @author Christopher Schuetz
@@ -50,9 +52,13 @@ public class Date {
     public Object[] getTableRow() {
         return new Object[] {
             this,
-            (date == null) ? "" : date,
             (time == null) ? "" : time,
             (description == null) ? "" : description
         };
+    }
+    
+    @Override
+    public String toString() {
+        return date;
     }
 }
