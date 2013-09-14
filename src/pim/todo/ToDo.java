@@ -4,6 +4,7 @@
  */
 package pim.todo;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -18,6 +19,8 @@ public class ToDo {
     private Date endDate;
     private Object priority;
     private String comments;
+    
+    SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 
     public ToDo(String subject, Date beginDate, Date endDate, Object priority, String comments) {
         this.subject = subject;
@@ -43,10 +46,6 @@ public class ToDo {
         return priority;
     }
     
-    public String getPriorityString() {
-        return priority.toString();
-    }
-
     public String getComments() {
         return comments;
     }
@@ -71,5 +70,16 @@ public class ToDo {
         this.comments = comments;
     }
     
+    /**
+     * Method returns Date object as String
+     * 
+     * @return
+     */
+    public String getBeginDateString () {
+        return sdf.format(beginDate);   
+    }
     
+    public String getEndDateString () {
+        return sdf.format(endDate);   
+    }
 }

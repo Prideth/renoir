@@ -21,8 +21,8 @@ public class ToDoSlot extends javax.swing.JPanel {
         this.toDo = toDo;
         position = 0;
         jLabelSubject.setText(toDo.getSubject());
-        jLabelBeginDate.setText(toDo.getBeginDate().toString());
-        jLabelEndDate.setText(toDo.getEndDate().toString());
+        jLabelBeginDate.setText(toDo.getBeginDateString());
+        jLabelEndDate.setText(toDo.getEndDateString());
         jLabelPriority.setText(toDo.getPriority().toString());
         jLabelComments.setText(toDo.getComments());
     }
@@ -34,8 +34,8 @@ public class ToDoSlot extends javax.swing.JPanel {
     public void setToDo(ToDo toDo) {
         this.toDo = toDo;
         jLabelSubject.setText(toDo.getSubject());
-        jLabelBeginDate.setText(toDo.getBeginDate().toString());
-        jLabelEndDate.setText(toDo.getEndDate().toString());
+        jLabelBeginDate.setText(toDo.getBeginDateString());
+        jLabelEndDate.setText(toDo.getEndDateString());
         jLabelPriority.setText(toDo.getPriority().toString());
         jLabelComments.setText(toDo.getComments());
     }
