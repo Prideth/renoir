@@ -102,13 +102,12 @@ public class MainFrame extends javax.swing.JFrame {
         }
                
         ToDo[] todos = null;
-        Note[] notes = null;
         
         mailPanel = new pim.mail.MailPanel();
-       // calendarPanel = new pim.calendar2.CalendarPanel(examPanel);
-        calendarPanel = new pim.calendar.CalendarPanel();
+        calendarPanel = new pim.calendar2.CalendarPanel(examPanel, notePanel);
+        //calendarPanel = new pim.calendar.CalendarPanel();
         toDoPanel = new pim.todo.ToDoPanel(todos);
-        //notePanel = new pim.notes.NotePanel(notes);
+        
         
         if (user != null) {
             setTitle("Personal Information Manager - " + user.getUsername());
@@ -117,7 +116,7 @@ public class MainFrame extends javax.swing.JFrame {
             jMenuItemSave.setEnabled(true);
         }
         
-        switchPanel(notePanel, jButtonNotes);
+        switchPanel(calendarPanel, jButtonCalendar);
     }
     
     private void updatePanels(Connection con) {
@@ -395,7 +394,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void jButtonCalendarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCalendarActionPerformed
         switchPanel(calendarPanel, jButtonCalendar);
-        //calendarPanel.update();
+        calendarPanel.update();
     }//GEN-LAST:event_jButtonCalendarActionPerformed
 
     private void jButtonToDoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonToDoActionPerformed
@@ -483,7 +482,7 @@ public class MainFrame extends javax.swing.JFrame {
             this.setTitle("Personal Information Manager - " + user.getUsername());
             con = dialog.getConnection();
             updatePanels(con);
-           // calendarPanel.update();
+            calendarPanel.update();
         }
     }//GEN-LAST:event_jMenuItemLoginActionPerformed
 
@@ -515,7 +514,7 @@ public class MainFrame extends javax.swing.JFrame {
         contactPanel.updateContacts(null);
         examPanel.updateExams(null);
         notePanel.updateNotes(null);
-        //calendarPanel.update();
+        calendarPanel.update();
         this.setTitle("Personal Information Manager");
     }//GEN-LAST:event_jMenuItemLogoutActionPerformed
 
@@ -598,8 +597,8 @@ public class MainFrame extends javax.swing.JFrame {
     private pim.mail.MailPanel mailPanel;
     private pim.exam.ExamPanel examPanel;
     private pim.contact.ContactPanel contactPanel;
-    //private pim.calendar2.CalendarPanel calendarPanel;
-    private pim.calendar.CalendarPanel calendarPanel;
+    private pim.calendar2.CalendarPanel calendarPanel;
+    //private pim.calendar.CalendarPanel calendarPanel;
     private pim.todo.ToDoPanel toDoPanel;
     private pim.notes.NotePanel notePanel;
     
