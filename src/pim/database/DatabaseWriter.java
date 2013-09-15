@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat;
 import javax.imageio.ImageIO;
 import pim.contact.Contact;
 import pim.exam.Exam;
+import pim.notes.Note;
 
 
 /**
@@ -116,5 +117,35 @@ public class DatabaseWriter {
         }
     }
     
+    
+    public void writeNotes(Note[] notes, int userid) throws SQLException {
+        SimpleDateFormat f= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        StringBuilder sb = new StringBuilder("INSERT INTO notes VALUES ");
+        for (int i = 0; i < notes.length; i++) {
+            sb.append("(")
+              .append(userid)
+              .append(",'")
+              .append(notes[i].getTitle().replaceAll("'", "\\\\'"))
+              .append("','")
+              .append(notes[i].getNoteContent().replaceAll("'", "\\\\'"))
+              .append("','")
+              .append(f.format(notes[i].getCreateDate()))
+              .append("'");
+
+            
+            if (i < notes.length - 1) {
+                sb.append("),");
+            } else {
+                sb.append(")");
+            }
+        }
+        try (Statement stmt = con.createStatement()) {
+            stmt.addBatch("DELETE FROM notes WHERE userid = '" + userid + "'");
+            stmt.addBatch(sb.toString());
+            //System.out.println(sb.toString());
+            
+            stmt.executeBatch();
+        }
+    }
     
 }

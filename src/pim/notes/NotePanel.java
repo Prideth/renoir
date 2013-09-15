@@ -47,7 +47,7 @@ public class NotePanel extends javax.swing.JPanel  {
     /**
      * Creates new form NotePanel
      */
-    public NotePanel(Note[] notes) {
+    public NotePanel() {
         initComponents();
         disableCancelButton();
         
@@ -56,19 +56,19 @@ public class NotePanel extends javax.swing.JPanel  {
         
         
         noteItems = new NoteItem[MAXARRAYSIZE];
-        
-        
-        
-      
-        
         size = 0;
         selectedIndex = -1;
         
+        //initNoteItems("");
+        TextFieldListener textFieldListener = new TextFieldListener();
+        jTextFieldSearch.addMouseListener(textFieldListener);
+    }
+
+    
+    public void updateNotes(Note[] notes) {
         if (notes != null) {
             size = notes.length;
-            
-            
-             for (int i = 0; i < size; i++) {
+            for (int i = 0; i < size; i++) {
                 noteItems[i] = new NoteItem(notes[i]);
                 noteItems[i].addMouseListener(new java.awt.event.MouseAdapter() {
                     @Override
@@ -77,24 +77,28 @@ public class NotePanel extends javax.swing.JPanel  {
                     }
                 });
             }
-             
-
+        } else {
+            noteItems = new NoteItem[MAXARRAYSIZE];
+            size = 0;
+            selectedIndex = -1;
         }
-        
         initNoteItems("");
-        TextFieldListener textFieldListener = new TextFieldListener();
-        jTextFieldSearch.addMouseListener(textFieldListener);
-        
-        
-        
-        
-    }
 
+    }
+    
+    
+    public Note[] getNotes() {
+        Note[] notes = new Note[size];
+        for (int i = 0; i < size; i++) {
+            notes[i] = noteItems[i].getNote();
+        }
+        return notes;
+    }
+    
+    
+    
     private void initNoteItems(String searchString) {
 
-        
-        
-   
         jPanelLeft.removeAll();
         jPanelRight.removeAll();
         

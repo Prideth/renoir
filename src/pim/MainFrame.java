@@ -95,6 +95,7 @@ public class MainFrame extends javax.swing.JFrame {
         
         contactPanel = new ContactPanel();
         examPanel = new ExamPanel();
+        notePanel = new pim.notes.NotePanel();
         
         if (user != null) {
             updatePanels(con);
@@ -104,10 +105,10 @@ public class MainFrame extends javax.swing.JFrame {
         Note[] notes = null;
         
         mailPanel = new pim.mail.MailPanel();
-        //calendarPanel = new pim.calendar2.CalendarPanel(examPanel);
+       // calendarPanel = new pim.calendar2.CalendarPanel(examPanel);
         calendarPanel = new pim.calendar.CalendarPanel();
         toDoPanel = new pim.todo.ToDoPanel(todos);
-        notePanel = new pim.notes.NotePanel(notes);
+        //notePanel = new pim.notes.NotePanel(notes);
         
         if (user != null) {
             setTitle("Personal Information Manager - " + user.getUsername());
@@ -116,7 +117,7 @@ public class MainFrame extends javax.swing.JFrame {
             jMenuItemSave.setEnabled(true);
         }
         
-        switchPanel(calendarPanel, jButtonCalendar);
+        switchPanel(notePanel, jButtonNotes);
     }
     
     private void updatePanels(Connection con) {
@@ -142,6 +143,16 @@ public class MainFrame extends javax.swing.JFrame {
                 contactPanel.updateContacts(dr.getContacts(user.getId()));
                 System.out.println(System.currentTimeMillis() - start);
             } catch (SQLException e) {
+                System.err.println("error");
+            }
+            
+            System.out.print("read notes... ");
+            start = System.currentTimeMillis();
+            try {
+                notePanel.updateNotes(dr.getNotes(user.getId()));
+                System.out.println(System.currentTimeMillis() - start);
+            } catch (SQLException e) {
+                e.printStackTrace();
                 System.err.println("error");
             }
         }
@@ -430,6 +441,15 @@ public class MainFrame extends javax.swing.JFrame {
                 dw.writeExams(examPanel.getExams(), user.getId());
                 System.out.println(System.currentTimeMillis() - start);
             } catch (SQLException e) {
+                System.out.println("error");
+            }
+            
+            System.out.print("write notes... ");
+            start = System.currentTimeMillis();
+            try {
+                dw.writeNotes(notePanel.getNotes(), user.getId());
+                System.out.println(System.currentTimeMillis() - start);
+            } catch (SQLException e) {
                 e.printStackTrace();
                 System.out.println("error");
             }
@@ -463,7 +483,7 @@ public class MainFrame extends javax.swing.JFrame {
             this.setTitle("Personal Information Manager - " + user.getUsername());
             con = dialog.getConnection();
             updatePanels(con);
-            //calendarPanel.update();
+           // calendarPanel.update();
         }
     }//GEN-LAST:event_jMenuItemLoginActionPerformed
 
@@ -494,6 +514,7 @@ public class MainFrame extends javax.swing.JFrame {
         }
         contactPanel.updateContacts(null);
         examPanel.updateExams(null);
+        notePanel.updateNotes(null);
         //calendarPanel.update();
         this.setTitle("Personal Information Manager");
     }//GEN-LAST:event_jMenuItemLogoutActionPerformed
