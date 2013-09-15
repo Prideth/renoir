@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import javax.imageio.ImageIO;
 import pim.contact.Contact;
 import pim.exam.Exam;
@@ -71,24 +72,20 @@ public class DatabaseWriter {
     
     
     public void writeExams(Exam[] exams, int userid) throws SQLException {
- 
+        SimpleDateFormat f= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         StringBuilder sb = new StringBuilder("INSERT INTO exams VALUES ");
-        
         for (int i = 0; i < exams.length; i++) {
-            
             sb.append("(")
               .append(userid)
               .append(",'")
               .append(exams[i].getSubject().replaceAll("'", "\\\\'"))
               .append("','")
               .append(exams[i].getSemester().replaceAll("'", "\\\\'"))
-              .append("',")
+              .append("','")
               .append(exams[i].getEcts())
+              .append("',")
+              .append(exams[i].getDate() == null ? "null" : "'" + f.format(exams[i].getDate()) + "'")
               .append(",'")
-              .append(exams[i].getDate() == null ? "" : exams[i].getDate().replaceAll("'", "\\\\'"))
-              .append("','")
-              .append(exams[i].getTime() == null ? "" : exams[i].getTime().replaceAll("'", "\\\\'"))
-              .append("','")
               .append(exams[i].getRoom() == null ? "" : exams[i].getRoom().replaceAll("'", "\\\\'"))
               .append("',")
               .append(exams[i].getGrade())

@@ -4,7 +4,9 @@
  */
 package pim.exam;
 
+import java.text.SimpleDateFormat;
 import java.util.Comparator;
+import java.util.Date;
 
 /**
  *
@@ -48,25 +50,23 @@ public class Exam {
        "WS 13/14", "SS 13", "WS 12/13", "SS 12",
        "WS 11/12", "SS 11", "WS 10/11" };
 
-    
+   
     private String subject;
     private String semester;
     private int ects;
-    private String date;
-    private String time;
+    private Date date;
     private String room;
     private double grade;
     private int[] numbers;
     private double average;
     private int students;
 
-    public Exam(String subject, String semester, int ects, String date,
-            String time, String room, double grade, int[] numbers) {
+    public Exam(String subject, String semester, int ects, Date date,
+            String room, double grade, int[] numbers) {
         this.subject = subject;
         this.semester = semester;
         this.ects = ects;
         this.date = date;
-        this.time = time;
         this.room = room;
         this.grade = grade;
         this.numbers = numbers;
@@ -90,12 +90,25 @@ public class Exam {
     }
 
     public Object[] getTableRow() {
+        
+        String datestring = "";
+        String timestring = "";
+        
+        if (date != null) {
+            
+            SimpleDateFormat f = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+            String formated = f.format(date);
+            
+            datestring = formated.substring(0, 10);
+            timestring = formated.substring(11, 16);
+        }
+        
         return new Object[] {
             this,
             semester,
             ects,
-            (date == null) ? "" : date,
-            (time == null) ? "" : time,
+            datestring,
+            timestring,
             (room == null) ? "" : room,
             (grade == 0d) ? "" : grade,
             (average == 0d) ? "" : average
@@ -114,12 +127,8 @@ public class Exam {
         return ects;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
-    }
-
-    public String getTime() {
-        return time;
     }
 
     public String getRoom() {
@@ -154,14 +163,10 @@ public class Exam {
         this.ects = ects;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
+    
     public void setRoom(String room) {
         this.room = room;
     }

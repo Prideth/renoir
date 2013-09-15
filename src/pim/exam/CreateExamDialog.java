@@ -3,6 +3,12 @@
  * and open the template in the editor.
  */
 package pim.exam;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import pim.*;
 
 /**
@@ -26,18 +32,26 @@ public class CreateExamDialog extends javax.swing.JDialog {
         
         TextFieldListener textFieldListener = new TextFieldListener();
         jTextFieldSubject.addMouseListener(textFieldListener);
-        jTextFieldDate.addMouseListener(textFieldListener);
         jTextFieldTime.addMouseListener(textFieldListener);
         jTextFieldRoom.addMouseListener(textFieldListener);
+        dateChooserCombo.setCurrent(null);
         
         if (exam != null) {
+            if (exam.getDate() != null) {
+                Calendar c = Calendar.getInstance();
+                c.setTime(exam.getDate());
+                dateChooserCombo.setSelectedDate(c);
+                SimpleDateFormat f = new SimpleDateFormat("HH:mm");  
+                jTextFieldTime.setText(f.format(exam.getDate()));
+            } else {
+                dateChooserCombo.setSelectedDate(null);
+            }
             jTextFieldSubject.setText(exam.getSubject());
             jComboBoxSemester.setSelectedItem(exam.getSemester());
             jComboBoxEcts.setSelectedIndex(exam.getEcts() - 1);
-            jTextFieldDate.setText(exam.getDate());
-            jTextFieldTime.setText(exam.getTime());
             jTextFieldRoom.setText(exam.getRoom());
         }
+        
     }
 
     
@@ -58,12 +72,12 @@ public class CreateExamDialog extends javax.swing.JDialog {
         jLabelRoom = new javax.swing.JLabel();
         jTextFieldRoom = new javax.swing.JTextField();
         jTextFieldTime = new javax.swing.JTextField();
-        jTextFieldDate = new javax.swing.JTextField();
         jComboBoxEcts = new javax.swing.JComboBox();
         jComboBoxSemester = new javax.swing.JComboBox();
         jTextFieldSubject = new javax.swing.JTextField();
         jButtonSubmit = new javax.swing.JButton();
         jButtonCancel = new javax.swing.JButton();
+        dateChooserCombo = new datechooser.beans.DateChooserCombo();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Klausur erstellen");
@@ -85,8 +99,6 @@ public class CreateExamDialog extends javax.swing.JDialog {
 
         jTextFieldTime.setDocument(new pim.JTextFieldLimit(40));
 
-        jTextFieldDate.setDocument(new pim.JTextFieldLimit(40));
-
         jComboBoxEcts.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15" }));
 
         jTextFieldSubject.setDocument(new pim.JTextFieldLimit(40));
@@ -105,6 +117,8 @@ public class CreateExamDialog extends javax.swing.JDialog {
             }
         });
 
+        dateChooserCombo.setCalendarPreferredSize(new java.awt.Dimension(340, 180));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -112,11 +126,6 @@ public class CreateExamDialog extends javax.swing.JDialog {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButtonSubmit, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabelSemester)
@@ -130,9 +139,14 @@ public class CreateExamDialog extends javax.swing.JDialog {
                             .addComponent(jTextFieldSubject, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jComboBoxSemester, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jComboBoxEcts, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTextFieldDate, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jTextFieldTime)
-                            .addComponent(jTextFieldRoom, javax.swing.GroupLayout.Alignment.TRAILING))))
+                            .addComponent(jTextFieldRoom, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(dateChooserCombo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButtonSubmit, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -151,9 +165,9 @@ public class CreateExamDialog extends javax.swing.JDialog {
                     .addComponent(jLabelEcts)
                     .addComponent(jComboBoxEcts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelDate)
-                    .addComponent(jTextFieldDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelDate, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(dateChooserCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextFieldTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -178,31 +192,63 @@ public class CreateExamDialog extends javax.swing.JDialog {
         this.dispose();
     }//GEN-LAST:event_jButtonCancelActionPerformed
 
+    private Date getDate() {
+        Date date = null;
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dateChooserCombo.getCurrent().getTime());
+        Pattern pattern = Pattern.compile("(\\d\\d?):(\\d\\d)");
+        Matcher matcher = pattern.matcher(jTextFieldTime.getText().trim());
+        if (matcher.find()) {
+            int hours = Integer.parseInt(matcher.group(1));
+            int minutes = Integer.parseInt(matcher.group(2));
+            if (hours < 24 && minutes < 60) {
+                cal.set(Calendar.HOUR_OF_DAY, hours);
+                cal.set(Calendar.MINUTE, minutes);
+                date = cal.getTime();
+            }
+        }
+        return date;
+    }
+    
     private void jButtonSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSubmitActionPerformed
         String subject = jTextFieldSubject.getText().trim();
-        if (!subject.isEmpty()) {
-            String semester = (String) jComboBoxSemester.getSelectedItem();
-            int ects = jComboBoxEcts.getSelectedIndex() + 1;
-            String date = jTextFieldDate.getText().trim();
-            String time = jTextFieldTime.getText().trim();
-            String room = jTextFieldRoom.getText().trim();
-            if (exam == null) {
-                exam = new Exam(subject, semester, ects, date, time, room, 0d, null);
-            } else {
-                exam.setSubject(subject);
-                exam.setSemester(semester);
-                exam.setEcts(ects);
-                exam.setDate(date);
-                exam.setTime(time);
-                exam.setRoom(room);
-            }
-            changed = true;
-            this.dispose();
-        }
-        else {
+        
+        if (subject.isEmpty()) {
             jTextFieldSubject.setText("");
             jTextFieldSubject.requestFocus();
+            return;
         }
+        
+        if (dateChooserCombo.getSelectedDate() == null && !jTextFieldTime.getText().trim().isEmpty()) {
+            dateChooserCombo.requestFocus();
+            return;
+        }
+        
+        Date date = null;
+        if (dateChooserCombo.getSelectedDate() != null) {
+            date = getDate();
+            if (date == null) {
+                jTextFieldTime.requestFocus();
+                jTextFieldTime.setSelectionStart(0);
+                jTextFieldTime.setSelectionEnd(jTextFieldTime.getText().length());
+                return;
+            }
+        }
+        
+        String semester = (String) jComboBoxSemester.getSelectedItem();
+        int ects = jComboBoxEcts.getSelectedIndex() + 1;
+        String room = jTextFieldRoom.getText().trim();
+        if (exam == null) {
+            exam = new Exam(subject, semester, ects, date, room, 0d, null);
+        } else {
+            exam.setSubject(subject);
+            exam.setSemester(semester);
+            exam.setEcts(ects);
+            exam.setDate(date);
+            exam.setRoom(room);
+        }
+        changed = true;
+        this.dispose();
     }//GEN-LAST:event_jButtonSubmitActionPerformed
 
     
@@ -216,6 +262,7 @@ public class CreateExamDialog extends javax.swing.JDialog {
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private datechooser.beans.DateChooserCombo dateChooserCombo;
     private javax.swing.JButton jButtonCancel;
     private javax.swing.JButton jButtonSubmit;
     private javax.swing.JComboBox jComboBoxEcts;
@@ -226,7 +273,6 @@ public class CreateExamDialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabelSemester;
     private javax.swing.JLabel jLabelSubject;
     private javax.swing.JLabel jLabelTime;
-    private javax.swing.JTextField jTextFieldDate;
     private javax.swing.JTextField jTextFieldRoom;
     private javax.swing.JTextField jTextFieldSubject;
     private javax.swing.JTextField jTextFieldTime;

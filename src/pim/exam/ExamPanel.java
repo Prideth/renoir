@@ -249,12 +249,16 @@ public class ExamPanel extends javax.swing.JPanel {
         dialog.setVisible(true);
         Exam exam = dialog.getExam();
         if (exam != null) {
-            model.addRow(exam.getTableRow());
-            jTableExams.changeSelection(jTableExams.convertRowIndexToView(model.getRowCount() - 1), 0, true, false);
-            calculateAverage();
+            insertExam(exam);
         }
     }//GEN-LAST:event_jButtonAddActionPerformed
 
+    public void insertExam(Exam exam) {
+        model.addRow(exam.getTableRow());
+        jTableExams.changeSelection(jTableExams.convertRowIndexToView(model.getRowCount() - 1), 0, true, false);
+        calculateAverage();
+    }
+    
     private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
         int index = getSelectedRow();
         if (index > -1) {

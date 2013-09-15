@@ -104,8 +104,9 @@ public class MainFrame extends javax.swing.JFrame {
         Note[] notes = null;
         
         mailPanel = new pim.mail.MailPanel();
+        //calendarPanel = new pim.calendar2.CalendarPanel(examPanel);
         calendarPanel = new pim.calendar.CalendarPanel();
-        toDoPanel = new pim.todo.TodoPanel(todos);
+        toDoPanel = new pim.todo.ToDoPanel(todos);
         notePanel = new pim.notes.NotePanel(notes);
         
         if (user != null) {
@@ -115,7 +116,7 @@ public class MainFrame extends javax.swing.JFrame {
             jMenuItemSave.setEnabled(true);
         }
         
-        switchPanel(contactPanel, jButtonContacts);
+        switchPanel(calendarPanel, jButtonCalendar);
     }
     
     private void updatePanels(Connection con) {
@@ -131,6 +132,7 @@ public class MainFrame extends javax.swing.JFrame {
                 examPanel.updateExams(dr.getExams(user.getId()));
                 System.out.println(System.currentTimeMillis() - start);
             } catch (SQLException e) {
+                e.printStackTrace();
                 System.err.println("error");
             }
 
@@ -382,6 +384,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void jButtonCalendarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCalendarActionPerformed
         switchPanel(calendarPanel, jButtonCalendar);
+        //calendarPanel.update();
     }//GEN-LAST:event_jButtonCalendarActionPerformed
 
     private void jButtonToDoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonToDoActionPerformed
@@ -418,7 +421,6 @@ public class MainFrame extends javax.swing.JFrame {
                 dw.writeContacts(contactPanel.getContacts(), user.getId());
                 System.out.println(System.currentTimeMillis() - start);
             } catch (SQLException e) {
-                e.printStackTrace();
                 System.out.println("error");
             }
             
@@ -428,6 +430,7 @@ public class MainFrame extends javax.swing.JFrame {
                 dw.writeExams(examPanel.getExams(), user.getId());
                 System.out.println(System.currentTimeMillis() - start);
             } catch (SQLException e) {
+                e.printStackTrace();
                 System.out.println("error");
             }
             
@@ -460,6 +463,7 @@ public class MainFrame extends javax.swing.JFrame {
             this.setTitle("Personal Information Manager - " + user.getUsername());
             con = dialog.getConnection();
             updatePanels(con);
+            //calendarPanel.update();
         }
     }//GEN-LAST:event_jMenuItemLoginActionPerformed
 
@@ -490,6 +494,7 @@ public class MainFrame extends javax.swing.JFrame {
         }
         contactPanel.updateContacts(null);
         examPanel.updateExams(null);
+        //calendarPanel.update();
         this.setTitle("Personal Information Manager");
     }//GEN-LAST:event_jMenuItemLogoutActionPerformed
 
@@ -572,8 +577,9 @@ public class MainFrame extends javax.swing.JFrame {
     private pim.mail.MailPanel mailPanel;
     private pim.exam.ExamPanel examPanel;
     private pim.contact.ContactPanel contactPanel;
+    //private pim.calendar2.CalendarPanel calendarPanel;
     private pim.calendar.CalendarPanel calendarPanel;
-    private pim.todo.TodoPanel toDoPanel;
+    private pim.todo.ToDoPanel toDoPanel;
     private pim.notes.NotePanel notePanel;
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

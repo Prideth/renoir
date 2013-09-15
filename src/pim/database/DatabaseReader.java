@@ -45,21 +45,20 @@ public class DatabaseReader {
                 String subject = rs.getString(2).isEmpty() ? null : rs.getString(2);
                 String semester = rs.getString(3).isEmpty() ? null : rs.getString(3);
                 int ects = rs.getInt(4);
-                String date = rs.getString(5).isEmpty() ? null : rs.getString(5);
-                String time = rs.getString(6).isEmpty() ? null : rs.getString(6);
-                String room = rs.getString(7).isEmpty() ? null : rs.getString(7);
-                double grade =Math.round(rs.getFloat(8) * 10d) / 10d;
+                Date date = rs.getTimestamp(5);
+                String room = rs.getString(6).isEmpty() ? null : rs.getString(7);
+                double grade = Math.round(rs.getFloat(7) * 10d) / 10d;
                 int numbers[] = new int[32];
                 int students = 0;
                 for (int i = 0; i < 32; i++) {
-                    numbers[i] = rs.getInt(i + 9);
+                    numbers[i] = rs.getInt(i + 8);
                     students += numbers[i];
                 }
                 Exam exam;
                 if (students == 0) {
-                    exam = new Exam(subject, semester, ects, date, time, room, grade, null);
+                    exam = new Exam(subject, semester, ects, date, room, grade, null);
                 } else {
-                    exam = new Exam(subject, semester, ects, date, time, room, grade, numbers);
+                    exam = new Exam(subject, semester, ects, date, room, grade, numbers);
                 }
                 exams[rs.getRow() - 1] = exam;
             }
