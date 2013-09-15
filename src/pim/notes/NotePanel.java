@@ -431,6 +431,24 @@ public class NotePanel extends javax.swing.JPanel  {
         getAccessibleContext().setAccessibleParent(this);
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    
+    public void insertNote(Note note) {
+
+        NoteItem n = new NoteItem(note);
+        n.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                notePanelMousePressed(evt);
+            }
+        });
+        noteItems[size++] = n;
+        disableCancelButton();
+        jTextFieldSearch.setText("");
+        initNoteItems("");
+    }
+    
+    
     private void jButtonNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNewActionPerformed
         if (size < noteItems.length) {
             JFrame rootWindow = getRootWindow();
@@ -441,17 +459,7 @@ public class NotePanel extends javax.swing.JPanel  {
             Note note = dialog.getNote();
             
             if (note != null) {
-                NoteItem n = new NoteItem(dialog.getNote());
-                n.addMouseListener(new java.awt.event.MouseAdapter() {
-                    @Override
-                    public void mousePressed(java.awt.event.MouseEvent evt) {
-                        notePanelMousePressed(evt);
-                    }
-                });
-                noteItems[size++] = n;
-                disableCancelButton();
-                jTextFieldSearch.setText("");
-                initNoteItems("");
+                insertNote(note);
             }
         } else {
             JOptionPane.showMessageDialog(getRootWindow(),
