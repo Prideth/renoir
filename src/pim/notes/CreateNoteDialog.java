@@ -130,7 +130,6 @@ public class CreateNoteDialog extends javax.swing.JDialog {
         if (!name.isEmpty()) {
             String title = jTextFieldName.getText().trim();
             String noteContent = jTextAreaNote.getText().trim();
-            System.out.println(noteContent);
 
             Date dt;
             
@@ -139,8 +138,6 @@ public class CreateNoteDialog extends javax.swing.JDialog {
             } else {
                 dt = new Date();
             }
-            
-            SimpleDateFormat df = new SimpleDateFormat( "yyyy-MM-dd HH:mm" );
 
             if (note == null) {
                 note = new Note(0, title, noteContent, dt);

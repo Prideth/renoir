@@ -36,10 +36,8 @@ public class NotePanel extends javax.swing.JPanel  {
     private static final String ALPHABETIC = "alphabetic";
     private static final String DATE = "date";
     private static final int MAXARRAYSIZE = 100;
-    
-    
-         
-    private DateFormat df = new SimpleDateFormat();
+
+
 
     
     
@@ -125,7 +123,7 @@ public class NotePanel extends javax.swing.JPanel  {
 
             for (int i = 0; i <= size - 1; i++) {
                 noteItems[i].setPosition(i);
-                System.out.println("IsEmpty");
+                
                 
                 if (noteItems[i].getPosition() % 2 == 0) {
                     group1.addComponent(noteItems[i], GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE);
@@ -196,21 +194,21 @@ public class NotePanel extends javax.swing.JPanel  {
             unselectAll();
             int counter = 0;
             for (int i = 0; i <= size - 1; i++) {
-                //noteItems[i].setPosition(i);
                 
-                System.out.println(noteItems[i].getTitle() + " " + i);
+                
+                
                 if (noteItems[i].getTitle().matches(".*"+searchString+".*") | noteItems[i].getContent().matches(".*"+searchString+".*")) {
-                    System.out.println(noteItems[i].getTitle() + " passt");
+                    
                     if (counter % 2 == 0) {
                         group1Searched.addComponent(noteItems[i], GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE);
                         group2Searched.addComponent(noteItems[i], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE);
                         group2Searched.addGap(10);
-                        System.out.println(i + " add links");
+                        
                     } else {
                         group3Searched.addComponent(noteItems[i], GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE);
                         group4Searched.addComponent(noteItems[i], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE);
                         group4Searched.addGap(10);
-                        System.out.println(i + " add rechts");
+                        
                     } 
                     counter++;
                 }
@@ -490,7 +488,7 @@ public class NotePanel extends javax.swing.JPanel  {
                     options[0]);
 
             if (n == 0) {
-                System.out.println("es wird geloescht:" + noteItems[selectedIndex].getTitle());
+
                 for (int i = selectedIndex; i < size - 1; i++) {
                     noteItems[i] = noteItems[i + 1];
                 }
@@ -604,7 +602,7 @@ public class NotePanel extends javax.swing.JPanel  {
             
             for (int i = 0; i < size; i++) {                       
                 tempNoteItemList.add(noteItems[i]);
-                System.out.println(noteItems[i].getTitle() + " " + noteItems[i].getDate());
+                
             } 
             ListIterator<NoteItem> it = tempNoteItemList.listIterator(tempNoteItemList.size());
             
@@ -619,7 +617,7 @@ public class NotePanel extends javax.swing.JPanel  {
                     
                     for (NoteItem noteItemTemp : tempNoteItemList) {
                         noteItems[i] = noteItemTemp;
-                        System.out.println(noteItemTemp.getTitle());
+                        
                         i++;
                     }
 
@@ -637,7 +635,7 @@ public class NotePanel extends javax.swing.JPanel  {
                     
                     for (NoteItem noteItemTemp : tempNoteItemList) {
                         noteItems[i] = noteItemTemp;
-                        System.out.println(noteItemTemp.getDate());
+                        
                         i++;
                     }
 

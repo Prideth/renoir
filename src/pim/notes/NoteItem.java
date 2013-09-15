@@ -4,7 +4,6 @@
  */
 package pim.notes;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -29,6 +28,8 @@ public class NoteItem extends javax.swing.JPanel implements Comparable<NoteItem>
         
         initComponents();
         jTextAreaNoteOut.setBorder(null);
+        jTextAreaNoteOut.setLineWrap(true);
+        jTextAreaNoteOut.setWrapStyleWord(true);
 
         this.note = note;
         pos = 0;
@@ -52,10 +53,6 @@ public class NoteItem extends javax.swing.JPanel implements Comparable<NoteItem>
         setDate(note.getCreateDate());
         setContent(note.getNoteContent());
         jLabelTitle.setText(getTitle());
-        
-        
-        
-        System.out.println("noteItemContent: " + getContent());
         getjTextAreaNoteOut().setText(getContent());
         jLableDate.setText(simpleDateFormat.format(getDate()));
     }
@@ -67,10 +64,7 @@ public class NoteItem extends javax.swing.JPanel implements Comparable<NoteItem>
     public void setPosition(int pos) {
         this.pos = pos;
     }
-    
 
-    
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -153,9 +147,9 @@ public class NoteItem extends javax.swing.JPanel implements Comparable<NoteItem>
     private javax.swing.JTextArea jTextAreaNoteOut;
     // End of variables declaration//GEN-END:variables
 
+    //Unused in this programversion
     @Override
     public int compareTo(NoteItem o) {
-        System.out.println("Debug:StartComPareTo");
         if (o.getTitle( ).isEmpty() && this.getTitle().isEmpty()) {
           return 0;
         }
