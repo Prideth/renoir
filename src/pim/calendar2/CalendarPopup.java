@@ -75,9 +75,9 @@ public class CalendarPopup extends javax.swing.JPopupMenu {
         } else if (evt.getSource() == jMenuItemNote) {
             cp.insertNote();
         } else if (evt.getSource() == jMenuItemChange) {
-            
+            cp.change();
         } else if (evt.getSource() == jMenuItemDelete) {
-            
+            cp.delete();
         }
     }
 }

@@ -74,14 +74,14 @@ CREATE TABLE `contacts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 
-CREATE TABLE `notes` (
+CREATE TABLE  `notes` (
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
   `title` varchar(255) NOT NULL DEFAULT '',
-  `content` varchar(255) NOT NULL DEFAULT '',
+  `content` text,
   `date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   KEY `FK_notes_userid` (`userid`),
   CONSTRAINT `FK_notes_userid` FOREIGN KEY (`userid`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
 DELIMITER $$

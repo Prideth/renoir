@@ -9,6 +9,7 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Group;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import pim.*;
 
@@ -16,7 +17,7 @@ import pim.*;
  *
  * @author lk
  */
-public class ContactPanel extends javax.swing.JPanel {
+public class ContactPanel extends JPanel implements PanelInterface {
 
     ContactButton[] contactButtons;
     private int size;
@@ -36,56 +37,6 @@ public class ContactPanel extends javax.swing.JPanel {
         selectedIndex = -1;
     }
     
-    public void updateContacts(Contact[] contacts) {
-        contactButtons = new ContactButton[100];
-        size = 0;
-        selectedIndex = -1;
-        if (contacts != null) {
-            size = contacts.length;
-            for (int i = 0; i < size; i++) {
-                contactButtons[i] = new ContactButton(contacts[i]);
-                contactButtons[i].addMouseListener(new java.awt.event.MouseAdapter() {
-                    @Override
-                    public void mouseClicked(java.awt.event.MouseEvent evt) {
-                        personPanelMousePressed(evt);
-                    }
-                });
-            }
-        }
-        initContactButtons();
-    }
-    
-
-    private void initContactButtons() {
-        jPanel1.removeAll();
-        
-        javax.swing.GroupLayout layout = new GroupLayout(jPanel1);
-        jPanel1.setLayout(layout);
-
-        Group group1 = layout.createParallelGroup(GroupLayout.Alignment.LEADING);
-        Group group2 = layout.createSequentialGroup().addGap(5);
-
-        for (int i = size - 1; i >= 0; i--) {
-            contactButtons[i].setPosition(i);
-            group1.addComponent(contactButtons[i], GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE);
-            group2.addComponent(contactButtons[i], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE);
-            group2.addGap(5);
-        }
-
-        layout.setHorizontalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(group1)
-                .addContainerGap()));
-
-        layout.setVerticalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addGroup(group2));
-        
-        selectPerson(size - 1);
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -171,6 +122,100 @@ public class ContactPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+        private void initContactButtons() {
+        jPanel1.removeAll();
+
+        javax.swing.GroupLayout layout = new GroupLayout(jPanel1);
+        jPanel1.setLayout(layout);
+
+        Group group1 = layout.createParallelGroup(GroupLayout.Alignment.LEADING);
+        Group group2 = layout.createSequentialGroup().addGap(5);
+
+        for (int i = size - 1; i >= 0; i--) {
+            contactButtons[i].setPosition(i);
+            group1.addComponent(contactButtons[i], GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE);
+            group2.addComponent(contactButtons[i], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE);
+            group2.addGap(5);
+        }
+
+        layout.setHorizontalGroup(
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(group1)
+                .addContainerGap()));
+
+        layout.setVerticalGroup(
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addGroup(group2));
+
+        selectPerson(size - 1);
+    }
+
+    @Override
+    public void updateValues(Object[] values) {
+        Contact[] contacts = (Contact[]) values;
+        contactButtons = new ContactButton[100];
+        size = 0;
+        selectedIndex = -1;
+        if (contacts != null) {
+            size = contacts.length;
+            for (int i = 0; i < size; i++) {
+                contactButtons[i] = new ContactButton(contacts[i]);
+                contactButtons[i].addMouseListener(new java.awt.event.MouseAdapter() {
+                    @Override
+                    public void mouseClicked(java.awt.event.MouseEvent evt) {
+                        personPanelMousePressed(evt);
+                    }
+                });
+            }
+        }
+        initContactButtons();
+    }
+
+    @Override
+    public void insertValue(Object value) {
+        Contact contact = (Contact) value;
+        ContactButton p = new ContactButton(contact);
+        p.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                personPanelMousePressed(evt);
+            }
+        });
+        contactButtons[size++] = p;
+        initContactButtons();
+    }
+
+    @Override
+    public Object[] getValues() {
+        Contact[] contacts = new Contact[size];
+        for (int i = 0; i < size; i++) {
+            contacts[i] = contactButtons[i].getContact();
+        }
+        return contacts;
+    }
+
+    @Override
+    public void changeValue(Object value) {
+        Contact contact = (Contact) value;
+        contactButtons[selectedIndex].setContact(contact);
+        contactButtons[selectedIndex].update();
+    }
+
+    @Override
+    public void deleteValue(Object value) {
+        if (value == null) {
+            for (int i = selectedIndex; i < size - 1; i++) {
+                contactButtons[i] = contactButtons[i + 1];
+            }
+            contactButtons[--size] = null;
+            selectedIndex = -1;
+        }
+        initContactButtons();
+    }
+
+    
     private void jButtonNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNewActionPerformed
         if (size < contactButtons.length) {
             JFrame rootWindow = getRootWindow();
@@ -179,17 +224,8 @@ public class ContactPanel extends javax.swing.JPanel {
             dialog.setLocationRelativeTo(rootWindow);
             dialog.setVisible(true);
             Contact contact = dialog.getContact();
-            
             if (contact != null) {
-                ContactButton p = new ContactButton(dialog.getContact());
-                p.addMouseListener(new java.awt.event.MouseAdapter() {
-                    @Override
-                    public void mousePressed(java.awt.event.MouseEvent evt) {
-                        personPanelMousePressed(evt);
-                    }
-                });
-                contactButtons[size++] = p;
-                initContactButtons();
+                insertValue(contact);
             }
         } else {
             JOptionPane.showMessageDialog(getRootWindow(),
@@ -213,18 +249,16 @@ public class ContactPanel extends javax.swing.JPanel {
                     options[0]);
 
             if (n == 0) {
-                for (int i = selectedIndex; i < size - 1; i++) {
-                    contactButtons[i] = contactButtons[i + 1];
-                }
-                contactButtons[--size] = null;
-                selectedIndex = -1;
-                initContactButtons();
+                deleteValue(null);
             }
         } else {
             JOptionPane.showMessageDialog(getRootWindow(), "Es ist kein Kontakt ausgewählt.");
         }
     }//GEN-LAST:event_jButtonDeleteActionPerformed
 
+    
+
+    
     private void jButtonEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditActionPerformed
         if (selectedIndex > -1) {        
             Contact contact = contactButtons[selectedIndex].getContact();
@@ -236,8 +270,7 @@ public class ContactPanel extends javax.swing.JPanel {
             dialog.setVisible(true);
             contact = dialog.getContact();
             if (contact != null) {
-                contactButtons[selectedIndex].setContact(contact);
-                contactButtons[selectedIndex].update();
+                changeValue(contact);
             }
         } else {
             JOptionPane.showMessageDialog(getRootWindow(), "Es ist kein Kontakt ausgewählt.");
@@ -250,7 +283,6 @@ public class ContactPanel extends javax.swing.JPanel {
             selectPerson(position);
             if (evt.getClickCount() == 2) {
                 Contact contact = contactButtons[selectedIndex].getContact();
-
                 JFrame rootWindow = getRootWindow();
                 CreateContactDialog dialog = new CreateContactDialog(rootWindow, true, contact);
                 dialog.setTitle(contact.getName());
@@ -258,8 +290,7 @@ public class ContactPanel extends javax.swing.JPanel {
                 dialog.setVisible(true);
                 contact = dialog.getContact();
                 if (contact != null) {
-                    contactButtons[selectedIndex].setContact(contact);
-                    contactButtons[selectedIndex].update();
+                    changeValue(contact);
                 }
             }
         }
@@ -276,18 +307,13 @@ public class ContactPanel extends javax.swing.JPanel {
     }
     
     
-    public Contact[] getContacts() {
-        Contact[] contacts = new Contact[size];
-        for (int i = 0; i < size; i++) {
-            contacts[i] = contactButtons[i].getContact();
-        }
-        return contacts;
-    }
-    
-    
     private JFrame getRootWindow() {
         return (JFrame) SwingUtilities.getWindowAncestor(this.getParent());
     }
+    
+    
+    
+    
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonDelete;
@@ -298,4 +324,6 @@ public class ContactPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextFieldSearch;
     // End of variables declaration//GEN-END:variables
+
+
 }

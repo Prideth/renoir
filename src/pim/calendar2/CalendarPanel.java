@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -139,7 +140,7 @@ public class CalendarPanel extends javax.swing.JPanel {
             }
         };
         
-        Exam[] exams = examPanel.getExams();
+        Exam[] exams = (Exam[]) examPanel.getValues();
         for (int i = 0; i < exams.length; i++) {
             Date date = exams[i].getDate();
             if (date != null && date.getMonth() == month) {
@@ -427,6 +428,67 @@ public class CalendarPanel extends javax.swing.JPanel {
         insertNote();
     }//GEN-LAST:event_jButtonNoteActionPerformed
 
+    
+    public void change() {
+        int row = jTableCalendar.getSelectedRow();
+        int column = jTableCalendar.getSelectedColumn() + 1;
+        Object value = model.getValueAt(row, column);
+        if (value != null) {
+            if (value instanceof Exam) {
+                Exam exam = (Exam) value;
+
+                JFrame rootWindow = getRootWindow();
+                CreateExamDialog dialog = new CreateExamDialog(rootWindow, true, exam);
+                dialog.setLocationRelativeTo(rootWindow);
+                dialog.setTitle(exam.getSubject());
+                dialog.setVisible(true);
+                exam = dialog.getExam();
+                if (exam != null) {
+                    examPanel.changeValue(exam);
+                    model.setValueAt(exam, row, column);
+                    update();
+                }
+            }
+            if (value instanceof Note) {
+                
+            }
+            if (value instanceof ToDo) {
+                
+            }
+        }
+    }
+    
+    public void delete() {
+        int row = jTableCalendar.getSelectedRow();
+        int column = jTableCalendar.getSelectedColumn() + 1;
+        Object value = model.getValueAt(row, column);
+        if (value != null) {
+            if (value instanceof Exam) {
+                Exam exam = (Exam) value;
+                Object[] options = {"Ja", "Nein"};
+                int n = JOptionPane.showOptionDialog(getRootWindow(),
+                        "Klausur \"" + exam.getSubject() + "\" löschen?",
+                        "Löschen bestätigen",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        options,
+                        options[0]);
+
+                if (n == 0) {
+                    examPanel.deleteValue(exam);
+                    update();
+                }
+                
+            }
+            if (value instanceof Note) {
+            }
+            if (value instanceof ToDo) {
+            }
+        }
+    }
+    
+    
     public void insertExam() {
         int column = jTableCalendar.getSelectedColumn() + 1;
         if (column > 0) {
@@ -441,7 +503,7 @@ public class CalendarPanel extends javax.swing.JPanel {
             dialog.setVisible(true);
             exam = dialog.getExam();
             if (exam != null) {
-                examPanel.insertExam(exam);
+                examPanel.insertValue(exam);
                 model.setValueAt(exam, row, column);
                 update();
             }

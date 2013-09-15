@@ -32,6 +32,9 @@ public class DatabaseWriter {
     }
 
     public void writeContacts(Contact[] contacts, int userid) throws SQLException {
+        if (contacts.length == 0) {
+            return;
+        }
         try (Statement stmt = con.createStatement()) {
             stmt.executeUpdate("DELETE FROM contacts WHERE userid = '" + userid + "'");
         }
@@ -73,6 +76,9 @@ public class DatabaseWriter {
     
     
     public void writeExams(Exam[] exams, int userid) throws SQLException {
+        if (exams.length == 0) {
+            return;
+        }
         SimpleDateFormat f= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         StringBuilder sb = new StringBuilder("INSERT INTO exams VALUES ");
         for (int i = 0; i < exams.length; i++) {
@@ -119,6 +125,9 @@ public class DatabaseWriter {
     
     
     public void writeNotes(Note[] notes, int userid) throws SQLException {
+        if (notes.length == 0) {
+            return;
+        }
         SimpleDateFormat f= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         StringBuilder sb = new StringBuilder("INSERT INTO notes VALUES ");
         for (int i = 0; i < notes.length; i++) {
@@ -142,8 +151,6 @@ public class DatabaseWriter {
         try (Statement stmt = con.createStatement()) {
             stmt.addBatch("DELETE FROM notes WHERE userid = '" + userid + "'");
             stmt.addBatch(sb.toString());
-            //System.out.println(sb.toString());
-            
             stmt.executeBatch();
         }
     }

@@ -19,10 +19,12 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
 import javax.swing.JOptionPane;
+import pim.contact.Contact;
 import pim.contact.ContactPanel;
 import pim.database.Account;
 import pim.database.DatabaseReader;
 import pim.database.DatabaseWriter;
+import pim.exam.Exam;
 import pim.exam.ExamPanel;
 import pim.mail.MailSettings;
 import pim.notes.Note;
@@ -129,22 +131,12 @@ public class MainFrame extends javax.swing.JFrame {
             System.out.print("read exams... ");
             long start = System.currentTimeMillis();
             try {
-                examPanel.updateExams(dr.getExams(user.getId()));
+                examPanel.updateValues(dr.getExams(user.getId()));
                 System.out.println(System.currentTimeMillis() - start);
             } catch (SQLException e) {
-                e.printStackTrace();
                 System.err.println("error");
             }
 
-            System.out.print("read contacts... ");
-            start = System.currentTimeMillis();
-            try {
-                contactPanel.updateContacts(dr.getContacts(user.getId()));
-                System.out.println(System.currentTimeMillis() - start);
-            } catch (SQLException e) {
-                System.err.println("error");
-            }
-            
             System.out.print("read notes... ");
             start = System.currentTimeMillis();
             try {
@@ -152,6 +144,15 @@ public class MainFrame extends javax.swing.JFrame {
                 System.out.println(System.currentTimeMillis() - start);
             } catch (SQLException e) {
                 e.printStackTrace();
+                System.err.println("error");
+            }
+            
+            System.out.print("read contacts... ");
+            start = System.currentTimeMillis();
+            try {
+                contactPanel.updateValues(dr.getContacts(user.getId()));
+                System.out.println(System.currentTimeMillis() - start);
+            } catch (SQLException e) {
                 System.err.println("error");
             }
         }
@@ -428,7 +429,7 @@ public class MainFrame extends javax.swing.JFrame {
             System.out.print("write contacts... ");
             long start = System.currentTimeMillis();
             try {
-                dw.writeContacts(contactPanel.getContacts(), user.getId());
+                dw.writeContacts((Contact[]) contactPanel.getValues(), user.getId());
                 System.out.println(System.currentTimeMillis() - start);
             } catch (SQLException e) {
                 System.out.println("error");
@@ -437,7 +438,7 @@ public class MainFrame extends javax.swing.JFrame {
             System.out.print("write exams... ");
             start = System.currentTimeMillis();
             try {
-                dw.writeExams(examPanel.getExams(), user.getId());
+                dw.writeExams((Exam[]) examPanel.getValues(), user.getId());
                 System.out.println(System.currentTimeMillis() - start);
             } catch (SQLException e) {
                 System.out.println("error");
@@ -511,8 +512,8 @@ public class MainFrame extends javax.swing.JFrame {
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
-        contactPanel.updateContacts(null);
-        examPanel.updateExams(null);
+        contactPanel.updateValues(null);
+        examPanel.updateValues(null);
         notePanel.updateNotes(null);
         calendarPanel.update();
         this.setTitle("Personal Information Manager");
