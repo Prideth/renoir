@@ -10,11 +10,11 @@ CREATE TABLE  `pim`.`users` (
 DROP TABLE IF EXISTS `exams`;
 CREATE TABLE  `exams` (
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
-  `subject` varchar(255) COLLATE latin1_swedish_ci NOT NULL DEFAULT '',
-  `semester` varchar(255) COLLATE latin1_swedish_ci NOT NULL DEFAULT '',
+  `subject` varchar(255) NOT NULL DEFAULT '',
+  `semester` varchar(255) NOT NULL DEFAULT '',
   `ects` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `date` datetime DEFAULT NULL,
-  `room` varchar(255) COLLATE latin1_swedish_ci NOT NULL DEFAULT '',
+  `room` varchar(255) NOT NULL DEFAULT '',
   `grade` float unsigned NOT NULL DEFAULT '0',
   `numbers1` smallint(5) unsigned NOT NULL DEFAULT '0',
   `numbers2` smallint(5) unsigned NOT NULL DEFAULT '0',
