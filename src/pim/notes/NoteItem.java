@@ -4,6 +4,8 @@
  */
 package pim.notes;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -15,22 +17,29 @@ public class NoteItem extends javax.swing.JPanel implements Comparable<NoteItem>
     private int pos;
     private Note note;
     private String title;
-    private String date;
+    private Date date;
+    private String content;
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 
     
     /**
      * Creates new form NoteItem
      */
     public NoteItem(Note note) {
+        
         initComponents();
+        jTextAreaNoteOut.setBorder(null);
+
         this.note = note;
         pos = 0;
         title = note.getTitle();
-        date = note.getCreateDate().toString();
+        date = note.getCreateDate();
+        content = note.getNoteContent();
         
         jLabelTitle.setText(title);
-        jLabelNote.setText(note.getNoteContent());
-        jLableDate.setText(date);
+        jTextAreaNoteOut.setText(content);
+        jLableDate.setText(simpleDateFormat.format(getDate()));
+       
     }
     
     public Note getNote() {
@@ -40,10 +49,15 @@ public class NoteItem extends javax.swing.JPanel implements Comparable<NoteItem>
     public void setNote(Note note) {
         this.note = note;
         setTitle(note.getTitle());
-        setDate(note.getCreateDate().toString());
+        setDate(note.getCreateDate());
+        setContent(note.getNoteContent());
         jLabelTitle.setText(getTitle());
-        jLabelNote.setText(note.getNoteContent());
-        jLableDate.setText(getDate());
+        
+        
+        
+        System.out.println("noteItemContent: " + getContent());
+        getjTextAreaNoteOut().setText(getContent());
+        jLableDate.setText(simpleDateFormat.format(getDate()));
     }
     
     public int getPosition() {
@@ -67,18 +81,16 @@ public class NoteItem extends javax.swing.JPanel implements Comparable<NoteItem>
     private void initComponents() {
 
         jLableDate = new javax.swing.JLabel();
-        jLabelNote = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabelTitle = new javax.swing.JLabel();
+        jTextAreaNoteOut = new javax.swing.JTextArea();
 
         setBackground(new java.awt.Color(236, 227, 159));
+        setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         setMaximumSize(new java.awt.Dimension(100, 100));
 
         jLableDate.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLableDate.setText("Datum");
-
-        jLabelNote.setText("Inhalt");
-        jLabelNote.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         jPanel1.setBackground(new java.awt.Color(120, 68, 41));
 
@@ -101,38 +113,44 @@ public class NoteItem extends javax.swing.JPanel implements Comparable<NoteItem>
 
         jLabelTitle.getAccessibleContext().setAccessibleName("");
 
+        jTextAreaNoteOut.setEditable(false);
+        jTextAreaNoteOut.setBackground(new java.awt.Color(236, 227, 159));
+        jTextAreaNoteOut.setColumns(20);
+        jTextAreaNoteOut.setRows(5);
+        jTextAreaNoteOut.setAutoscrolls(false);
+        jTextAreaNoteOut.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jTextAreaNoteOut.setFocusable(false);
+        jTextAreaNoteOut.setMaximumSize(new java.awt.Dimension(46, 250));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(114, 114, 114)
-                .addComponent(jLabelNote, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(120, Short.MAX_VALUE)
-                .addComponent(jLableDate, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40))
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLableDate, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextAreaNoteOut, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(22, 22, 22)
-                .addComponent(jLabelNote, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTextAreaNoteOut, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLableDate))
         );
-
-        jLabelNote.getAccessibleContext().setAccessibleName("Notiz");
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabelNote;
     private javax.swing.JLabel jLabelTitle;
     private javax.swing.JLabel jLableDate;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JTextArea jTextAreaNoteOut;
     // End of variables declaration//GEN-END:variables
 
     @Override
@@ -168,14 +186,42 @@ public class NoteItem extends javax.swing.JPanel implements Comparable<NoteItem>
     /**
      * @return the date
      */
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
     /**
      * @param date the date to set
      */
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
+    }
+
+    /**
+     * @return the content
+     */
+    public String getContent() {
+        return content;
+    }
+
+    /**
+     * @param content the content to set
+     */
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    /**
+     * @return the jTextAreaNoteOut
+     */
+    public javax.swing.JTextArea getjTextAreaNoteOut() {
+        return jTextAreaNoteOut;
+    }
+
+    /**
+     * @param jTextAreaNoteOut the jTextAreaNoteOut to set
+     */
+    public void setjTextAreaNoteOut(javax.swing.JTextArea jTextAreaNoteOut) {
+        this.jTextAreaNoteOut = jTextAreaNoteOut;
     }
 }
