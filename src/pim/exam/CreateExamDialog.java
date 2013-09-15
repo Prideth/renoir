@@ -118,6 +118,7 @@ public class CreateExamDialog extends javax.swing.JDialog {
         });
 
         dateChooserCombo.setCalendarPreferredSize(new java.awt.Dimension(340, 180));
+        dateChooserCombo.setBehavior(datechooser.model.multiple.MultyModelBehavior.SELECT_SINGLE);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
