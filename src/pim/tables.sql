@@ -1,12 +1,3 @@
-DROP TABLE IF EXISTS `users`;
-CREATE TABLE `users` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `username` varchar(12) NOT NULL DEFAULT '',
-  `password` varchar(12) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-
-
 DROP TABLE IF EXISTS `exams`;
 CREATE TABLE  `exams` (
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
@@ -77,6 +68,14 @@ CREATE TABLE `notes` (
   `date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   KEY `FK_notes_userid` (`userid`),
   CONSTRAINT `FK_notes_userid` FOREIGN KEY (`userid`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE `users` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `username` varchar(12) NOT NULL DEFAULT '',
+  `password` varchar(12) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 DELIMITER $$
