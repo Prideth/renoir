@@ -89,7 +89,7 @@ public class CalendarPanel extends javax.swing.JPanel {
                         setBackground(new Color(255, 196, 196));
                     }
                     if (value instanceof Note) {
-                       setBackground(new java.awt.Color(255, 255, 128));
+                       setBackground(new Color(255, 255, 128));
                     }
                     if (value instanceof ToDo) {
                         //setBackground(new Color(255, 85, 85));
@@ -111,7 +111,7 @@ public class CalendarPanel extends javax.swing.JPanel {
     }
 
     public void update() {
-        getModel();
+        model = getModel();
     }
 
     private DefaultTableModel getModel() {
