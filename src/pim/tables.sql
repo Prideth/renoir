@@ -1,4 +1,9 @@
+DROP TABLE IF EXISTS `exams`;
+DROP TABLE IF EXISTS `contacts`;
+DROP TABLE IF EXISTS `notes`;
 DROP TABLE IF EXISTS `users`;
+
+
 CREATE TABLE `users` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(12) NOT NULL DEFAULT '',
@@ -6,7 +11,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
-DROP TABLE IF EXISTS `exams`;
+
 CREATE TABLE  `exams` (
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
   `subject` varchar(255) NOT NULL DEFAULT '',
@@ -51,7 +56,7 @@ CREATE TABLE  `exams` (
   CONSTRAINT `FK_exams_userid` FOREIGN KEY (`userid`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
-DROP TABLE IF EXISTS `contacts`;
+
 CREATE TABLE `contacts` (
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
   `name` varchar(255) NOT NULL DEFAULT '',
@@ -68,7 +73,7 @@ CREATE TABLE `contacts` (
   CONSTRAINT `FK_contacts_userid` FOREIGN KEY (`userid`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
-DROP TABLE IF EXISTS `notes`;
+
 CREATE TABLE `notes` (
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
   `title` varchar(255) NOT NULL DEFAULT '',
@@ -77,6 +82,7 @@ CREATE TABLE `notes` (
   KEY `FK_notes_userid` (`userid`),
   CONSTRAINT `FK_notes_userid` FOREIGN KEY (`userid`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
 
 DELIMITER $$
 DROP FUNCTION IF EXISTS `insertUser` $$
