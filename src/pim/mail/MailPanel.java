@@ -66,7 +66,6 @@ Mail selectedMail;
         jButtonReply = new javax.swing.JButton();
         jButtonForward = new javax.swing.JButton();
         jButtonDelete = new javax.swing.JButton();
-        jButtonSpam = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextAreaMailBody = new javax.swing.JTextArea();
         jLabelStatus = new javax.swing.JLabel();
@@ -83,6 +82,12 @@ Mail selectedMail;
         jButtonWriteMail.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonWriteMailActionPerformed(evt);
+            }
+        });
+
+        jTextFieldSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldSearchActionPerformed(evt);
             }
         });
 
@@ -180,13 +185,6 @@ Mail selectedMail;
             }
         });
 
-        jButtonSpam.setText("Spam");
-        jButtonSpam.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonSpamActionPerformed(evt);
-            }
-        });
-
         jTextAreaMailBody.setColumns(20);
         jTextAreaMailBody.setRows(5);
         jTextAreaMailBody.setLineWrap(true);
@@ -202,9 +200,7 @@ Mail selectedMail;
                 .addComponent(jButtonForward, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButtonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButtonSpam, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 116, Short.MAX_VALUE))
+                .addGap(0, 236, Short.MAX_VALUE))
             .addComponent(jScrollPane1)
         );
         jPanel1Layout.setVerticalGroup(
@@ -214,8 +210,7 @@ Mail selectedMail;
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonReply)
                     .addComponent(jButtonForward)
-                    .addComponent(jButtonDelete)
-                    .addComponent(jButtonSpam))
+                    .addComponent(jButtonDelete))
                 .addGap(4, 4, 4)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE))
         );
@@ -279,10 +274,6 @@ Mail selectedMail;
         // TODO add your handling code here:
     }//GEN-LAST:event_jButtonDeleteActionPerformed
 
-    private void jButtonSpamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSpamActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonSpamActionPerformed
-
     private void jButtonWriteMailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonWriteMailActionPerformed
         JFrame rootWindow = (JFrame) SwingUtilities.getWindowAncestor(this.getParent());
         MailWriteDialog dialog = new MailWriteDialog(rootWindow, true, null);
@@ -313,12 +304,15 @@ Mail selectedMail;
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBoxFolderActionPerformed
 
+    private void jTextFieldSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldSearchActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldSearchActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonDelete;
     private javax.swing.JButton jButtonForward;
     private javax.swing.JButton jButtonReceiveMail;
     private javax.swing.JButton jButtonReply;
-    private javax.swing.JButton jButtonSpam;
     private javax.swing.JButton jButtonWriteMail;
     private javax.swing.JComboBox jComboBoxFolder;
     private javax.swing.JLabel jLabelSearch;
