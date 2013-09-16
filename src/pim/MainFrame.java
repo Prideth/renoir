@@ -360,6 +360,16 @@ public class MainFrame extends javax.swing.JFrame {
         jMenuBar.add(jMenuSettings);
 
         jMenuInfo.setText("Info");
+        jMenuInfo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenuInfoMouseClicked(evt);
+            }
+        });
+        jMenuInfo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuInfoActionPerformed(evt);
+            }
+        });
         jMenuBar.add(jMenuInfo);
 
         setJMenuBar(jMenuBar);
@@ -539,6 +549,19 @@ public class MainFrame extends javax.swing.JFrame {
         calendarPanel.update();
         this.setTitle("Personal Information Manager");
     }//GEN-LAST:event_jMenuItemLogoutActionPerformed
+
+    private void jMenuInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuInfoActionPerformed
+    
+        
+    }//GEN-LAST:event_jMenuInfoActionPerformed
+
+    private void jMenuInfoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuInfoMouseClicked
+            System.out.println("test");
+        InfoDialog dialog = new InfoDialog(this, true);
+        dialog.setTitle("Info");
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+    }//GEN-LAST:event_jMenuInfoMouseClicked
 
     
     private void switchPanel(javax.swing.JPanel panel, javax.swing.JButton button) {
