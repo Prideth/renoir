@@ -91,14 +91,11 @@ public class CreateEventDialog extends javax.swing.JDialog {
         jTextAreaContent.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
         jTextAreaContent.setLineWrap(true);
         jTextAreaContent.setRows(5);
-        jTextAreaContent.setText("test");
         jScrollPaneContent.setViewportView(jTextAreaContent);
 
         dateChooserCombo.setCalendarPreferredSize(new java.awt.Dimension(340, 180));
         dateChooserCombo.setNothingAllowed(false);
         dateChooserCombo.setBehavior(datechooser.model.multiple.MultyModelBehavior.SELECT_SINGLE);
-
-        jTextFieldTime.setText("12:00");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

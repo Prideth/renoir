@@ -114,7 +114,7 @@
             </Component>
           </SubComponents>
         </Container>
-        <Component class="javax.swing.JLabel" name="jLabel1">
+        <Component class="javax.swing.JLabel" name="jLabelSearch">
           <Properties>
             <Property name="text" type="java.lang.String" value="Suche: "/>
           </Properties>
