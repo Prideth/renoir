@@ -20,7 +20,7 @@ import pim.util.ObjectSerializer;
 
 /**
  *
- * @author lk
+ * @author 
  */
 public class MailWriteDialog extends JDialog {
 
@@ -33,7 +33,7 @@ public class MailWriteDialog extends JDialog {
     /**
      * Creates new form MailWriteDialog
      */
-    public MailWriteDialog(JFrame parent, boolean modal, Mail mail) {
+  public MailWriteDialog(JFrame parent, boolean modal, Mail mail, String what) {
         super(parent, modal);
         initComponents();
 
@@ -43,6 +43,8 @@ public class MailWriteDialog extends JDialog {
         jTextFieldReceiver.addMouseListener(textFieldListener);
         jTextFieldSubject.addMouseListener(textFieldListener);
         jTextAreaBody.addMouseListener(textFieldListener);
+        jTextFieldSender.setEditable(false);
+        jTextFieldSender.setEnabled(false);
 
         ObjectSerializer so = new ObjectSerializer();
         f = new File(System.getProperty("user.home") + "/pim/" + "mailaccount.ser");
@@ -50,16 +52,26 @@ public class MailWriteDialog extends JDialog {
         if (f.exists()) {
             acc = (MailAccount) so.readFromFile(f);
             jTextFieldSender.setText(acc.getEmail());
-            
-            if (mail != null) {
-                jTextFieldReceiver.setText(mail.getRecipientsTo()[0].toString());
-                jTextFieldSubject.setText("AW: " + mail.getSubject());
-                jTextAreaBody.setText("____________________________________________________________\n\n");
-                //getContent
+
+            if (mail != null && what.equals("aw")) {
+
+                jTextFieldReceiver.setText(mail.getFrom());
+                jTextFieldSubject.setText("Aw: " + mail.getSubject());
+                jTextAreaBody.setText("\n\n____________________________________________________________\n\n");
+                jTextAreaBody.append((String) mail.getContent());
+                jTextAreaBody.setCaretPosition(0);
+                jTextAreaBody.requestFocus();
+            } else if (mail != null && what.equals("wl")) {
+                jTextFieldSubject.setText("Fwd: " + mail.getSubject());
+                jTextAreaBody.setText("\n\n____________________________________________________________\n\n");
+                jTextAreaBody.append((String) mail.getContent());
+                jTextAreaBody.setCaretPosition(0);
+                jTextAreaBody.requestFocus();
+
             }
-    
-            
-            
+
+
+
         } else {
             JFrame rootWindow = (JFrame) SwingUtilities.getWindowAncestor(getParent());
             MailSettings dialog = new MailSettings(rootWindow, true);
@@ -67,8 +79,9 @@ public class MailWriteDialog extends JDialog {
             dialog.setLocationRelativeTo(rootWindow);
             dialog.setVisible(true);
         }
-        
+
     }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
