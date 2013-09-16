@@ -274,9 +274,8 @@ public class ExamPanel extends JPanel implements PanelInterface {
         calculateAverage();
     }
     
-    
-    private void jButtonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddActionPerformed
-        JFrame rootWindow = getRootWindow();
+    @Override
+    public void showAddDialog(JFrame rootWindow) {
         CreateExamDialog dialog = new CreateExamDialog(rootWindow, true, null);
         dialog.setTitle("Klausur erstellen");
         dialog.setLocationRelativeTo(rootWindow);
@@ -285,27 +284,50 @@ public class ExamPanel extends JPanel implements PanelInterface {
         if (exam != null) {
             insertValue(exam);
         }
-    }//GEN-LAST:event_jButtonAddActionPerformed
+    }
 
+    @Override
+    public void showChangeDialog(Object value, JFrame rootWindow) {
+        Exam exam = (Exam) value;
+        CreateExamDialog dialog = new CreateExamDialog(rootWindow, true, exam);
+        dialog.setTitle(exam.getSubject());
+        dialog.setLocationRelativeTo(rootWindow);
+        dialog.setVisible(true);
+        exam = dialog.getExam();
+        if (exam != null) {
+            changeValue(exam);
+        }
+    }
+
+    @Override
+    public void showDeleteDialog(Object value, JFrame rootWindow) {
+        Exam exam = (Exam) value;
+        Object[] options = {"Ja", "Nein"};
+        int n = JOptionPane.showOptionDialog(rootWindow,
+                "Klausur \"" + exam.getSubject() + "\" löschen?",
+                "Löschen bestätigen",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                options,
+                options[0]);
+        
+        if (n == 0) {
+            deleteValue(exam);
+        }
+    }
+
+    private void jButtonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddActionPerformed
+        JFrame rootWindow = getRootWindow();
+        showAddDialog(rootWindow);
+    }//GEN-LAST:event_jButtonAddActionPerformed
     
     private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
         JFrame rootWindow = getRootWindow();
         int index = getSelectedRow();
         if (index > -1) {
             Exam exam = (Exam) model.getValueAt(index, 0);
-            Object[] options = {"Ja", "Nein"};
-            int n = JOptionPane.showOptionDialog(rootWindow,
-                    "Klausur \"" + exam.getSubject() + "\" löschen?",
-                    "Löschen bestätigen",
-                    JOptionPane.YES_NO_OPTION,
-                    JOptionPane.QUESTION_MESSAGE,
-                    null,
-                    options,
-                    options[0]);
-            
-            if (n == 0) {
-                deleteValue(exam);
-            }
+            showDeleteDialog(exam, rootWindow);
         } else {
              JOptionPane.showMessageDialog(rootWindow, "Es ist keine Klausur ausgewählt.");
         }
@@ -332,18 +354,14 @@ public class ExamPanel extends JPanel implements PanelInterface {
         }
     }//GEN-LAST:event_jButtonResultActionPerformed
 
+    
     private void jButtonChangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonChangeActionPerformed
-        int index = getSelectedRow();
         JFrame rootWindow = getRootWindow();
+        int index = getSelectedRow();
         if (index > -1) {
             Exam exam = (Exam) model.getValueAt(index, 0);
-            CreateExamDialog dialog = new CreateExamDialog(rootWindow, true, exam);
-            dialog.setTitle(exam.getSubject());
-            dialog.setLocationRelativeTo(rootWindow);
-            dialog.setVisible(true);
-            exam = dialog.getExam();
             if (exam != null) {
-                changeValue(exam);
+                showChangeDialog(exam, rootWindow);
             }
         } else {
              JOptionPane.showMessageDialog(rootWindow, "Es ist keine Klausur ausgewählt.");

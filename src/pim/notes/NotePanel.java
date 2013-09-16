@@ -16,258 +16,51 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import java.util.*;
+import javax.swing.JPanel;
 
 
 import pim.*;
-
 
 /**
  *
  * @author Beware
  */
-public class NotePanel extends javax.swing.JPanel  {
+public class NotePanel extends JPanel implements PanelInterface {
 
     NoteItem[] noteItems;
     private int size;
     private int selectedIndex;
     private Color bgColor;
     private Color selectedColor;
-    
     private static final String ALPHABETIC = "alphabetic";
     private static final String DATE = "date";
     private static final int MAXARRAYSIZE = 100;
 
-
-
-    
-    
-    
     /**
      * Creates new form NotePanel
      */
     public NotePanel() {
         initComponents();
         disableCancelButton();
-        
+
         bgColor = new java.awt.Color(236, 227, 159);
-        selectedColor = new java.awt.Color(244,239,202);
-        
-        
+        selectedColor = new java.awt.Color(244, 239, 202);
+
+
         noteItems = new NoteItem[MAXARRAYSIZE];
         size = 0;
         selectedIndex = -1;
-        
+
         //initNoteItems("");
         TextFieldListener textFieldListener = new TextFieldListener();
         jTextFieldSearch.addMouseListener(textFieldListener);
     }
 
-    
-    public void updateNotes(Note[] notes) {
-        if (notes != null) {
-            size = notes.length;
-            for (int i = 0; i < size; i++) {
-                noteItems[i] = new NoteItem(notes[i]);
-                noteItems[i].addMouseListener(new java.awt.event.MouseAdapter() {
-                    @Override
-                    public void mousePressed(java.awt.event.MouseEvent evt) {
-                        notePanelMousePressed(evt);
-                    }
-                });
-            }
-        } else {
-            noteItems = new NoteItem[MAXARRAYSIZE];
-            size = 0;
-            selectedIndex = -1;
-        }
-        initNoteItems("");
-
-    }
-    
-    
-    public Note[] getNotes() {
-        Note[] notes = new Note[size];
-        for (int i = 0; i < size; i++) {
-            notes[i] = noteItems[i].getNote();
-        }
-        return notes;
-    }
-    
-    
-    
-    private void initNoteItems(String searchString) {
-
-        jPanelLeft.removeAll();
-        jPanelRight.removeAll();
-        
-        
-        if (searchString.isEmpty()) {
-            
-            
-            //create a GroupLayout object associate with the panel  
-            GroupLayout grpLayoutLeft = new GroupLayout(jPanelLeft); 
-            jPanelLeft.setLayout(grpLayoutLeft);  
-            grpLayoutLeft.setAutoCreateGaps(true);      // specify automatic gap insertion  
-            grpLayoutLeft.setAutoCreateContainerGaps(true);  
-            GroupLayout.Group group1 = grpLayoutLeft.createParallelGroup(GroupLayout.Alignment.LEADING);
-            GroupLayout.Group group2 = grpLayoutLeft.createSequentialGroup().addGap(5);
-
-
-
-            GroupLayout grpLayoutRight = new GroupLayout(jPanelRight); 
-            jPanelRight.setLayout(grpLayoutRight);  
-            grpLayoutRight.setAutoCreateGaps(true);      // specify automatic gap insertion  
-            grpLayoutRight.setAutoCreateContainerGaps(true);  
-            GroupLayout.Group group3 = grpLayoutRight.createParallelGroup(GroupLayout.Alignment.LEADING);
-            GroupLayout.Group group4 = grpLayoutRight.createSequentialGroup().addGap(5);     
-
-            for (int i = 0; i <= size - 1; i++) {
-                noteItems[i].setPosition(i);
-                
-                
-                if (noteItems[i].getPosition() % 2 == 0) {
-                    group1.addComponent(noteItems[i], GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE);
-                    group2.addComponent(noteItems[i], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE);
-                    group2.addGap(10);
-                    
-                } else {
-                    group3.addComponent(noteItems[i], GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE);
-                    group4.addComponent(noteItems[i], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE);
-                    group4.addGap(10);
-                }  
-            }
-            
-            
-            
-            grpLayoutLeft.setHorizontalGroup(
-                grpLayoutLeft.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addGroup(grpLayoutLeft.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(group1)
-                .addContainerGap()));
-
-            grpLayoutLeft.setVerticalGroup(
-                grpLayoutLeft.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addGroup(group2));
-        
-        
-            grpLayoutRight.setHorizontalGroup(
-                grpLayoutRight.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addGroup(grpLayoutRight.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(group3)
-                .addContainerGap()));
-
-            grpLayoutRight.setVerticalGroup(
-                grpLayoutRight.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addGroup(group4));
-            
-            
-            
-            
-            
-            
-            
-            
-            
-        } else {
-            
-            enableCancelButton();
-            //create a GroupLayout object associate with the panel  
-            GroupLayout grpLayoutLeftSearched = new GroupLayout(jPanelLeft); 
-            jPanelLeft.setLayout(grpLayoutLeftSearched);  
-            grpLayoutLeftSearched.setAutoCreateGaps(true);      // specify automatic gap insertion  
-            grpLayoutLeftSearched.setAutoCreateContainerGaps(true);  
-            GroupLayout.Group group1Searched = grpLayoutLeftSearched.createParallelGroup(GroupLayout.Alignment.LEADING);
-            GroupLayout.Group group2Searched = grpLayoutLeftSearched.createSequentialGroup().addGap(5);
-
-
-
-            GroupLayout grpLayoutRightSearched = new GroupLayout(jPanelRight); 
-            jPanelRight.setLayout(grpLayoutRightSearched);  
-            grpLayoutRightSearched.setAutoCreateGaps(true);      // specify automatic gap insertion  
-            grpLayoutRightSearched.setAutoCreateContainerGaps(true);  
-            GroupLayout.Group group3Searched = grpLayoutRightSearched.createParallelGroup(GroupLayout.Alignment.LEADING);
-            GroupLayout.Group group4Searched = grpLayoutRightSearched.createSequentialGroup().addGap(5);     
-            
-
-            unselectAll();
-            int counter = 0;
-            for (int i = 0; i <= size - 1; i++) {
-                
-                
-                
-                if (noteItems[i].getTitle().matches(".*"+searchString+".*") | noteItems[i].getContent().matches(".*"+searchString+".*")) {
-                    
-                    if (counter % 2 == 0) {
-                        group1Searched.addComponent(noteItems[i], GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE);
-                        group2Searched.addComponent(noteItems[i], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE);
-                        group2Searched.addGap(10);
-                        
-                    } else {
-                        group3Searched.addComponent(noteItems[i], GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE);
-                        group4Searched.addComponent(noteItems[i], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE);
-                        group4Searched.addGap(10);
-                        
-                    } 
-                    counter++;
-                }
-            }
-            
-            
-            grpLayoutLeftSearched.setHorizontalGroup(
-                grpLayoutLeftSearched.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addGroup(grpLayoutLeftSearched.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(group1Searched)
-                .addContainerGap()));
-
-            grpLayoutLeftSearched.setVerticalGroup(
-                grpLayoutLeftSearched.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addGroup(group2Searched));
-
-
-            grpLayoutRightSearched.setHorizontalGroup(
-                grpLayoutRightSearched.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addGroup(grpLayoutRightSearched.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(group3Searched)
-                .addContainerGap()));
-
-            grpLayoutRightSearched.setVerticalGroup(
-                grpLayoutRightSearched.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addGroup(group4Searched));
-            
-            
-            
-            
-            
-            
-            
-            
-        }
-        
-      
-        
-                
-        
-        
-        //selectNote(size - 1);
-        
-        
-        
-    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
      * regenerated by the Form Editor.
      */
-    @SuppressWarnings("unchecked")
-    
-
-
-    
-
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -429,10 +222,169 @@ public class NotePanel extends javax.swing.JPanel  {
         getAccessibleContext().setAccessibleParent(this);
     }// </editor-fold>//GEN-END:initComponents
 
-    
-    
-    public void insertNote(Note note) {
+    private void initNoteItems(String searchString) {
 
+        jPanelLeft.removeAll();
+        jPanelRight.removeAll();
+
+
+        if (searchString.isEmpty()) {
+
+
+            //create a GroupLayout object associate with the panel  
+            GroupLayout grpLayoutLeft = new GroupLayout(jPanelLeft);
+            jPanelLeft.setLayout(grpLayoutLeft);
+            grpLayoutLeft.setAutoCreateGaps(true);      // specify automatic gap insertion  
+            grpLayoutLeft.setAutoCreateContainerGaps(true);
+            GroupLayout.Group group1 = grpLayoutLeft.createParallelGroup(GroupLayout.Alignment.LEADING);
+            GroupLayout.Group group2 = grpLayoutLeft.createSequentialGroup().addGap(5);
+
+
+
+            GroupLayout grpLayoutRight = new GroupLayout(jPanelRight);
+            jPanelRight.setLayout(grpLayoutRight);
+            grpLayoutRight.setAutoCreateGaps(true);      // specify automatic gap insertion  
+            grpLayoutRight.setAutoCreateContainerGaps(true);
+            GroupLayout.Group group3 = grpLayoutRight.createParallelGroup(GroupLayout.Alignment.LEADING);
+            GroupLayout.Group group4 = grpLayoutRight.createSequentialGroup().addGap(5);
+
+            for (int i = 0; i <= size - 1; i++) {
+                noteItems[i].setPosition(i);
+
+
+                if (noteItems[i].getPosition() % 2 == 0) {
+                    group1.addComponent(noteItems[i], GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE);
+                    group2.addComponent(noteItems[i], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE);
+                    group2.addGap(10);
+
+                } else {
+                    group3.addComponent(noteItems[i], GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE);
+                    group4.addComponent(noteItems[i], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE);
+                    group4.addGap(10);
+                }
+            }
+
+
+
+            grpLayoutLeft.setHorizontalGroup(
+                    grpLayoutLeft.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addGroup(grpLayoutLeft.createSequentialGroup()
+                    .addContainerGap()
+                    .addGroup(group1)
+                    .addContainerGap()));
+
+            grpLayoutLeft.setVerticalGroup(
+                    grpLayoutLeft.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addGroup(group2));
+
+
+            grpLayoutRight.setHorizontalGroup(
+                    grpLayoutRight.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addGroup(grpLayoutRight.createSequentialGroup()
+                    .addContainerGap()
+                    .addGroup(group3)
+                    .addContainerGap()));
+
+            grpLayoutRight.setVerticalGroup(
+                    grpLayoutRight.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addGroup(group4));
+        } else {
+
+            enableCancelButton();
+            //create a GroupLayout object associate with the panel  
+            GroupLayout grpLayoutLeftSearched = new GroupLayout(jPanelLeft);
+            jPanelLeft.setLayout(grpLayoutLeftSearched);
+            grpLayoutLeftSearched.setAutoCreateGaps(true);      // specify automatic gap insertion  
+            grpLayoutLeftSearched.setAutoCreateContainerGaps(true);
+            GroupLayout.Group group1Searched = grpLayoutLeftSearched.createParallelGroup(GroupLayout.Alignment.LEADING);
+            GroupLayout.Group group2Searched = grpLayoutLeftSearched.createSequentialGroup().addGap(5);
+
+            GroupLayout grpLayoutRightSearched = new GroupLayout(jPanelRight);
+            jPanelRight.setLayout(grpLayoutRightSearched);
+            grpLayoutRightSearched.setAutoCreateGaps(true);      // specify automatic gap insertion  
+            grpLayoutRightSearched.setAutoCreateContainerGaps(true);
+            GroupLayout.Group group3Searched = grpLayoutRightSearched.createParallelGroup(GroupLayout.Alignment.LEADING);
+            GroupLayout.Group group4Searched = grpLayoutRightSearched.createSequentialGroup().addGap(5);
+
+
+            unselectAll();
+            int counter = 0;
+            for (int i = 0; i <= size - 1; i++) {
+
+
+
+                if (noteItems[i].getTitle().matches(".*" + searchString + ".*") | noteItems[i].getContent().matches(".*" + searchString + ".*")) {
+
+                    if (counter % 2 == 0) {
+                        group1Searched.addComponent(noteItems[i], GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE);
+                        group2Searched.addComponent(noteItems[i], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE);
+                        group2Searched.addGap(10);
+
+                    } else {
+                        group3Searched.addComponent(noteItems[i], GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE);
+                        group4Searched.addComponent(noteItems[i], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE);
+                        group4Searched.addGap(10);
+
+                    }
+                    counter++;
+                }
+            }
+
+
+            grpLayoutLeftSearched.setHorizontalGroup(
+                    grpLayoutLeftSearched.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addGroup(grpLayoutLeftSearched.createSequentialGroup()
+                    .addContainerGap()
+                    .addGroup(group1Searched)
+                    .addContainerGap()));
+
+            grpLayoutLeftSearched.setVerticalGroup(
+                    grpLayoutLeftSearched.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addGroup(group2Searched));
+
+
+            grpLayoutRightSearched.setHorizontalGroup(
+                    grpLayoutRightSearched.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addGroup(grpLayoutRightSearched.createSequentialGroup()
+                    .addContainerGap()
+                    .addGroup(group3Searched)
+                    .addContainerGap()));
+
+            grpLayoutRightSearched.setVerticalGroup(
+                    grpLayoutRightSearched.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addGroup(group4Searched));
+        }
+
+        //selectNote(size - 1);
+    }
+
+    
+    @Override
+    public void updateValues(Object[] values) {
+        Note[] notes = (Note[]) values;
+        if (notes != null) {
+            size = notes.length;
+            for (int i = 0; i < size; i++) {
+                noteItems[i] = new NoteItem(notes[i]);
+                noteItems[i].addMouseListener(new java.awt.event.MouseAdapter() {
+                    @Override
+                    public void mousePressed(java.awt.event.MouseEvent evt) {
+                        notePanelMousePressed(evt);
+                    }
+                });
+            }
+        } else {
+            noteItems = new NoteItem[MAXARRAYSIZE];
+            size = 0;
+            selectedIndex = -1;
+        }
+        initNoteItems("");
+    }
+
+    
+    @Override
+    public void insertValue(Object value) {
+        Note note = (Note) value;
         NoteItem n = new NoteItem(note);
         n.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
@@ -443,22 +395,86 @@ public class NotePanel extends javax.swing.JPanel  {
         noteItems[size++] = n;
         disableCancelButton();
         jTextFieldSearch.setText("");
+        initNoteItems("");}
+
+    
+    @Override
+    public Object[] getValues() {
+        Note[] notes = new Note[size];
+        for (int i = 0; i < size; i++) {
+            notes[i] = noteItems[i].getNote();
+        }
+        return notes;
+    }
+
+    
+    @Override
+    public void changeValue(Object value) {
+        Note note = (Note) value;
+        int index = getIndex(note);
+        noteItems[index].setNote(note);
+    }
+
+    @Override
+    public void deleteValue(Object value) {
+        int index = getIndex((Note) value);
+        for (int i = index; i < size - 1; i++) {
+            noteItems[i] = noteItems[i + 1];
+        }
+        noteItems[--size] = null;
+        selectedIndex = -1;
+        unselectAll();
+        disableCancelButton();
         initNoteItems("");
     }
-    
-    
+
+    @Override
+    public void showAddDialog(JFrame rootWindow) {
+        CreateNoteDialog dialog = new CreateNoteDialog(rootWindow, true, null);
+        dialog.setLocationRelativeTo(rootWindow);
+        dialog.setVisible(true);
+        Note note = dialog.getNote();
+        if (note != null) {
+            insertValue(note);
+        }
+    }
+
+    @Override
+    public void showChangeDialog(Object value, JFrame rootWindow) {
+        Note note = (Note) value;
+        CreateNoteDialog dialog = new CreateNoteDialog(rootWindow, true, note);
+        dialog.setTitle(note.getTitle());
+        dialog.setLocationRelativeTo(rootWindow);
+        dialog.setVisible(true);
+        note = dialog.getNote();
+        if (note != null) {
+            changeValue(note);
+        }
+    }
+
+    @Override
+    public void showDeleteDialog(Object value, JFrame rootWindow) {
+        Note note = (Note) value;
+        Object[] options = {"Ja", "Nein"};
+        int n = JOptionPane.showOptionDialog(null,
+                "Notiz \"" + note.getTitle() + "\" löschen?",
+                "Löschen bestätigen",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                options,
+                options[0]);
+
+        if (n == 0) {
+            deleteValue(note);
+        }
+    }
+
+
     private void jButtonNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNewActionPerformed
         if (size < noteItems.length) {
             JFrame rootWindow = getRootWindow();
-            CreateNoteDialog dialog = new CreateNoteDialog(rootWindow, true, null);
-            dialog.setTitle("Notiz erstellen"); //FIXME
-            dialog.setLocationRelativeTo(rootWindow);
-            dialog.setVisible(true);
-            Note note = dialog.getNote();
-            
-            if (note != null) {
-                insertNote(note);
-            }
+            showAddDialog(rootWindow);
         } else {
             JOptionPane.showMessageDialog(getRootWindow(),
                     "Es können maximal " + noteItems.length + " Notizen erstellt werden.");
@@ -466,38 +482,21 @@ public class NotePanel extends javax.swing.JPanel  {
     }//GEN-LAST:event_jButtonNewActionPerformed
 
     private void jButtonEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditActionPerformed
-        if (selectedIndex > -1) {    
-            editSelectedNote();
-
+        
+        JFrame rootWindow = getRootWindow();
+        if (selectedIndex > -1) {
+            Note note = noteItems[selectedIndex].getNote();
+            showChangeDialog(note, rootWindow);
         } else {
-            JOptionPane.showMessageDialog(getRootWindow(), "Es ist keine Notiz ausgewählt.");
+            JOptionPane.showMessageDialog(rootWindow, "Es ist keine Notiz ausgewählt.");
         }
     }//GEN-LAST:event_jButtonEditActionPerformed
 
     private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
-        if (selectedIndex > -1) {         
-            
-            Object[] options = {"Ja", "Nein"};
-            int n = JOptionPane.showOptionDialog(null,
-                    "Notiz \"" + noteItems[selectedIndex].getNote().getTitle()+ "\" löschen?",
-                    "Löschen bestätigen",
-                    JOptionPane.YES_NO_OPTION,
-                    JOptionPane.QUESTION_MESSAGE,
-                    null,
-                    options,
-                    options[0]);
-
-            if (n == 0) {
-
-                for (int i = selectedIndex; i < size - 1; i++) {
-                    noteItems[i] = noteItems[i + 1];
-                }
-                noteItems[--size] = null;
-                selectedIndex = -1;
-                unselectAll();
-                disableCancelButton();
-                initNoteItems("");
-            }
+        JFrame rootWindow = getRootWindow();
+        if (selectedIndex > -1) {
+            Note note = noteItems[selectedIndex].getNote();
+            showDeleteDialog(note, rootWindow);
         } else {
             JOptionPane.showMessageDialog(getRootWindow(), "Es ist keine Notiz ausgewählt.");
         }
@@ -514,37 +513,50 @@ public class NotePanel extends javax.swing.JPanel  {
 
         }
 
-    
+
     }//GEN-LAST:event_jComboBoxSortActionPerformed
 
     private void jTextFieldSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldSearchActionPerformed
-        
+
         String searchString = jTextFieldSearch.getText();
         if (size > 0) {
-            initNoteItems(searchString);   
-        } 
+            initNoteItems(searchString);
+        }
         if (jTextFieldSearch.getText().isEmpty()) {
             disableCancelButton();
         }
-        
-    
+
+
     }//GEN-LAST:event_jTextFieldSearchActionPerformed
 
     private void jButtonUndoSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUndoSearchActionPerformed
         disableCancelButton();
         initNoteItems("");
-        
+
     }//GEN-LAST:event_jButtonUndoSearchActionPerformed
 
     private void notePanelMousePressed(java.awt.event.MouseEvent evt) {
-        selectNote(((NoteItem) evt.getComponent()).getPosition());
-        if (evt.getClickCount() == 2) {
-            editSelectedNote();
-        }  
+        if (evt.getButton() == 1) {
+            selectNote(((NoteItem) evt.getComponent()).getPosition());
+            if (evt.getClickCount() == 2) {
+                JFrame rootWindow = getRootWindow();
+                Note note = noteItems[selectedIndex].getNote();
+                showChangeDialog(note, rootWindow);
+            }
+        }
     }
+
     
-        
-    
+    private int getIndex(Note note) {
+        int index = -1;
+        for (int i = 0; i < size; i++) {
+            if (note == noteItems[i].getNote()) {
+                index = i;
+                break;
+            }
+        }
+        return index;
+    }
     
     private void selectNote(int position) {
         if (size > 0) {
@@ -557,24 +569,101 @@ public class NotePanel extends javax.swing.JPanel  {
             selectedIndex = position;
         }
     }
-    
+
     private void unselectAll() {
         if (size > 0) {
-                for (int i = 0; i < size; i++) {                       
-                    noteItems[i].setBackground(bgColor);
-                    noteItems[i].getjTextAreaNoteOut().setBackground(bgColor);
-                    selectedIndex = -1;
-                    
-            } 
+            for (int i = 0; i < size; i++) {
+                noteItems[i].setBackground(bgColor);
+                noteItems[i].getjTextAreaNoteOut().setBackground(bgColor);
+                selectedIndex = -1;
+
+            }
         }
-        
+
+    }
+
+    private void sortList(String sortBy) {
+
+        if (noteItems.length > 0) {
+
+            List<NoteItem> tempNoteItemList = new ArrayList<NoteItem>();
+
+            for (int i = 0; i < size; i++) {
+                tempNoteItemList.add(noteItems[i]);
+
+            }
+            ListIterator<NoteItem> it = tempNoteItemList.listIterator(tempNoteItemList.size());
+
+
+            switch (sortBy) {
+                case ALPHABETIC:
+
+                    Collections.sort(tempNoteItemList, TITLE_COMPARATOR);
+                    //Collections.reverse(tempNoteItemList);
+
+                    int i = 0;
+
+                    for (NoteItem noteItemTemp : tempNoteItemList) {
+                        noteItems[i] = noteItemTemp;
+
+                        i++;
+                    }
+
+                    initNoteItems(jTextFieldSearch.getText());
+                    unselectAll();
+
+
+                    break;
+
+                case DATE:
+
+                    Collections.sort(tempNoteItemList, DATE_COMPARATOR);
+                    //Collections.reverse(tempNoteItemList);
+                    i = 0;
+
+                    for (NoteItem noteItemTemp : tempNoteItemList) {
+                        noteItems[i] = noteItemTemp;
+
+                        i++;
+                    }
+
+                    initNoteItems(jTextFieldSearch.getText());
+                    unselectAll();
+
+                    break;
+            }
+
+
+        }
+    }
+    
+
+    private void enableCancelButton() {
+        jButtonUndoSearch.setEnabled(true);
+    }
+
+    private void disableCancelButton() {
+        jButtonUndoSearch.setEnabled(false);
+        jTextFieldSearch.setText("");
     }
     
     private JFrame getRootWindow() {
         return (JFrame) SwingUtilities.getWindowAncestor(this.getParent());
     }
     
+    public final static Comparator<NoteItem> TITLE_COMPARATOR = new Comparator<NoteItem>() {
+        @Override
+        public int compare(NoteItem p1, NoteItem p2) {
+            return p1.getTitle().toLowerCase().compareTo(p2.getTitle().toLowerCase());
+        }
+    };
     
+    public final static Comparator<NoteItem> DATE_COMPARATOR = new Comparator<NoteItem>() {
+        @Override
+        public int compare(NoteItem p1, NoteItem p2) {
+            return p1.getDate().compareTo(p2.getDate());
+        }
+    };
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -591,101 +680,4 @@ public class NotePanel extends javax.swing.JPanel  {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextFieldSearch;
     // End of variables declaration//GEN-END:variables
-
-
-
-    private void sortList(String sortBy) {
-
-        if (noteItems.length > 0) {
-            
-            List<NoteItem> tempNoteItemList = new ArrayList<NoteItem>();
-            
-            for (int i = 0; i < size; i++) {                       
-                tempNoteItemList.add(noteItems[i]);
-                
-            } 
-            ListIterator<NoteItem> it = tempNoteItemList.listIterator(tempNoteItemList.size());
-            
-            
-            switch (sortBy) {
-                case ALPHABETIC:
-
-                    Collections.sort(tempNoteItemList, TITLE_COMPARATOR);
-                    //Collections.reverse(tempNoteItemList);
-
-                    int i = 0;
-                    
-                    for (NoteItem noteItemTemp : tempNoteItemList) {
-                        noteItems[i] = noteItemTemp;
-                        
-                        i++;
-                    }
-
-                    initNoteItems(jTextFieldSearch.getText());
-                    unselectAll();
-                    
-                    
-                    break;
-                    
-                case DATE:
-
-                    Collections.sort(tempNoteItemList, DATE_COMPARATOR);
-                    //Collections.reverse(tempNoteItemList);
-                    i = 0;
-                    
-                    for (NoteItem noteItemTemp : tempNoteItemList) {
-                        noteItems[i] = noteItemTemp;
-                        
-                        i++;
-                    }
-
-                    initNoteItems(jTextFieldSearch.getText());
-                    unselectAll();
-                    
-                    break;
-            }
-            
-
-        }   
-    }
-    
-    
-    public final static Comparator<NoteItem>
-        TITLE_COMPARATOR = new Comparator<NoteItem>() {
-        @Override public int compare( NoteItem p1, NoteItem p2 ) {
-            return p1.getTitle().compareTo( p2.getTitle() );
-        }
-    };
-
-    public final static Comparator<NoteItem>
-        DATE_COMPARATOR = new Comparator<NoteItem>() {
-        @Override public int compare( NoteItem p1, NoteItem p2 ) {
-            return p1.getDate().compareTo( p2.getDate());
-        }
-    };
-
-    private void enableCancelButton() {
-        jButtonUndoSearch.setEnabled(true);
-    }
-
-    private void disableCancelButton() {
-        jButtonUndoSearch.setEnabled(false);
-        jTextFieldSearch.setText("");
-    }
-
-    private void editSelectedNote() {
-        Note note = noteItems[selectedIndex].getNote();
-
-        JFrame rootWindow = getRootWindow();
-        CreateNoteDialog dialog = new CreateNoteDialog(rootWindow, true, note);
-        dialog.setTitle(note.getTitle());
-        dialog.setLocationRelativeTo(rootWindow);
-        dialog.setVisible(true);
-        note = dialog.getNote();
-        if (note != null) {
-            noteItems[selectedIndex].setNote(note);
-        }
-    }
-
-
 }

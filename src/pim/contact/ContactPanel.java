@@ -11,7 +11,9 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import pim.*;
+import pim.PanelInterface;
+import pim.TextFieldListener;
+
 
 /**
  *
@@ -199,79 +201,90 @@ public class ContactPanel extends JPanel implements PanelInterface {
     @Override
     public void changeValue(Object value) {
         Contact contact = (Contact) value;
-        contactButtons[selectedIndex].setContact(contact);
-        contactButtons[selectedIndex].update();
+        int index = getIndex(contact);
+        contactButtons[index].setContact(contact);
+        contactButtons[index].update();
     }
 
     @Override
     public void deleteValue(Object value) {
-        if (value == null) {
-            for (int i = selectedIndex; i < size - 1; i++) {
-                contactButtons[i] = contactButtons[i + 1];
-            }
-            contactButtons[--size] = null;
-            selectedIndex = -1;
+        int index = getIndex((Contact) value);
+        for (int i = index; i < size - 1; i++) {
+            contactButtons[i] = contactButtons[i + 1];
         }
+        contactButtons[--size] = null;
+        selectedIndex = -1;
+
         initContactButtons();
     }
 
+    @Override
+    public void showAddDialog(JFrame rootWindow) {
+        CreateContactDialog dialog = new CreateContactDialog(rootWindow, true, null);
+        dialog.setTitle("Kontakt erstellen");
+        dialog.setLocationRelativeTo(rootWindow);
+        dialog.setVisible(true);
+        Contact contact = dialog.getContact();
+        if (contact != null) {
+            insertValue(contact);
+        }
+    }
+
+    @Override
+    public void showChangeDialog(Object value, JFrame rootWindow) {
+        Contact contact = (Contact) value;
+        CreateContactDialog dialog = new CreateContactDialog(rootWindow, true, contact);
+        dialog.setTitle(contact.getName());
+        dialog.setLocationRelativeTo(rootWindow);
+        dialog.setVisible(true);
+        contact = dialog.getContact();
+        if (contact != null) {
+            changeValue(contact);
+        }
+    }
+
+    @Override
+    public void showDeleteDialog(Object value, JFrame rootWindow) {
+        Contact contact = (Contact) value;
+        Object[] options = {"Ja", "Nein"};
+        int n = JOptionPane.showOptionDialog(getRootWindow(),
+                "Kontakt \"" + contact.getName() + "\" löschen?",
+                "Löschen bestätigen",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                options,
+                options[0]);
+
+        if (n == 0) {
+            deleteValue(contact);
+        }
+    }
+    
     
     private void jButtonNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNewActionPerformed
         if (size < contactButtons.length) {
             JFrame rootWindow = getRootWindow();
-            CreateContactDialog dialog = new CreateContactDialog(rootWindow, true, null);
-            dialog.setTitle("Kontakt erstellen");
-            dialog.setLocationRelativeTo(rootWindow);
-            dialog.setVisible(true);
-            Contact contact = dialog.getContact();
-            if (contact != null) {
-                insertValue(contact);
-            }
+            showAddDialog(rootWindow);
         } else {
             JOptionPane.showMessageDialog(getRootWindow(),
                     "Es können maximal " + contactButtons.length + " Kontakte erstellt werden.");
         }
-
-
     }//GEN-LAST:event_jButtonNewActionPerformed
 
     private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
         if (selectedIndex > -1) {         
-            
-            Object[] options = {"Ja", "Nein"};
-            int n = JOptionPane.showOptionDialog(getRootWindow(),
-                    "Kontakt \"" + contactButtons[selectedIndex].getContact().getName() + "\" löschen?",
-                    "Löschen bestätigen",
-                    JOptionPane.YES_NO_OPTION,
-                    JOptionPane.QUESTION_MESSAGE,
-                    null,
-                    options,
-                    options[0]);
-
-            if (n == 0) {
-                deleteValue(null);
-            }
+            Contact contact = contactButtons[selectedIndex].getContact();
+            showDeleteDialog(contact, getRootWindow());
         } else {
             JOptionPane.showMessageDialog(getRootWindow(), "Es ist kein Kontakt ausgewählt.");
         }
     }//GEN-LAST:event_jButtonDeleteActionPerformed
-
-    
-
     
     private void jButtonEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditActionPerformed
         if (selectedIndex > -1) {        
             Contact contact = contactButtons[selectedIndex].getContact();
-            
-            JFrame rootWindow = getRootWindow();
-            CreateContactDialog dialog = new CreateContactDialog(rootWindow, true, contact);
-            dialog.setTitle(contact.getName());
-            dialog.setLocationRelativeTo(rootWindow);
-            dialog.setVisible(true);
-            contact = dialog.getContact();
-            if (contact != null) {
-                changeValue(contact);
-            }
+            showChangeDialog(contact, getRootWindow());
         } else {
             JOptionPane.showMessageDialog(getRootWindow(), "Es ist kein Kontakt ausgewählt.");
         }
@@ -279,23 +292,26 @@ public class ContactPanel extends JPanel implements PanelInterface {
 
     private void personPanelMousePressed(java.awt.event.MouseEvent evt) {
         if (evt.getButton() == 1) {
-            int position = ((ContactButton) evt.getComponent()).getPosition();
-            selectPerson(position);
+            selectPerson(((ContactButton) evt.getComponent()).getPosition());
             if (evt.getClickCount() == 2) {
                 Contact contact = contactButtons[selectedIndex].getContact();
-                JFrame rootWindow = getRootWindow();
-                CreateContactDialog dialog = new CreateContactDialog(rootWindow, true, contact);
-                dialog.setTitle(contact.getName());
-                dialog.setLocationRelativeTo(rootWindow);
-                dialog.setVisible(true);
-                contact = dialog.getContact();
-                if (contact != null) {
-                    changeValue(contact);
-                }
+                showChangeDialog(contact, getRootWindow());
             }
         }
     }
 
+    private int getIndex(Contact contact) {
+        int index = -1;
+        for (int i = 0; i < size; i++) {
+            if (contact == contactButtons[i].getContact()) {
+                index = i;
+                break;
+            }
+        }
+        return index;
+    }
+    
+    
     private void selectPerson(int position) {
         if (size > 0) {
             if (selectedIndex > -1) {
@@ -324,6 +340,5 @@ public class ContactPanel extends JPanel implements PanelInterface {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextFieldSearch;
     // End of variables declaration//GEN-END:variables
-
 
 }

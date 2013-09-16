@@ -140,7 +140,7 @@ public class MainFrame extends javax.swing.JFrame {
             System.out.print("read notes... ");
             start = System.currentTimeMillis();
             try {
-                notePanel.updateNotes(dr.getNotes(user.getId()));
+                notePanel.updateValues(dr.getNotes(user.getId()));
                 System.out.println(System.currentTimeMillis() - start);
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -447,7 +447,7 @@ public class MainFrame extends javax.swing.JFrame {
             System.out.print("write notes... ");
             start = System.currentTimeMillis();
             try {
-                dw.writeNotes(notePanel.getNotes(), user.getId());
+                dw.writeNotes((Note[]) notePanel.getValues(), user.getId());
                 System.out.println(System.currentTimeMillis() - start);
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -514,7 +514,7 @@ public class MainFrame extends javax.swing.JFrame {
         }
         contactPanel.updateValues(null);
         examPanel.updateValues(null);
-        notePanel.updateNotes(null);
+        notePanel.updateValues(null);
         calendarPanel.update();
         this.setTitle("Personal Information Manager");
     }//GEN-LAST:event_jMenuItemLogoutActionPerformed

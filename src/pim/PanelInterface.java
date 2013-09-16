@@ -4,6 +4,8 @@
  */
 package pim;
 
+import javax.swing.JFrame;
+
 /**
  * Alle Panels müssen dieses Interface erfüllen, damit der Kalender
  * mit ihnen umgehen kann
@@ -16,4 +18,7 @@ public interface PanelInterface {
     public void changeValue(Object value);
     public void deleteValue(Object value);
     
+    public void showAddDialog(JFrame rootWindow);
+    public void showChangeDialog(Object value, JFrame rootWindow);
+    public void showDeleteDialog(Object value, JFrame rootWindow);
 }

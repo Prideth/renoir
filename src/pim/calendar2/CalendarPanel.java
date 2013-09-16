@@ -151,7 +151,7 @@ public class CalendarPanel extends javax.swing.JPanel {
             }
         }
         
-        Note[] notes = notePanel.getNotes();
+        Note[] notes = (Note[]) notePanel.getValues();
         for (int i = 0; i < notes.length; i++) {
             Date date = notes[i].getCreateDate();
             if (date != null && date.getMonth() == month) {
@@ -435,26 +435,15 @@ public class CalendarPanel extends javax.swing.JPanel {
         Object value = model.getValueAt(row, column);
         if (value != null) {
             if (value instanceof Exam) {
-                Exam exam = (Exam) value;
-
-                JFrame rootWindow = getRootWindow();
-                CreateExamDialog dialog = new CreateExamDialog(rootWindow, true, exam);
-                dialog.setLocationRelativeTo(rootWindow);
-                dialog.setTitle(exam.getSubject());
-                dialog.setVisible(true);
-                exam = dialog.getExam();
-                if (exam != null) {
-                    examPanel.changeValue(exam);
-                    model.setValueAt(exam, row, column);
-                    update();
-                }
+                examPanel.showChangeDialog(value, getRootWindow());    
             }
             if (value instanceof Note) {
-                
+                notePanel.showChangeDialog(value, getRootWindow());
             }
             if (value instanceof ToDo) {
                 
             }
+            update();
         }
     }
     
@@ -464,27 +453,14 @@ public class CalendarPanel extends javax.swing.JPanel {
         Object value = model.getValueAt(row, column);
         if (value != null) {
             if (value instanceof Exam) {
-                Exam exam = (Exam) value;
-                Object[] options = {"Ja", "Nein"};
-                int n = JOptionPane.showOptionDialog(getRootWindow(),
-                        "Klausur \"" + exam.getSubject() + "\" löschen?",
-                        "Löschen bestätigen",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE,
-                        null,
-                        options,
-                        options[0]);
-
-                if (n == 0) {
-                    examPanel.deleteValue(exam);
-                    update();
-                }
-                
+                examPanel.showDeleteDialog(value, getRootWindow()); 
             }
             if (value instanceof Note) {
+                notePanel.showDeleteDialog(value, getRootWindow());
             }
             if (value instanceof ToDo) {
             }
+            update();
         }
     }
     
@@ -526,7 +502,7 @@ public class CalendarPanel extends javax.swing.JPanel {
             dialog.setVisible(true);
             note = dialog.getNote();
             if (note != null) {
-                notePanel.insertNote(note);
+                notePanel.insertValue(note);
                 model.setValueAt(note, row, column);
                 update();
             }

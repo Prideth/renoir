@@ -52,6 +52,7 @@ public class CreateNoteDialog extends javax.swing.JDialog {
         jTextAreaNote = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Notiz erstellen");
 
         jLabelNote.setText("Notiz:");
 
