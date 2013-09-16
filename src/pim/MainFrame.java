@@ -556,7 +556,6 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuInfoActionPerformed
 
     private void jMenuInfoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuInfoMouseClicked
-            System.out.println("test");
         InfoDialog dialog = new InfoDialog(this, true);
         dialog.setTitle("Info");
         dialog.setLocationRelativeTo(this);
