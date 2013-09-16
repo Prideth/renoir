@@ -18,11 +18,11 @@ public class InfoDialog extends javax.swing.JDialog {
         initComponents();
         
         String htmltext =
-                "<html><b>Autoren:<b>"
+                "<html><b>Autoren<b>"
                 + "<table border=\"0\" cellpadding=\"0\" cellspacing=\"2\">"
                 + "	<tr>"
                 + "		<td style=\"padding-right:10px\">Andreas Dier</td>"
-                + "		<td>dierandreas@googlemail.com</td>"
+                + "		<td>dierandreas@gmail.com</td>"
                 + "	</tr>"
                 + "	<tr>"
                 + "		<td style=\"padding-right:10px\">Ardian Beqiri</td>"
@@ -38,7 +38,7 @@ public class InfoDialog extends javax.swing.JDialog {
                 + "	</tr>"
                 + "	<tr>"
                 + "		<td style=\"padding-right:10px\">Lukas Ewen</td>"
-                + "		<td>lewen65@googlemail.com</td>"
+                + "		<td>lewen65@gmail.com</td>"
                 + "	</tr>"
                 + "	<tr>"
                 + "		<td style=\"padding-right:10px\">Matthias Kiefer</td>"
