@@ -208,7 +208,7 @@ public class NotePanel extends JPanel implements PanelInterface {
         }
         jPanelContent.updateUI();
 
-        selectNote(size - 1);
+        selectNote(noteItems[size - 1]);
     }
 
     
@@ -390,12 +390,13 @@ public class NotePanel extends JPanel implements PanelInterface {
 
     private void notePanelMousePressed(java.awt.event.MouseEvent evt) {
         if (evt.getButton() == 1) {
-            selectNote(((NoteItem) evt.getComponent()).getPosition());
-            
-            if (evt.getClickCount() == 2) {
-                JFrame rootWindow = getRootWindow();
-                Note note = noteItems[selectedIndex].getNote();
-                showChangeDialog(note, rootWindow);
+            if (evt.getComponent() instanceof NoteItem) {
+                NoteItem noteItem = (NoteItem) evt.getComponent();
+                selectNote(noteItem);
+                if (evt.getClickCount() == 2) {
+                    JFrame rootWindow = getRootWindow();
+                    showChangeDialog(noteItem.getNote(), rootWindow);
+                }
             }
         }
     }
@@ -412,17 +413,13 @@ public class NotePanel extends JPanel implements PanelInterface {
         return index;
     }
     
-    private void selectNote(int position) {
+    private void selectNote(NoteItem noteItem) {
         if (size > 0) {
-            if (selectedIndex > -1) {
-                noteItems[selectedIndex].setBackground(bgColor);
-                noteItems[selectedIndex].getjTextAreaNoteOut().setBackground(bgColor);
-                noteItems[selectedIndex].setjTextAreaNoteOutBgColor(bgColor);
-            }
-            noteItems[position].setBackground(selectedColor);
-            //noteItems[position].getjTextAreaNoteOut().setBackground(bgColor);
-            noteItems[position].setjTextAreaNoteOutBgColor(selectedColor);
-            selectedIndex = position;
+            unselectAll();
+            noteItem.setBackground(selectedColor);
+            noteItem.getjTextAreaNoteOut().setBackground(selectedColor);
+            noteItem.setjTextAreaNoteOutBgColor(selectedColor);
+            selectedIndex = noteItem.getPosition();
         }
     }
 
