@@ -6,6 +6,8 @@ package pim.notes;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -20,6 +22,7 @@ import javax.swing.JPanel;
 
 
 import pim.*;
+import pim.util.WrapLayout;
 
 /**
 *
@@ -54,6 +57,10 @@ public class NotePanel extends JPanel implements PanelInterface {
         //initNoteItems("");
         TextFieldListener textFieldListener = new TextFieldListener();
         jTextFieldSearch.addMouseListener(textFieldListener);
+        
+        jPanelContent.setLayout(new WrapLayout(FlowLayout.LEFT, 10, 10));
+        
+        jPanelContent.setSize(new Dimension(300, 1));
     }
 
     /**
@@ -67,9 +74,7 @@ public class NotePanel extends JPanel implements PanelInterface {
         jButtonNew = new javax.swing.JButton();
         jButtonEdit = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jPanel1 = new javax.swing.JPanel();
-        jPanelLeft = new javax.swing.JPanel();
-        jPanelRight = new javax.swing.JPanel();
+        jPanelContent = new javax.swing.JPanel();
         jButtonDelete = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jTextFieldSearch = new javax.swing.JTextField();
@@ -95,50 +100,18 @@ public class NotePanel extends JPanel implements PanelInterface {
 
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-        javax.swing.GroupLayout jPanelLeftLayout = new javax.swing.GroupLayout(jPanelLeft);
-        jPanelLeft.setLayout(jPanelLeftLayout);
-        jPanelLeftLayout.setHorizontalGroup(
-            jPanelLeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 281, Short.MAX_VALUE)
+        javax.swing.GroupLayout jPanelContentLayout = new javax.swing.GroupLayout(jPanelContent);
+        jPanelContent.setLayout(jPanelContentLayout);
+        jPanelContentLayout.setHorizontalGroup(
+            jPanelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 640, Short.MAX_VALUE)
         );
-        jPanelLeftLayout.setVerticalGroup(
-            jPanelLeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 265, Short.MAX_VALUE)
-        );
-
-        javax.swing.GroupLayout jPanelRightLayout = new javax.swing.GroupLayout(jPanelRight);
-        jPanelRight.setLayout(jPanelRightLayout);
-        jPanelRightLayout.setHorizontalGroup(
-            jPanelRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 269, Short.MAX_VALUE)
-        );
-        jPanelRightLayout.setVerticalGroup(
-            jPanelRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 276, Short.MAX_VALUE)
+        jPanelContentLayout.setVerticalGroup(
+            jPanelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 282, Short.MAX_VALUE)
         );
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jPanelLeft, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanelRight, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(84, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanelRight, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jPanelLeft, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())))
-        );
-
-        jScrollPane1.setViewportView(jPanel1);
+        jScrollPane1.setViewportView(jPanelContent);
 
         jButtonDelete.setText("Löschen");
         jButtonDelete.addActionListener(new java.awt.event.ActionListener() {
@@ -219,141 +192,23 @@ public class NotePanel extends JPanel implements PanelInterface {
         getAccessibleContext().setAccessibleParent(this);
     }// </editor-fold>//GEN-END:initComponents
 
+    
     private void initNoteItems(String searchString) {
-
-        jPanelLeft.removeAll();
-        jPanelRight.removeAll();
-
-        
-
+        jPanelContent.removeAll();
         if (searchString.isEmpty()) {
-
-
-            //create a GroupLayout object associate with the panel
-            GroupLayout grpLayoutLeft = new GroupLayout(jPanelLeft);
-            jPanelLeft.setLayout(grpLayoutLeft);
-            grpLayoutLeft.setAutoCreateGaps(true); // specify automatic gap insertion
-            grpLayoutLeft.setAutoCreateContainerGaps(true);
-            GroupLayout.Group group1 = grpLayoutLeft.createParallelGroup(GroupLayout.Alignment.LEADING);
-            GroupLayout.Group group2 = grpLayoutLeft.createSequentialGroup().addGap(5);
-
-
-
-            GroupLayout grpLayoutRight = new GroupLayout(jPanelRight);
-            jPanelRight.setLayout(grpLayoutRight);
-            grpLayoutRight.setAutoCreateGaps(true); // specify automatic gap insertion
-            grpLayoutRight.setAutoCreateContainerGaps(true);
-            GroupLayout.Group group3 = grpLayoutRight.createParallelGroup(GroupLayout.Alignment.LEADING);
-            GroupLayout.Group group4 = grpLayoutRight.createSequentialGroup().addGap(5);
-
-            for (int i = 0; i <= size - 1; i++) {
-                noteItems[i].setPosition(i);
-
-
-                if (noteItems[i].getPosition() % 2 == 0) {
-                    group1.addComponent(noteItems[i], GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE);
-                    group2.addComponent(noteItems[i], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE);
-                    group2.addGap(10);
-
-                } else {
-                    group3.addComponent(noteItems[i], GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE);
-                    group4.addComponent(noteItems[i], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE);
-                    group4.addGap(10);
-                }
+            for (int i = 0; i < size; i++) {
+                jPanelContent.add(noteItems[i]);
             }
-
-
-
-            grpLayoutLeft.setHorizontalGroup(
-                    grpLayoutLeft.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addGroup(grpLayoutLeft.createSequentialGroup()
-                    .addContainerGap()
-                    .addGroup(group1)
-                    .addContainerGap()));
-
-            grpLayoutLeft.setVerticalGroup(
-                    grpLayoutLeft.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addGroup(group2));
-
-
-            grpLayoutRight.setHorizontalGroup(
-                    grpLayoutRight.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addGroup(grpLayoutRight.createSequentialGroup()
-                    .addContainerGap()
-                    .addGroup(group3)
-                    .addContainerGap()));
-
-            grpLayoutRight.setVerticalGroup(
-                    grpLayoutRight.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addGroup(group4));
         } else {
-
-            enableCancelButton();
-            //create a GroupLayout object associate with the panel
-            GroupLayout grpLayoutLeftSearched = new GroupLayout(jPanelLeft);
-            jPanelLeft.setLayout(grpLayoutLeftSearched);
-            grpLayoutLeftSearched.setAutoCreateGaps(true); // specify automatic gap insertion
-            grpLayoutLeftSearched.setAutoCreateContainerGaps(true);
-            GroupLayout.Group group1Searched = grpLayoutLeftSearched.createParallelGroup(GroupLayout.Alignment.LEADING);
-            GroupLayout.Group group2Searched = grpLayoutLeftSearched.createSequentialGroup().addGap(5);
-
-            GroupLayout grpLayoutRightSearched = new GroupLayout(jPanelRight);
-            jPanelRight.setLayout(grpLayoutRightSearched);
-            grpLayoutRightSearched.setAutoCreateGaps(true); // specify automatic gap insertion
-            grpLayoutRightSearched.setAutoCreateContainerGaps(true);
-            GroupLayout.Group group3Searched = grpLayoutRightSearched.createParallelGroup(GroupLayout.Alignment.LEADING);
-            GroupLayout.Group group4Searched = grpLayoutRightSearched.createSequentialGroup().addGap(5);
-
-
-            unselectAll();
-            int counter = 0;
-            for (int i = 0; i <= size - 1; i++) {
-
-
-
+            for (int i = 0; i < size; i++) {
                 if (noteItems[i].getTitle().matches(".*" + searchString + ".*") | noteItems[i].getContent().matches(".*" + searchString + ".*")) {
-
-                    if (counter % 2 == 0) {
-                        group1Searched.addComponent(noteItems[i], GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE);
-                        group2Searched.addComponent(noteItems[i], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE);
-                        group2Searched.addGap(10);
-
-                    } else {
-                        group3Searched.addComponent(noteItems[i], GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE);
-                        group4Searched.addComponent(noteItems[i], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE);
-                        group4Searched.addGap(10);
-
-                    }
-                    counter++;
+                    jPanelContent.add(noteItems[i]);
                 }
             }
-
-
-            grpLayoutLeftSearched.setHorizontalGroup(
-                    grpLayoutLeftSearched.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addGroup(grpLayoutLeftSearched.createSequentialGroup()
-                    .addContainerGap()
-                    .addGroup(group1Searched)
-                    .addContainerGap()));
-
-            grpLayoutLeftSearched.setVerticalGroup(
-                    grpLayoutLeftSearched.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addGroup(group2Searched));
-
-
-            grpLayoutRightSearched.setHorizontalGroup(
-                    grpLayoutRightSearched.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addGroup(grpLayoutRightSearched.createSequentialGroup()
-                    .addContainerGap()
-                    .addGroup(group3Searched)
-                    .addContainerGap()));
-
-            grpLayoutRightSearched.setVerticalGroup(
-                    grpLayoutRightSearched.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addGroup(group4Searched));
         }
+        jPanelContent.updateUI();
 
-        //selectNote(size - 1);
+        selectNote(size - 1);
     }
 
     
@@ -675,9 +530,7 @@ public class NotePanel extends JPanel implements PanelInterface {
     private javax.swing.JComboBox jComboBoxSort;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanelLeft;
-    private javax.swing.JPanel jPanelRight;
+    private javax.swing.JPanel jPanelContent;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextFieldSearch;
     // End of variables declaration//GEN-END:variables
