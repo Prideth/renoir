@@ -275,12 +275,16 @@ public class ExamPanel extends JPanel implements PanelInterface {
     }
     
     @Override
-    public void showAddDialog(JFrame rootWindow) {
-        CreateExamDialog dialog = new CreateExamDialog(rootWindow, true, null);
+    public void showAddDialog(Object value, JFrame rootWindow) {
+        Exam exam = null;
+        if (value != null) {
+            exam = (Exam) value;
+        }
+        CreateExamDialog dialog = new CreateExamDialog(rootWindow, true, exam);
         dialog.setTitle("Klausur erstellen");
         dialog.setLocationRelativeTo(rootWindow);
         dialog.setVisible(true);
-        Exam exam = dialog.getExam();
+        exam = dialog.getExam();
         if (exam != null) {
             insertValue(exam);
         }
@@ -319,7 +323,7 @@ public class ExamPanel extends JPanel implements PanelInterface {
 
     private void jButtonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddActionPerformed
         JFrame rootWindow = getRootWindow();
-        showAddDialog(rootWindow);
+        showAddDialog(null, rootWindow);
     }//GEN-LAST:event_jButtonAddActionPerformed
     
     private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed

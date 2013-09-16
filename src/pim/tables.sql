@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS `exams`;
 DROP TABLE IF EXISTS `contacts`;
 DROP TABLE IF EXISTS `notes`;
+DROP TABLE IF EXISTS `events`;
 DROP TABLE IF EXISTS `users`;
 
 
@@ -81,7 +82,17 @@ CREATE TABLE  `notes` (
   `date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   KEY `FK_notes_userid` (`userid`),
   CONSTRAINT `FK_notes_userid` FOREIGN KEY (`userid`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+
+CREATE TABLE  `pim`.`events` (
+  `userid` int(10) unsigned NOT NULL DEFAULT '0',
+  `title` varchar(255) NOT NULL DEFAULT '',
+  `content` text,
+  `date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  KEY `FK_events_userid` (`userid`),
+  CONSTRAINT `FK_events_userid` FOREIGN KEY (`userid`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 
 DELIMITER $$

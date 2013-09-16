@@ -4,13 +4,13 @@
  */
 package pim.event;
 
-import java.awt.Color;
+
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import javax.swing.GroupLayout;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import pim.PanelInterface;
 import pim.util.WrapLayout;
@@ -22,52 +22,34 @@ import pim.util.WrapLayout;
  */
 public class EventPanel extends JPanel implements PanelInterface {
     
-    EventItem[] eventSlots;
+    private static final int MAX_SIZE = 100;
+
+    
+    EventItem[] eventItems;
     private int size;
-    private int selectedIndex;
-    private Color backGroundColor;
+    private EventItem selectedItem;
 
     /**
      * Creates new form EventPanel
      */
-    public EventPanel(Event[] events) {
+    public EventPanel() {
         initComponents();
-        eventSlots = new EventItem[100];
+        eventItems = new EventItem[MAX_SIZE];
         
         size = 0;
-        selectedIndex = -1;
+        selectedItem = null;
         
-        for (int i=0; i<size; i++) {
-            eventSlots[i] = new EventItem(events[i]);
-            eventSlots[i].addMouseListener(new java.awt.event.MouseAdapter() {
-                public void mouseClicked(java.awt.event.MouseEvent evt) {
-                    eventPanelMousePressed(evt);
-                }
-            });
-        }
         
-        //initEventButtons();
         jPanelContent.setLayout(new WrapLayout(FlowLayout.LEFT, 10, 10));
-        
-        jPanelContent.add(new EventItem(null));
-        jPanelContent.add(new EventItem(null));
-        jPanelContent.add(new EventItem(null));
-        //jPanelContent.add(new EventItem(null));
-        //jPanelContent.add(new EventItem(null));
-        //jPanelContent.add(new EventItem(null));
-        
         jPanelContent.setSize(new Dimension(300, 1));
-        
-        
     }
     
-    private void initEventButtons() {
-        
-        
-        
-        jPanelContent.add(new EventItem(null));
+    private void initEventItems() {
+        jPanelContent.removeAll();
+        for (int i = 0; i < size; i++) {
+            jPanelContent.add(eventItems[i]);
+        }
         jScrollPaneContent.updateUI();
-        
     }
 
     /**
@@ -170,10 +152,7 @@ public class EventPanel extends JPanel implements PanelInterface {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPaneContent, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 518, Short.MAX_VALUE)
-                .addGap(0, 0, 0))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 518, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -187,36 +166,25 @@ public class EventPanel extends JPanel implements PanelInterface {
 
     private void jButtonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddActionPerformed
         JFrame rootWindow = getRootWindow();
-        showAddDialog(rootWindow);
+        showAddDialog(null, rootWindow);
     }//GEN-LAST:event_jButtonAddActionPerformed
 
     private void jButtonChangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonChangeActionPerformed
-        
-        /*
         JFrame rootWindow = getRootWindow();
-        int index = getSelectedRow();
-        if (index > -1) {
-            Exam exam = (Exam) model.getValueAt(index, 0);
-            if (exam != null) {
-                showChangeDialog(exam, rootWindow);
-            }
+        if (selectedItem != null) {
+            showChangeDialog(selectedItem.getEvent(), rootWindow);
         } else {
-            JOptionPane.showMessageDialog(rootWindow, "Es ist keine Klausur ausgewählt.");
+            JOptionPane.showMessageDialog(rootWindow, "Es ist kein Termin ausgewählt.");
         }
-        */
     }//GEN-LAST:event_jButtonChangeActionPerformed
 
     private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
-        /*
         JFrame rootWindow = getRootWindow();
-        int index = getSelectedRow();
-        if (index > -1) {
-            Exam exam = (Exam) model.getValueAt(index, 0);
-            showDeleteDialog(exam, rootWindow);
+        if (selectedItem != null) {
+            showDeleteDialog(selectedItem.getEvent(), rootWindow);
         } else {
-            JOptionPane.showMessageDialog(rootWindow, "Es ist keine Klausur ausgewählt.");
+            JOptionPane.showMessageDialog(getRootWindow(), "Es ist kein Termin ausgewählt.");
         }
-        */
     }//GEN-LAST:event_jButtonDeleteActionPerformed
 
     private void jButtonUndoSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUndoSearchActionPerformed
@@ -224,19 +192,7 @@ public class EventPanel extends JPanel implements PanelInterface {
         //initNoteItems("");
     }//GEN-LAST:event_jButtonUndoSearchActionPerformed
     
-    private void eventPanelMousePressed(java.awt.event.MouseEvent evt) {
-        selectEvent(((EventItem) evt.getComponent()).getPosition());
-    }
-
-    private void selectEvent(int position) {
-        if (size > 0) {
-            if (selectedIndex > -1) {
-                eventSlots[selectedIndex].setBackground(backGroundColor);
-            }
-            eventSlots[position].setBackground(new Color(233, 236, 242));
-            selectedIndex = position;
-        }
-    }
+    
     
     private JFrame getRootWindow() {
         return (JFrame) SwingUtilities.getWindowAncestor(this.getParent());
@@ -257,42 +213,178 @@ public class EventPanel extends JPanel implements PanelInterface {
 
     @Override
     public void updateValues(Object[] values) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (values != null) {
+            Event[] events = (Event[]) values;
+            eventItems = new EventItem[100];
+            size = 0;
+            size = events.length;
+            for (int i = 0; i < size; i++) {
+                eventItems[i] = new EventItem(events[i]);
+                eventItems[i].addMouseListener(new java.awt.event.MouseAdapter() {
+                    @Override
+                    public void mouseClicked(java.awt.event.MouseEvent evt) {
+                        eventPanelMousePressed(evt);
+                    }
+                });
+                eventItems[i].getTextArea().addMouseListener(new java.awt.event.MouseAdapter() {
+                    @Override
+                    public void mouseClicked(java.awt.event.MouseEvent evt) {
+                        eventPanelMousePressed(evt);
+                    }
+                });
+            }
+
+        } else {
+            eventItems = new EventItem[MAX_SIZE];
+            size = 0;
+        }
+        initEventItems();
     }
 
     @Override
     public void insertValue(Object value) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Event event = (Event) value;
+        EventItem eventItem = new EventItem(event);
+        eventItem.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                eventPanelMousePressed(evt);
+            }
+        });
+        eventItem.getTextArea().addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                eventPanelMousePressed(evt);
+            }
+        });
+        eventItems[size++] = eventItem;
+        //initEventItems();
+        jPanelContent.add(eventItem);
+        jPanelContent.updateUI();
     }
 
     @Override
     public Object[] getValues() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Event[] events = new Event[size];
+        for (int i = 0; i < size; i++) {
+            events[i] = eventItems[i].getEvent();
+        }
+        return events;
     }
 
     @Override
     public void changeValue(Object value) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Event event = (Event) value;
+        int index = getIndex(event);
+        eventItems[index].setEvent(event);
+        eventItems[index].update();
+        jPanelContent.updateUI();
     }
 
     @Override
     public void deleteValue(Object value) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int index = getIndex((Event) value);
+        for (int i = index; i < size - 1; i++) {
+            eventItems[i] = eventItems[i + 1];
+        }
+        eventItems[--size] = null;
+        selectedItem = null;
+        selectEvent(null);
+        initEventItems();
     }
 
     @Override
-    public void showAddDialog(JFrame rootWindow) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void showAddDialog(Object value, JFrame rootWindow) {
+        Event event = null;
+        if (value != null) {
+            event = (Event) value;
+        }
+        CreateEventDialog dialog = new CreateEventDialog(rootWindow, true, event);
+        dialog.setLocationRelativeTo(rootWindow);
+        dialog.setVisible(true);
+        event = dialog.getEvent();
+        if (event != null) {
+            insertValue(event);
+        }
     }
 
     @Override
     public void showChangeDialog(Object value, JFrame rootWindow) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Event event = (Event) value;
+        CreateEventDialog dialog = new CreateEventDialog(rootWindow, true, event);
+        dialog.setLocationRelativeTo(rootWindow);
+        dialog.setTitle(event.getTitle());
+        dialog.setVisible(true);
+        event = dialog.getEvent();
+        if (event != null) {
+            changeValue(event);
+        }
     }
 
     @Override
     public void showDeleteDialog(Object value, JFrame rootWindow) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Event event = (Event) value;
+        Object[] options = {"Ja", "Nein"};
+        int n = JOptionPane.showOptionDialog(null,
+                "Notiz \"" + event.getTitle() + "\" löschen?",
+                "Löschen bestätigen",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                options,
+                options[0]);
+
+        if (n == 0) {
+            deleteValue(event);
+        }
+    }
+
+    
+    private void selectEvent(EventItem eventItem) {
+        selectedItem = eventItem;
+        for (int i = 0; i < size; i++) {
+            eventItems[i].unselect();
+        }
+        if (eventItem != null) {
+            eventItem.select();
+        }
     }
     
+    private int getIndex(Event event) {
+        int index = -1;
+        for (int i = 0; i < size; i++) {
+            if (event == eventItems[i].getEvent()) {
+                index = i;
+                break;
+            }
+        }
+        return index;
+    }
+    
+    
+    private void eventPanelMousePressed(java.awt.event.MouseEvent evt) {
+        if (evt.getButton() == 1) {
+            
+            EventItem eventItem = null;
+            if (evt.getComponent() instanceof EventItem) {
+                eventItem = (EventItem) evt.getComponent();
+                selectEvent(eventItem);
+            }
+            if (evt.getComponent() instanceof JTextArea) {
+                eventItem = (EventItem)evt.getComponent().getParent().getParent().getParent();
+                selectEvent(eventItem);
+            }
+            if (evt.getClickCount() == 2) {
+                
+                showChangeDialog(eventItem.getEvent(), getRootWindow());
+            }
+            /*
+            selectPerson(((ContactButton) evt.getComponent()).getPosition());
+            if (evt.getClickCount() == 2) {
+                Contact contact = contactButtons[selectedIndex].getContact();
+                showChangeDialog(contact, getRootWindow());
+            }
+            * */
+        }
+    }
 }

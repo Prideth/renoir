@@ -21,7 +21,7 @@ import pim.TextFieldListener;
  */
 public class ContactPanel extends JPanel implements PanelInterface {
 
-    ContactButton[] contactButtons;
+    ContactItem[] contactItems;
     private int size;
     private int selectedIndex;
     private Color bgColor;
@@ -34,7 +34,7 @@ public class ContactPanel extends JPanel implements PanelInterface {
         TextFieldListener textFieldListener = new TextFieldListener();
         jTextFieldSearch.addMouseListener(textFieldListener);
         bgColor = this.getBackground();
-        contactButtons = new ContactButton[100];
+        contactItems = new ContactItem[100];
         size = 0;
         selectedIndex = -1;
     }
@@ -124,7 +124,7 @@ public class ContactPanel extends JPanel implements PanelInterface {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-        private void initContactButtons() {
+        private void initContactItems() {
         jPanel1.removeAll();
 
         javax.swing.GroupLayout layout = new GroupLayout(jPanel1);
@@ -134,9 +134,9 @@ public class ContactPanel extends JPanel implements PanelInterface {
         Group group2 = layout.createSequentialGroup().addGap(5);
 
         for (int i = size - 1; i >= 0; i--) {
-            contactButtons[i].setPosition(i);
-            group1.addComponent(contactButtons[i], GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE);
-            group2.addComponent(contactButtons[i], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE);
+            contactItems[i].setPosition(i);
+            group1.addComponent(contactItems[i], GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE);
+            group2.addComponent(contactItems[i], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE);
             group2.addGap(5);
         }
 
@@ -157,14 +157,14 @@ public class ContactPanel extends JPanel implements PanelInterface {
     @Override
     public void updateValues(Object[] values) {
         Contact[] contacts = (Contact[]) values;
-        contactButtons = new ContactButton[100];
+        contactItems = new ContactItem[100];
         size = 0;
         selectedIndex = -1;
         if (contacts != null) {
             size = contacts.length;
             for (int i = 0; i < size; i++) {
-                contactButtons[i] = new ContactButton(contacts[i]);
-                contactButtons[i].addMouseListener(new java.awt.event.MouseAdapter() {
+                contactItems[i] = new ContactItem(contacts[i]);
+                contactItems[i].addMouseListener(new java.awt.event.MouseAdapter() {
                     @Override
                     public void mouseClicked(java.awt.event.MouseEvent evt) {
                         personPanelMousePressed(evt);
@@ -172,28 +172,28 @@ public class ContactPanel extends JPanel implements PanelInterface {
                 });
             }
         }
-        initContactButtons();
+        initContactItems();
     }
 
     @Override
     public void insertValue(Object value) {
         Contact contact = (Contact) value;
-        ContactButton p = new ContactButton(contact);
+        ContactItem p = new ContactItem(contact);
         p.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 personPanelMousePressed(evt);
             }
         });
-        contactButtons[size++] = p;
-        initContactButtons();
+        contactItems[size++] = p;
+        initContactItems();
     }
 
     @Override
     public Object[] getValues() {
         Contact[] contacts = new Contact[size];
         for (int i = 0; i < size; i++) {
-            contacts[i] = contactButtons[i].getContact();
+            contacts[i] = contactItems[i].getContact();
         }
         return contacts;
     }
@@ -202,29 +202,33 @@ public class ContactPanel extends JPanel implements PanelInterface {
     public void changeValue(Object value) {
         Contact contact = (Contact) value;
         int index = getIndex(contact);
-        contactButtons[index].setContact(contact);
-        contactButtons[index].update();
+        contactItems[index].setContact(contact);
+        contactItems[index].update();
     }
 
     @Override
     public void deleteValue(Object value) {
         int index = getIndex((Contact) value);
         for (int i = index; i < size - 1; i++) {
-            contactButtons[i] = contactButtons[i + 1];
+            contactItems[i] = contactItems[i + 1];
         }
-        contactButtons[--size] = null;
+        contactItems[--size] = null;
         selectedIndex = -1;
 
-        initContactButtons();
+        initContactItems();
     }
 
     @Override
-    public void showAddDialog(JFrame rootWindow) {
-        CreateContactDialog dialog = new CreateContactDialog(rootWindow, true, null);
+    public void showAddDialog(Object value, JFrame rootWindow) {
+        Contact contact = null;
+        if (value != null) {
+            contact = (Contact) value;
+        }
+        CreateContactDialog dialog = new CreateContactDialog(rootWindow, true, contact);
         dialog.setTitle("Kontakt erstellen");
         dialog.setLocationRelativeTo(rootWindow);
         dialog.setVisible(true);
-        Contact contact = dialog.getContact();
+        contact = dialog.getContact();
         if (contact != null) {
             insertValue(contact);
         }
@@ -263,18 +267,18 @@ public class ContactPanel extends JPanel implements PanelInterface {
     
     
     private void jButtonNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNewActionPerformed
-        if (size < contactButtons.length) {
+        if (size < contactItems.length) {
             JFrame rootWindow = getRootWindow();
-            showAddDialog(rootWindow);
+            showAddDialog(null, rootWindow);
         } else {
             JOptionPane.showMessageDialog(getRootWindow(),
-                    "Es können maximal " + contactButtons.length + " Kontakte erstellt werden.");
+                    "Es können maximal " + contactItems.length + " Kontakte erstellt werden.");
         }
     }//GEN-LAST:event_jButtonNewActionPerformed
 
     private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
         if (selectedIndex > -1) {         
-            Contact contact = contactButtons[selectedIndex].getContact();
+            Contact contact = contactItems[selectedIndex].getContact();
             showDeleteDialog(contact, getRootWindow());
         } else {
             JOptionPane.showMessageDialog(getRootWindow(), "Es ist kein Kontakt ausgewählt.");
@@ -283,7 +287,7 @@ public class ContactPanel extends JPanel implements PanelInterface {
     
     private void jButtonEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditActionPerformed
         if (selectedIndex > -1) {        
-            Contact contact = contactButtons[selectedIndex].getContact();
+            Contact contact = contactItems[selectedIndex].getContact();
             showChangeDialog(contact, getRootWindow());
         } else {
             JOptionPane.showMessageDialog(getRootWindow(), "Es ist kein Kontakt ausgewählt.");
@@ -292,9 +296,9 @@ public class ContactPanel extends JPanel implements PanelInterface {
 
     private void personPanelMousePressed(java.awt.event.MouseEvent evt) {
         if (evt.getButton() == 1) {
-            selectPerson(((ContactButton) evt.getComponent()).getPosition());
+            selectPerson(((ContactItem) evt.getComponent()).getPosition());
             if (evt.getClickCount() == 2) {
-                Contact contact = contactButtons[selectedIndex].getContact();
+                Contact contact = contactItems[selectedIndex].getContact();
                 showChangeDialog(contact, getRootWindow());
             }
         }
@@ -303,7 +307,7 @@ public class ContactPanel extends JPanel implements PanelInterface {
     private int getIndex(Contact contact) {
         int index = -1;
         for (int i = 0; i < size; i++) {
-            if (contact == contactButtons[i].getContact()) {
+            if (contact == contactItems[i].getContact()) {
                 index = i;
                 break;
             }
@@ -315,9 +319,9 @@ public class ContactPanel extends JPanel implements PanelInterface {
     private void selectPerson(int position) {
         if (size > 0) {
             if (selectedIndex > -1) {
-                contactButtons[selectedIndex].setBackground(bgColor);
+                contactItems[selectedIndex].setBackground(bgColor);
             }
-            contactButtons[position].setBackground(new Color(233, 236, 242));
+            contactItems[position].setBackground(new Color(233, 236, 242));
             selectedIndex = position;
         }
     }

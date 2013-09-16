@@ -5,6 +5,8 @@
 package pim.event;
 
 import java.awt.Color;
+import java.text.SimpleDateFormat;
+import javax.swing.JTextArea;
 
 /**
  * Class EventSlot shows todos in panel
@@ -13,6 +15,13 @@ import java.awt.Color;
  */
 public class EventItem extends javax.swing.JPanel {
     
+    private static final SimpleDateFormat SDF_DATE = new SimpleDateFormat("dd.MM.yyyy");
+    private static final SimpleDateFormat SDF_TIME = new SimpleDateFormat("HH:mm");
+    private static final Color BACK_COLOR = new Color(178, 216, 255);
+    private static final Color SELECT_COLOR = new Color(219, 219, 219);
+    private static final Color TITLE_BACK_COLOR = new Color(0, 0, 153);
+    private static final Color TITLE_SELECT_COLOR = new Color(0, 0, 0);
+
     private int position;
     private Event event;
     /**
@@ -22,8 +31,16 @@ public class EventItem extends javax.swing.JPanel {
         initComponents();
         this.event = event;
         position = 0;
-
+        update();
     }
+    
+    public void update() {
+        jLabelTitle.setText(event.getTitle());
+        jLabelDate.setText(SDF_DATE.format(event.getDate()));
+        jLabelTime.setText(SDF_TIME.format(event.getDate()));
+        jTextAreaContent.setText(event.getContent());
+    }
+    
     
     public Event getEvent() {
         return event;
@@ -40,6 +57,20 @@ public class EventItem extends javax.swing.JPanel {
     
     public void setPosition(int position) {
         this.position = position;
+    }
+    
+    public JTextArea getTextArea() {
+        return jTextAreaContent;
+    }
+    
+    public void select() {
+        setBackground(SELECT_COLOR);
+        jPanelTitle.setBackground(TITLE_SELECT_COLOR);
+    }
+    
+    public void unselect() {
+        setBackground(BACK_COLOR);
+        jPanelTitle.setBackground(TITLE_BACK_COLOR);
     }
 
     /**
@@ -63,7 +94,7 @@ public class EventItem extends javax.swing.JPanel {
 
         setBackground(new java.awt.Color(178, 216, 255));
         setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        setPreferredSize(new java.awt.Dimension(275, 180));
+        setPreferredSize(new java.awt.Dimension(270, 155));
         setRequestFocusEnabled(false);
 
         jTextAreaContent.setEditable(false);
@@ -87,10 +118,12 @@ public class EventItem extends javax.swing.JPanel {
         jLabelTitle.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabelTitle.setForeground(new java.awt.Color(255, 255, 255));
         jLabelTitle.setText("Termin");
+        jLabelTitle.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 3, 2, 0));
 
         jLabelDelete.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabelDelete.setForeground(new java.awt.Color(255, 255, 255));
         jLabelDelete.setText("x");
+        jLabelDelete.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 2, 5));
         jLabelDelete.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         javax.swing.GroupLayout jPanelTitleLayout = new javax.swing.GroupLayout(jPanelTitle);
@@ -98,57 +131,52 @@ public class EventItem extends javax.swing.JPanel {
         jPanelTitleLayout.setHorizontalGroup(
             jPanelTitleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelTitleLayout.createSequentialGroup()
-                .addGap(5, 5, 5)
                 .addComponent(jLabelTitle)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabelDelete)
-                .addGap(5, 5, 5))
+                .addComponent(jLabelDelete))
         );
         jPanelTitleLayout.setVerticalGroup(
             jPanelTitleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelTitleLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(jPanelTitleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelDelete)
-                    .addComponent(jLabelTitle))
-                .addGap(2, 2, 2))
+                    .addComponent(jLabelTitle)
+                    .addComponent(jLabelDelete)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(4, 4, 4)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPaneContent, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(3, 3, 3)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabelTimeCaption, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabelDateCaption, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabelTime, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabelDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(12, 12, 12)))
-                .addGap(4, 4, 4))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(jLabelDateCaption)
+                .addGap(6, 6, 6)
+                .addComponent(jLabelDate)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 82, Short.MAX_VALUE)
+                .addComponent(jLabelTimeCaption)
+                .addGap(6, 6, 6)
+                .addComponent(jLabelTime)
+                .addGap(10, 10, 10))
             .addComponent(jPanelTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPaneContent)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jPanelTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(4, 4, 4)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelDateCaption)
-                    .addComponent(jLabelDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabelTimeCaption)
-                    .addComponent(jLabelTime, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(5, 5, 5)
-                .addComponent(jScrollPaneContent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabelTime))
+                .addGap(3, 3, 3)
+                .addComponent(jScrollPaneContent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables

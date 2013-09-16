@@ -30,6 +30,7 @@ import pim.exam.Exam;
 import pim.exam.ExamPanel;
 import pim.mail.MailSettings;
 import pim.notes.Note;
+import pim.notes.NotePanel;
 
 /**
  *
@@ -98,18 +99,17 @@ public class MainFrame extends javax.swing.JFrame {
         
         contactPanel = new ContactPanel();
         examPanel = new ExamPanel();
-        notePanel = new pim.notes.NotePanel();
+        notePanel = new NotePanel();
+        eventPanel = new EventPanel();
         
         if (user != null) {
             updatePanels(con);
         }
-               
-        Event[] events = null;
         
         mailPanel = new pim.mail.MailPanel();
-        calendarPanel = new pim.calendar2.CalendarPanel(examPanel, notePanel);
+        calendarPanel = new pim.calendar.CalendarPanel(examPanel, notePanel, eventPanel);
         //calendarPanel = new pim.calendar.CalendarPanel();
-        eventPanel = new EventPanel(null);
+        
         
         
         if (user != null) {
@@ -119,7 +119,7 @@ public class MainFrame extends javax.swing.JFrame {
             jMenuItemSave.setEnabled(true);
         }
         
-        switchPanel(eventPanel, jButtonEvents);
+        switchPanel(calendarPanel, jButtonCalendar);
         
     }
     
@@ -143,6 +143,15 @@ public class MainFrame extends javax.swing.JFrame {
             start = System.currentTimeMillis();
             try {
                 notePanel.updateValues(dr.getNotes(user.getId()));
+                System.out.println(System.currentTimeMillis() - start);
+            } catch (SQLException e) {
+                System.err.println("error");
+            }
+            
+            System.out.print("read events... ");
+            start = System.currentTimeMillis();
+            try {
+                eventPanel.updateValues(dr.getEvents(user.getId()));
                 System.out.println(System.currentTimeMillis() - start);
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -452,6 +461,15 @@ public class MainFrame extends javax.swing.JFrame {
                 dw.writeNotes((Note[]) notePanel.getValues(), user.getId());
                 System.out.println(System.currentTimeMillis() - start);
             } catch (SQLException e) {
+                System.out.println("error");
+            }
+            
+            System.out.print("write events... ");
+            start = System.currentTimeMillis();
+            try {
+                dw.writeEvents((Event[]) eventPanel.getValues(), user.getId());
+                System.out.println(System.currentTimeMillis() - start);
+            } catch (SQLException e) {
                 e.printStackTrace();
                 System.out.println("error");
             }
@@ -517,6 +535,7 @@ public class MainFrame extends javax.swing.JFrame {
         contactPanel.updateValues(null);
         examPanel.updateValues(null);
         notePanel.updateValues(null);
+        eventPanel.updateValues(null);
         calendarPanel.update();
         this.setTitle("Personal Information Manager");
     }//GEN-LAST:event_jMenuItemLogoutActionPerformed
@@ -600,7 +619,7 @@ public class MainFrame extends javax.swing.JFrame {
     private pim.mail.MailPanel mailPanel;
     private pim.exam.ExamPanel examPanel;
     private pim.contact.ContactPanel contactPanel;
-    private pim.calendar2.CalendarPanel calendarPanel;
+    private pim.calendar.CalendarPanel calendarPanel;
     //private pim.calendar.CalendarPanel calendarPanel;
     private EventPanel eventPanel;
     private pim.notes.NotePanel notePanel;

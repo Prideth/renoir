@@ -4,22 +4,18 @@
  */
 package pim.event;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
-import pim.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-/**
- * Class CreateToDoDialog to create new todos
- * 
- * @author Joerg Federspiel
- */
+
+
 public class CreateEventDialog extends javax.swing.JDialog {
     
     private Event event;
-    String subject;
-    Date beginDate;
-    Date endDate;    
-    Object priority;
-    String comments;
+    
 
     /**
      * Creates new form createToDo
@@ -29,6 +25,22 @@ public class CreateEventDialog extends javax.swing.JDialog {
         this.event = event;
         initComponents();
         
+        dateChooserCombo.setSelectedDate(null);
+        
+        
+        if (event != null) {
+            jTextFieldTitle.setText(event.getTitle());
+            jTextAreaContent.setText(event.getContent());
+            if (event.getDate() != null) {
+                Calendar c = Calendar.getInstance();
+                c.setTime(event.getDate());
+                dateChooserCombo.setSelectedDate(c);
+                SimpleDateFormat f = new SimpleDateFormat("HH:mm");  
+                jTextFieldTime.setText(f.format(event.getDate()));
+            } else {
+                dateChooserCombo.setSelectedDate(null);
+            }
+        }
     }
 
     /**
@@ -40,16 +52,25 @@ public class CreateEventDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButtonSave = new javax.swing.JButton();
+        jButtonOk = new javax.swing.JButton();
         jButtonCancel = new javax.swing.JButton();
+        jLabelTitle = new javax.swing.JLabel();
+        jLabelDate = new javax.swing.JLabel();
+        jLabelTime = new javax.swing.JLabel();
+        jScrollPaneContent = new javax.swing.JScrollPane();
+        jTextAreaContent = new javax.swing.JTextArea();
+        dateChooserCombo = new datechooser.beans.DateChooserCombo();
+        jTextFieldTitle = new javax.swing.JTextField();
+        jTextFieldTime = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Termin erstellen");
         setResizable(false);
 
-        jButtonSave.setText("Speichern");
-        jButtonSave.addActionListener(new java.awt.event.ActionListener() {
+        jButtonOk.setText("Ok");
+        jButtonOk.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonSaveActionPerformed(evt);
+                jButtonOkActionPerformed(evt);
             }
         });
 
@@ -60,37 +81,136 @@ public class CreateEventDialog extends javax.swing.JDialog {
             }
         });
 
+        jLabelTitle.setText("Titel:");
+
+        jLabelDate.setText("Datum:");
+
+        jLabelTime.setText("Uhrzeit:");
+
+        jTextAreaContent.setColumns(20);
+        jTextAreaContent.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+        jTextAreaContent.setLineWrap(true);
+        jTextAreaContent.setRows(5);
+        jTextAreaContent.setText("test");
+        jScrollPaneContent.setViewportView(jTextAreaContent);
+
+        dateChooserCombo.setCalendarPreferredSize(new java.awt.Dimension(340, 180));
+        dateChooserCombo.setNothingAllowed(false);
+        dateChooserCombo.setBehavior(datechooser.model.multiple.MultyModelBehavior.SELECT_SINGLE);
+
+        jTextFieldTime.setText("12:00");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButtonSave)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 242, Short.MAX_VALUE)
-                .addComponent(jButtonCancel)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPaneContent)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabelTitle, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabelDate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabelTime, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(dateChooserCombo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jTextFieldTitle)
+                            .addComponent(jTextFieldTime)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButtonOk, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(304, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButtonCancel)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButtonSave)
-                        .addContainerGap())))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelTitle)
+                    .addComponent(jTextFieldTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabelDate, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(dateChooserCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelTime)
+                    .addComponent(jTextFieldTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPaneContent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonOk)
+                    .addComponent(jButtonCancel))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSaveActionPerformed
+    private Date getDate() {
+        Date date = null;
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dateChooserCombo.getCurrent().getTime());
+        Pattern pattern = Pattern.compile("(\\d\\d?):(\\d\\d)");
+        Matcher matcher = pattern.matcher(jTextFieldTime.getText().trim());
+        if (matcher.find()) {
+            int hours = Integer.parseInt(matcher.group(1));
+            int minutes = Integer.parseInt(matcher.group(2));
+            if (hours < 24 && minutes < 60) {
+                cal.set(Calendar.HOUR_OF_DAY, hours);
+                cal.set(Calendar.MINUTE, minutes);
+                date = cal.getTime();
+            }
+        }
+        return date;
+    }
+    
+    
+    private void jButtonOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOkActionPerformed
+        String title = jTextFieldTitle.getText().trim();
+        if (title.isEmpty()) {
+            jTextFieldTitle.setText("");
+            jTextFieldTitle.requestFocus();
+            return;
+        }
         
-        event = new Event();
-        this.dispose();
+        String content = jTextAreaContent.getText().trim();
+        if (title.isEmpty()) {
+            jTextAreaContent.setText("");
+            jTextAreaContent.requestFocus();
+            return;
+        }
         
-    }//GEN-LAST:event_jButtonSaveActionPerformed
+        if (dateChooserCombo.getSelectedDate() == null) {
+            dateChooserCombo.requestFocus();
+            return;
+        }
+        
+        Date date = null;
+        if (dateChooserCombo.getSelectedDate() != null) {
+            date = getDate();
+            if (date == null) {
+                jTextFieldTime.requestFocus();
+                jTextFieldTime.setSelectionStart(0);
+                jTextFieldTime.setSelectionEnd(jTextFieldTime.getText().length());
+                return;
+            }
+        }
+        
+        if (event == null) {
+            event = new Event(title, content, date);
+        } else {
+            event.setTitle(title);
+            event.setContent(content);
+            event.setDate(date);
+        }
+        dispose();
+    }//GEN-LAST:event_jButtonOkActionPerformed
 
     private void jButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelActionPerformed
         event = null;
@@ -102,8 +222,16 @@ public class CreateEventDialog extends javax.swing.JDialog {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private datechooser.beans.DateChooserCombo dateChooserCombo;
     private javax.swing.JButton jButtonCancel;
-    private javax.swing.JButton jButtonSave;
+    private javax.swing.JButton jButtonOk;
+    private javax.swing.JLabel jLabelDate;
+    private javax.swing.JLabel jLabelTime;
+    private javax.swing.JLabel jLabelTitle;
+    private javax.swing.JScrollPane jScrollPaneContent;
+    private javax.swing.JTextArea jTextAreaContent;
+    private javax.swing.JTextField jTextFieldTime;
+    private javax.swing.JTextField jTextFieldTitle;
     // End of variables declaration//GEN-END:variables
 }
 

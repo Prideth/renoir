@@ -15,6 +15,7 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import javax.imageio.ImageIO;
 import pim.contact.Contact;
+import pim.event.Event;
 import pim.exam.Exam;
 import pim.notes.Note;
 
@@ -150,6 +151,37 @@ public class DatabaseWriter {
         }
         try (Statement stmt = con.createStatement()) {
             stmt.addBatch("DELETE FROM notes WHERE userid = '" + userid + "'");
+            stmt.addBatch(sb.toString());
+            stmt.executeBatch();
+        }
+    }
+    
+    
+    public void writeEvents(Event[] events, int userid) throws SQLException {
+        if (events.length == 0) {
+            return;
+        }
+        SimpleDateFormat f= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        StringBuilder sb = new StringBuilder("INSERT INTO events VALUES ");
+        for (int i = 0; i < events.length; i++) {
+            sb.append("(")
+              .append(userid)
+              .append(",'")
+              .append(events[i].getTitle().replaceAll("'", "\\\\'"))
+              .append("','")
+              .append(events[i].getContent().replaceAll("'", "\\\\'"))
+              .append("','")
+              .append(f.format(events[i].getDate()))
+              .append("'");
+            
+            if (i < events.length - 1) {
+                sb.append("),");
+            } else {
+                sb.append(")");
+            }
+        }
+        try (Statement stmt = con.createStatement()) {
+            stmt.addBatch("DELETE FROM events WHERE userid = '" + userid + "'");
             stmt.addBatch(sb.toString());
             stmt.executeBatch();
         }

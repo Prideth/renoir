@@ -17,6 +17,7 @@ import pim.exam.Exam;
 import pim.notes.Note;
 import java.util.Date;  //REMOVE ME
 import javax.imageio.ImageIO;
+import pim.event.Event;
 
 /**
  *
@@ -126,5 +127,21 @@ public class DatabaseReader {
         return notes;
     }
 
+    public Event[] getEvents(int userid) throws SQLException {
+        Event[] events = null;
+        String sql = "SELECT * FROM events WHERE userid = '" + userid + "'";
+        try (Statement stmt = con.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+            rs.last();
+            if (rs.getRow() > 0) {
+                events = new Event[rs.getRow()];
+                rs.beforeFirst();
+                while (rs.next()) {
+                    events[rs.getRow() - 1] = new Event(rs.getString(2),
+                            rs.getString(3), rs.getTimestamp(4));
+                }
+            }
+        }
+        return events;
+    }
 
 }

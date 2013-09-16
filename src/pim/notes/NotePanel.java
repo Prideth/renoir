@@ -209,7 +209,9 @@ public class NotePanel extends JPanel implements PanelInterface {
         }
         jPanelContent.updateUI();
 
-        selectNote(noteItems[size - 1]);
+        if (size > 0) {
+            selectNote(noteItems[size - 1]);
+        }
     }
 
     
@@ -283,11 +285,15 @@ public class NotePanel extends JPanel implements PanelInterface {
     }
 
     @Override
-    public void showAddDialog(JFrame rootWindow) {
-        CreateNoteDialog dialog = new CreateNoteDialog(rootWindow, true, null);
+    public void showAddDialog(Object value, JFrame rootWindow) {
+        Note note = null;
+        if (value != null) {
+            note = (Note) value;
+        }
+        CreateNoteDialog dialog = new CreateNoteDialog(rootWindow, true, note);
         dialog.setLocationRelativeTo(rootWindow);
         dialog.setVisible(true);
-        Note note = dialog.getNote();
+        note = dialog.getNote();
         if (note != null) {
             insertValue(note);
         }
@@ -328,7 +334,7 @@ public class NotePanel extends JPanel implements PanelInterface {
     private void jButtonNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNewActionPerformed
         if (size < noteItems.length) {
             JFrame rootWindow = getRootWindow();
-            showAddDialog(rootWindow);
+            showAddDialog(null, rootWindow);
         } else {
             JOptionPane.showMessageDialog(getRootWindow(),
                     "Es können maximal " + noteItems.length + " Notizen erstellt werden.");
