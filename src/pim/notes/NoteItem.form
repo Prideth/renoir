@@ -103,21 +103,23 @@
     </Container>
     <Component class="javax.swing.JTextArea" name="jTextAreaNoteOut">
       <Properties>
-        <Property name="editable" type="boolean" value="false"/>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="9f" green="e3" red="ec" type="rgb"/>
         </Property>
         <Property name="columns" type="int" value="20"/>
         <Property name="rows" type="int" value="5"/>
+        <Property name="text" type="java.lang.String" value="Content&#xa;...&#xa;..."/>
         <Property name="autoscrolls" type="boolean" value="false"/>
         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
           <Color id="Standardcursor"/>
         </Property>
-        <Property name="focusable" type="boolean" value="false"/>
         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[46, 250]"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jTextAreaNoteOutMouseClicked"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

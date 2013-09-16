@@ -110,11 +110,11 @@ public class NotePanel extends JPanel implements PanelInterface {
         jPanelRight.setLayout(jPanelRightLayout);
         jPanelRightLayout.setHorizontalGroup(
             jPanelRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 284, Short.MAX_VALUE)
+            .addGap(0, 269, Short.MAX_VALUE)
         );
         jPanelRightLayout.setVerticalGroup(
             jPanelRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 276, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -124,8 +124,8 @@ public class NotePanel extends JPanel implements PanelInterface {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanelLeft, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanelRight, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(69, Short.MAX_VALUE))
+                .addComponent(jPanelRight, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(84, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -227,6 +227,7 @@ public class NotePanel extends JPanel implements PanelInterface {
         jPanelLeft.removeAll();
         jPanelRight.removeAll();
 
+        
 
         if (searchString.isEmpty()) {
 
@@ -538,6 +539,7 @@ public class NotePanel extends JPanel implements PanelInterface {
     private void notePanelMousePressed(java.awt.event.MouseEvent evt) {
         if (evt.getButton() == 1) {
             selectNote(((NoteItem) evt.getComponent()).getPosition());
+            
             if (evt.getClickCount() == 2) {
                 JFrame rootWindow = getRootWindow();
                 Note note = noteItems[selectedIndex].getNote();
@@ -563,9 +565,11 @@ public class NotePanel extends JPanel implements PanelInterface {
             if (selectedIndex > -1) {
                 noteItems[selectedIndex].setBackground(bgColor);
                 noteItems[selectedIndex].getjTextAreaNoteOut().setBackground(bgColor);
+                noteItems[selectedIndex].setjTextAreaNoteOutBgColor(bgColor);
             }
             noteItems[position].setBackground(selectedColor);
-            noteItems[position].getjTextAreaNoteOut().setBackground(bgColor);
+            //noteItems[position].getjTextAreaNoteOut().setBackground(bgColor);
+            noteItems[position].setjTextAreaNoteOutBgColor(selectedColor);
             selectedIndex = position;
         }
     }

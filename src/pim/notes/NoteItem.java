@@ -4,6 +4,7 @@
  */
 package pim.notes;
 
+import java.awt.Color;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -18,7 +19,7 @@ public class NoteItem extends javax.swing.JPanel implements Comparable<NoteItem>
     private String title;
     private Date date;
     private String content;
-    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy   HH:mm");
 
     
     /**
@@ -107,14 +108,18 @@ public class NoteItem extends javax.swing.JPanel implements Comparable<NoteItem>
 
         jLabelTitle.getAccessibleContext().setAccessibleName("");
 
-        jTextAreaNoteOut.setEditable(false);
         jTextAreaNoteOut.setBackground(new java.awt.Color(236, 227, 159));
         jTextAreaNoteOut.setColumns(20);
         jTextAreaNoteOut.setRows(5);
+        jTextAreaNoteOut.setText("Content\n...\n...");
         jTextAreaNoteOut.setAutoscrolls(false);
         jTextAreaNoteOut.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jTextAreaNoteOut.setFocusable(false);
         jTextAreaNoteOut.setMaximumSize(new java.awt.Dimension(46, 250));
+        jTextAreaNoteOut.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTextAreaNoteOutMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -139,6 +144,10 @@ public class NoteItem extends javax.swing.JPanel implements Comparable<NoteItem>
                 .addComponent(jLableDate))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jTextAreaNoteOutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextAreaNoteOutMouseClicked
+        System.out.println("clicked");
+    }//GEN-LAST:event_jTextAreaNoteOutMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabelTitle;
@@ -218,4 +227,9 @@ public class NoteItem extends javax.swing.JPanel implements Comparable<NoteItem>
     public void setjTextAreaNoteOut(javax.swing.JTextArea jTextAreaNoteOut) {
         this.jTextAreaNoteOut = jTextAreaNoteOut;
     }
+    
+    public void setjTextAreaNoteOutBgColor(Color color) {
+        jTextAreaNoteOut.setBackground(color);
+    }
 }
+
