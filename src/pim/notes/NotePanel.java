@@ -200,6 +200,7 @@ public class NotePanel extends JPanel implements PanelInterface {
                 jPanelContent.add(noteItems[i]);
             }
         } else {
+            enableCancelButton();
             for (int i = 0; i < size; i++) {
                 if (noteItems[i].getTitle().matches(".*" + searchString + ".*") | noteItems[i].getContent().matches(".*" + searchString + ".*")) {
                     jPanelContent.add(noteItems[i]);
