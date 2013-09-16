@@ -17,7 +17,6 @@ import pim.exam.Exam;
 import pim.notes.Note;
 import java.util.Date;  //REMOVE ME
 import javax.imageio.ImageIO;
-import pim.todo.ToDo;
 
 /**
  *
@@ -127,9 +126,5 @@ public class DatabaseReader {
         return notes;
     }
 
-    public ToDo[] getToDos() {
-        ToDo[] toDos = new ToDo[100];
-        
-        return toDos;
-    }
+
 }

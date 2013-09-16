@@ -24,11 +24,12 @@ import pim.contact.ContactPanel;
 import pim.database.Account;
 import pim.database.DatabaseReader;
 import pim.database.DatabaseWriter;
+import pim.event.Event;
+import pim.event.EventPanel;
 import pim.exam.Exam;
 import pim.exam.ExamPanel;
 import pim.mail.MailSettings;
 import pim.notes.Note;
-import pim.todo.ToDo;
 
 /**
  *
@@ -103,12 +104,12 @@ public class MainFrame extends javax.swing.JFrame {
             updatePanels(con);
         }
                
-        ToDo[] todos = null;
+        Event[] events = null;
         
         mailPanel = new pim.mail.MailPanel();
         calendarPanel = new pim.calendar2.CalendarPanel(examPanel, notePanel);
         //calendarPanel = new pim.calendar.CalendarPanel();
-        toDoPanel = new pim.todo.ToDoPanel(todos);
+        eventPanel = new EventPanel(null);
         
         
         if (user != null) {
@@ -118,7 +119,8 @@ public class MainFrame extends javax.swing.JFrame {
             jMenuItemSave.setEnabled(true);
         }
         
-        switchPanel(calendarPanel, jButtonCalendar);
+        switchPanel(eventPanel, jButtonEvents);
+        
     }
     
     private void updatePanels(Connection con) {
@@ -173,7 +175,7 @@ public class MainFrame extends javax.swing.JFrame {
         jButtonExams = new javax.swing.JButton();
         jButtonContacts = new javax.swing.JButton();
         jButtonCalendar = new javax.swing.JButton();
-        jButtonToDo = new javax.swing.JButton();
+        jButtonEvents = new javax.swing.JButton();
         jButtonNotes = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jPanelContent = new javax.swing.JPanel();
@@ -247,17 +249,17 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jToolBar.add(jButtonCalendar);
 
-        jButtonToDo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pim/icons/todo.png"))); // NOI18N
-        jButtonToDo.setText("ToDo");
-        jButtonToDo.setFocusable(false);
-        jButtonToDo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButtonToDo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButtonToDo.addActionListener(new java.awt.event.ActionListener() {
+        jButtonEvents.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pim/icons/todo.png"))); // NOI18N
+        jButtonEvents.setText("Termine");
+        jButtonEvents.setFocusable(false);
+        jButtonEvents.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButtonEvents.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButtonEvents.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonToDoActionPerformed(evt);
+                jButtonEventsActionPerformed(evt);
             }
         });
-        jToolBar.add(jButtonToDo);
+        jToolBar.add(jButtonEvents);
 
         jButtonNotes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pim/icons/notes.png"))); // NOI18N
         jButtonNotes.setText("Notizen");
@@ -398,9 +400,9 @@ public class MainFrame extends javax.swing.JFrame {
         calendarPanel.update();
     }//GEN-LAST:event_jButtonCalendarActionPerformed
 
-    private void jButtonToDoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonToDoActionPerformed
-        switchPanel(toDoPanel, jButtonToDo);
-    }//GEN-LAST:event_jButtonToDoActionPerformed
+    private void jButtonEventsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEventsActionPerformed
+        switchPanel(eventPanel, jButtonEvents);
+    }//GEN-LAST:event_jButtonEventsActionPerformed
 
     private void jButtonNotesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNotesActionPerformed
         switchPanel(notePanel, jButtonNotes);
@@ -538,9 +540,9 @@ public class MainFrame extends javax.swing.JFrame {
             jButtonCalendar.setForeground(Color.BLACK);
             jButtonCalendar.setEnabled(true);
         }
-        if (!jButtonToDo.isEnabled()) {
-            jButtonToDo.setForeground(Color.BLACK);
-            jButtonToDo.setEnabled(true);
+        if (!jButtonEvents.isEnabled()) {
+            jButtonEvents.setForeground(Color.BLACK);
+            jButtonEvents.setEnabled(true);
         }
         if (!jButtonNotes.isEnabled()) {
             jButtonNotes.setForeground(Color.BLACK);
@@ -600,16 +602,16 @@ public class MainFrame extends javax.swing.JFrame {
     private pim.contact.ContactPanel contactPanel;
     private pim.calendar2.CalendarPanel calendarPanel;
     //private pim.calendar.CalendarPanel calendarPanel;
-    private pim.todo.ToDoPanel toDoPanel;
+    private EventPanel eventPanel;
     private pim.notes.NotePanel notePanel;
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonCalendar;
     private javax.swing.JButton jButtonContacts;
+    private javax.swing.JButton jButtonEvents;
     private javax.swing.JButton jButtonExams;
     private javax.swing.JButton jButtonMail;
     private javax.swing.JButton jButtonNotes;
-    private javax.swing.JButton jButtonToDo;
     private javax.swing.JMenuBar jMenuBar;
     private javax.swing.JMenu jMenuFile;
     private javax.swing.JMenu jMenuInfo;
