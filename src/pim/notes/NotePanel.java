@@ -6,6 +6,8 @@ package pim.notes;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -20,6 +22,7 @@ import javax.swing.JPanel;
 
 
 import pim.*;
+import pim.util.WrapLayout;
 
 /**
  *
@@ -54,6 +57,9 @@ public class NotePanel extends JPanel implements PanelInterface {
         //initNoteItems("");
         TextFieldListener textFieldListener = new TextFieldListener();
         jTextFieldSearch.addMouseListener(textFieldListener);
+        
+          jPanelContent.setLayout(new WrapLayout(FlowLayout.LEFT, 10, 10));
+         jPanelContent.setPreferredSize(new Dimension(381, 333));
     }
 
     /**
@@ -67,9 +73,7 @@ public class NotePanel extends JPanel implements PanelInterface {
         jButtonNew = new javax.swing.JButton();
         jButtonEdit = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jPanel1 = new javax.swing.JPanel();
-        jPanelLeft = new javax.swing.JPanel();
-        jPanelRight = new javax.swing.JPanel();
+        jPanelContent = new javax.swing.JPanel();
         jButtonDelete = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jTextFieldSearch = new javax.swing.JTextField();
@@ -95,50 +99,18 @@ public class NotePanel extends JPanel implements PanelInterface {
 
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-        javax.swing.GroupLayout jPanelLeftLayout = new javax.swing.GroupLayout(jPanelLeft);
-        jPanelLeft.setLayout(jPanelLeftLayout);
-        jPanelLeftLayout.setHorizontalGroup(
-            jPanelLeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 281, Short.MAX_VALUE)
+        javax.swing.GroupLayout jPanelContentLayout = new javax.swing.GroupLayout(jPanelContent);
+        jPanelContent.setLayout(jPanelContentLayout);
+        jPanelContentLayout.setHorizontalGroup(
+            jPanelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 640, Short.MAX_VALUE)
         );
-        jPanelLeftLayout.setVerticalGroup(
-            jPanelLeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 265, Short.MAX_VALUE)
-        );
-
-        javax.swing.GroupLayout jPanelRightLayout = new javax.swing.GroupLayout(jPanelRight);
-        jPanelRight.setLayout(jPanelRightLayout);
-        jPanelRightLayout.setHorizontalGroup(
-            jPanelRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 269, Short.MAX_VALUE)
-        );
-        jPanelRightLayout.setVerticalGroup(
-            jPanelRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 276, Short.MAX_VALUE)
+        jPanelContentLayout.setVerticalGroup(
+            jPanelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 274, Short.MAX_VALUE)
         );
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jPanelLeft, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanelRight, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(84, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanelRight, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jPanelLeft, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())))
-        );
-
-        jScrollPane1.setViewportView(jPanel1);
+        jScrollPane1.setViewportView(jPanelContent);
 
         jButtonDelete.setText("Löschen");
         jButtonDelete.addActionListener(new java.awt.event.ActionListener() {
@@ -177,25 +149,28 @@ public class NotePanel extends JPanel implements PanelInterface {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButtonNew, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButtonNew, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addComponent(jComboBoxSort, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(25, 25, 25)
+                        .addComponent(jLabel2)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jComboBoxSort, 0, 100, Short.MAX_VALUE)
+                    .addComponent(jButtonEdit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
+                        .addGap(0, 125, Short.MAX_VALUE)
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextFieldSearch)
+                        .addComponent(jTextFieldSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonUndoSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 574, Short.MAX_VALUE)
+                        .addComponent(jButtonUndoSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButtonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -203,17 +178,17 @@ public class NotePanel extends JPanel implements PanelInterface {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonNew)
                     .addComponent(jButtonDelete)
-                    .addComponent(jButtonEdit)
-                    .addComponent(jComboBoxSort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
+                    .addComponent(jButtonEdit))
                 .addGap(8, 8, 8)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButtonUndoSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jTextFieldSearch)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jTextFieldSearch)
-                        .addComponent(jLabel1)))
+                        .addComponent(jComboBoxSort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel1)
+                        .addComponent(jLabel2)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE))
+                .addComponent(jScrollPane1))
         );
 
         getAccessibleContext().setAccessibleParent(this);
@@ -221,10 +196,25 @@ public class NotePanel extends JPanel implements PanelInterface {
 
     private void initNoteItems(String searchString) {
 
+        
+        jPanelContent.removeAll();
+        if (searchString.isEmpty()) {
+            for (int i = 0; i < size; i++) {
+                jPanelContent.add(noteItems[i]);
+            }
+        } else {
+            for (int i = 0; i < size; i++) {
+                if (noteItems[i].getTitle().matches(".*" + searchString + ".*") | noteItems[i].getContent().matches(".*" + searchString + ".*")) {
+                    jPanelContent.add(noteItems[i]);
+                }
+            }
+        }
+        jPanelContent.updateUI();
+
+        /*
         jPanelLeft.removeAll();
         jPanelRight.removeAll();
 
-        
 
         if (searchString.isEmpty()) {
 
@@ -354,6 +344,7 @@ public class NotePanel extends JPanel implements PanelInterface {
         }
 
         //selectNote(size - 1);
+        */
     }
 
     
@@ -377,6 +368,7 @@ public class NotePanel extends JPanel implements PanelInterface {
             selectedIndex = -1;
         }
         initNoteItems("");
+        
     }
 
     
@@ -535,12 +527,13 @@ public class NotePanel extends JPanel implements PanelInterface {
 
     private void notePanelMousePressed(java.awt.event.MouseEvent evt) {
         if (evt.getButton() == 1) {
-            selectNote(((NoteItem) evt.getComponent()).getPosition());
-            
-            if (evt.getClickCount() == 2) {
-                JFrame rootWindow = getRootWindow();
-                Note note = noteItems[selectedIndex].getNote();
-                showChangeDialog(note, rootWindow);
+            if (evt.getComponent() instanceof NoteItem) {
+                NoteItem noteItem = (NoteItem) evt.getComponent();
+                selectNote(noteItem);
+                if (evt.getClickCount() == 2) {
+                    JFrame rootWindow = getRootWindow();
+                    showChangeDialog(noteItem.getNote(), rootWindow);
+                }
             }
         }
     }
@@ -557,17 +550,13 @@ public class NotePanel extends JPanel implements PanelInterface {
         return index;
     }
     
-    private void selectNote(int position) {
+    private void selectNote(NoteItem noteItem) {
+        
         if (size > 0) {
-            if (selectedIndex > -1) {
-                noteItems[selectedIndex].setBackground(bgColor);
-                noteItems[selectedIndex].getjTextAreaNoteOut().setBackground(bgColor);
-                noteItems[selectedIndex].setjTextAreaNoteOutBgColor(bgColor);
-            }
-            noteItems[position].setBackground(selectedColor);
-            //noteItems[position].getjTextAreaNoteOut().setBackground(bgColor);
-            noteItems[position].setjTextAreaNoteOutBgColor(selectedColor);
-            selectedIndex = position;
+            unselectAll();
+            noteItem.setBackground(selectedColor);
+            noteItem.getjTextAreaNoteOut().setBackground(selectedColor);
+            selectedIndex = noteItem.getPosition();
         }
     }
 
@@ -675,9 +664,7 @@ public class NotePanel extends JPanel implements PanelInterface {
     private javax.swing.JComboBox jComboBoxSort;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanelLeft;
-    private javax.swing.JPanel jPanelRight;
+    private javax.swing.JPanel jPanelContent;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextFieldSearch;
     // End of variables declaration//GEN-END:variables
