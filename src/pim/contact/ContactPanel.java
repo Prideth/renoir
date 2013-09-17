@@ -7,13 +7,13 @@ package pim.contact;
 import java.awt.Color;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Group;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import pim.PanelInterface;
 import pim.TextFieldListener;
-
 
 /**
  *
@@ -25,11 +25,18 @@ public class ContactPanel extends JPanel implements PanelInterface {
     private int size;
     private int selectedIndex;
     private Color bgColor;
+    private ImageIcon okIcon;
+    private ImageIcon cancelIcon;
+    private boolean search;
 
     /**
      * Creates new form ContactPanel
      */
     public ContactPanel() {
+        okIcon = new javax.swing.ImageIcon(getClass().getResource("/pim/icons/ok.png"));
+        cancelIcon = new javax.swing.ImageIcon(getClass().getResource("/pim/icons/cancel.png"));
+
+
         initComponents();
         TextFieldListener textFieldListener = new TextFieldListener();
         jTextFieldSearch.addMouseListener(textFieldListener);
@@ -38,7 +45,7 @@ public class ContactPanel extends JPanel implements PanelInterface {
         size = 0;
         selectedIndex = -1;
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -48,42 +55,47 @@ public class ContactPanel extends JPanel implements PanelInterface {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButtonNew = new javax.swing.JButton();
-        jButtonEdit = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jPanel1 = new javax.swing.JPanel();
+        jScrollPaneContent = new javax.swing.JScrollPane();
+        jPanelContent = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        jButtonAdd = new javax.swing.JButton();
+        jButtonChange = new javax.swing.JButton();
         jButtonDelete = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        jLabelSearch = new javax.swing.JLabel();
         jTextFieldSearch = new javax.swing.JTextField();
+        jButtonSearch = new javax.swing.JButton();
 
-        jButtonNew.setText("Erstellen");
-        jButtonNew.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonNewActionPerformed(evt);
-            }
-        });
+        jScrollPaneContent.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-        jButtonEdit.setText("Ändern");
-        jButtonEdit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonEditActionPerformed(evt);
-            }
-        });
-
-        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout jPanelContentLayout = new javax.swing.GroupLayout(jPanelContent);
+        jPanelContent.setLayout(jPanelContentLayout);
+        jPanelContentLayout.setHorizontalGroup(
+            jPanelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 516, Short.MAX_VALUE)
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        jPanelContentLayout.setVerticalGroup(
+            jPanelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 329, Short.MAX_VALUE)
         );
 
-        jScrollPane1.setViewportView(jPanel1);
+        jScrollPaneContent.setViewportView(jPanelContent);
+
+        jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.LINE_AXIS));
+
+        jButtonAdd.setText("Erstellen");
+        jButtonAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAddActionPerformed(evt);
+            }
+        });
+
+        jButtonChange.setText("Ändern");
+        jButtonChange.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonChangeActionPerformed(evt);
+            }
+        });
 
         jButtonDelete.setText("Löschen");
         jButtonDelete.addActionListener(new java.awt.event.ActionListener() {
@@ -92,52 +104,104 @@ public class ContactPanel extends JPanel implements PanelInterface {
             }
         });
 
-        jLabel1.setText("Suche:");
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jButtonAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonChange, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(20, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(jButtonAdd)
+                .addComponent(jButtonChange)
+                .addComponent(jButtonDelete))
+        );
+
+        jPanel2.add(jPanel3);
+
+        jLabelSearch.setText("Suche: ");
+        jPanel2.add(jLabelSearch);
+
+        jTextFieldSearch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextFieldSearchKeyReleased(evt);
+            }
+        });
+        jPanel2.add(jTextFieldSearch);
+
+        jButtonSearch.setIcon(okIcon);
+        jButtonSearch.setBorder(javax.swing.BorderFactory.createEmptyBorder(6, 6, 6, 6));
+        jButtonSearch.setEnabled(false);
+        jButtonSearch.setIconTextGap(0);
+        jButtonSearch.setInheritsPopupMenu(true);
+        jButtonSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSearchActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButtonSearch);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jButtonNew, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextFieldSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addComponent(jScrollPane1)
+            .addComponent(jScrollPaneContent)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonNew)
-                    .addComponent(jButtonEdit)
-                    .addComponent(jButtonDelete)
-                    .addComponent(jLabel1)
-                    .addComponent(jTextFieldSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(1, 1, 1)
-                .addComponent(jScrollPane1))
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(jScrollPaneContent, javax.swing.GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-        private void initContactItems() {
-        jPanel1.removeAll();
+    private void initContactItems(String searchString) {
+        
+        
+        jPanelContent.removeAll();
 
-        javax.swing.GroupLayout layout = new GroupLayout(jPanel1);
-        jPanel1.setLayout(layout);
+        GroupLayout layout = new GroupLayout(jPanelContent);
+        jPanelContent.setLayout(layout);
 
         Group group1 = layout.createParallelGroup(GroupLayout.Alignment.LEADING);
         Group group2 = layout.createSequentialGroup().addGap(5);
 
         for (int i = size - 1; i >= 0; i--) {
-            contactItems[i].setPosition(i);
-            group1.addComponent(contactItems[i], GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE);
-            group2.addComponent(contactItems[i], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE);
-            group2.addGap(5);
+            boolean show = false;
+            if (searchString == null) {
+                show = true;
+            } else {
+                String regex = ".*" + searchString.toLowerCase() + ".*";
+                String title = contactItems[i].getContact().getName().toLowerCase();
+                String content1 = contactItems[i].getContact().getContent1();
+                String content2 = contactItems[i].getContact().getContent2();
+                String content3 = contactItems[i].getContact().getContent3();
+                content1 = (content1 != null) ? content1.toLowerCase() : null;
+                content2 = (content2 != null) ? content2.toLowerCase() : null;
+                content3 = (content3 != null) ? content3.toLowerCase() : null;
+                if (title.matches(regex)
+                        || ((content1 != null) && content1.matches(regex))
+                        || ((content2 != null) && content2.matches(regex))
+                        || ((content3 != null) && content3.matches(regex))) {
+                    show = true;
+                    search = true;
+                }
+            }
+            if (show) {
+                contactItems[i].setPosition(i);
+                group1.addComponent(contactItems[i], GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE);
+                group2.addComponent(contactItems[i], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE);
+                group2.addGap(5);
+            }
         }
 
         layout.setHorizontalGroup(
@@ -153,6 +217,67 @@ public class ContactPanel extends JPanel implements PanelInterface {
 
         selectPerson(size - 1);
     }
+
+    private void jButtonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddActionPerformed
+        if (size < contactItems.length) {
+            JFrame rootWindow = getRootWindow();
+            showAddDialog(null, rootWindow);
+        } else {
+            JOptionPane.showMessageDialog(getRootWindow(),
+                    "Es können maximal " + contactItems.length + " Kontakte erstellt werden.");
+        }
+    }//GEN-LAST:event_jButtonAddActionPerformed
+
+    private void jButtonChangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonChangeActionPerformed
+        if (selectedIndex > -1) {
+            Contact contact = contactItems[selectedIndex].getContact();
+            showChangeDialog(contact, getRootWindow());
+        } else {
+            JOptionPane.showMessageDialog(getRootWindow(), "Es ist kein Kontakt ausgewählt.");
+        }
+    }//GEN-LAST:event_jButtonChangeActionPerformed
+
+    private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
+        if (selectedIndex > -1) {
+            Contact contact = contactItems[selectedIndex].getContact();
+            showDeleteDialog(contact, getRootWindow());
+        } else {
+            JOptionPane.showMessageDialog(getRootWindow(), "Es ist kein Kontakt ausgewählt.");
+        }
+    }//GEN-LAST:event_jButtonDeleteActionPerformed
+
+    private void jTextFieldSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldSearchKeyReleased
+        if (!search && jTextFieldSearch.getText().trim().isEmpty()) {
+            jButtonSearch.setEnabled(false);
+        } else {
+            jButtonSearch.setEnabled(true);
+        }
+    }//GEN-LAST:event_jTextFieldSearchKeyReleased
+
+    private void jButtonSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSearchActionPerformed
+        if (!search) {
+            String searchstring = jTextFieldSearch.getText().trim();
+            if (!searchstring.isEmpty()) {
+                initContactItems(searchstring);
+                if (!search) {
+
+                    initContactItems(null);
+                    JOptionPane.showMessageDialog(getRootWindow(), "Nichts gefunden.");
+                } else {
+                     //selectEvent(null);
+                    jButtonSearch.setIcon(cancelIcon);
+                }
+            }
+        } else {
+            if (jTextFieldSearch.getText().trim().isEmpty()) {
+                jButtonSearch.setEnabled(false);
+            }
+            search = false;
+            jButtonSearch.setIcon(okIcon);
+            initContactItems(null);
+        }
+
+    }//GEN-LAST:event_jButtonSearchActionPerformed
 
     @Override
     public void updateValues(Object[] values) {
@@ -172,7 +297,7 @@ public class ContactPanel extends JPanel implements PanelInterface {
                 });
             }
         }
-        initContactItems();
+        initContactItems(null);
     }
 
     @Override
@@ -186,7 +311,7 @@ public class ContactPanel extends JPanel implements PanelInterface {
             }
         });
         contactItems[size++] = p;
-        initContactItems();
+        initContactItems(null);
     }
 
     @Override
@@ -215,7 +340,7 @@ public class ContactPanel extends JPanel implements PanelInterface {
         contactItems[--size] = null;
         selectedIndex = -1;
 
-        initContactItems();
+        initContactItems(null);
     }
 
     @Override
@@ -264,35 +389,6 @@ public class ContactPanel extends JPanel implements PanelInterface {
             deleteValue(contact);
         }
     }
-    
-    
-    private void jButtonNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNewActionPerformed
-        if (size < contactItems.length) {
-            JFrame rootWindow = getRootWindow();
-            showAddDialog(null, rootWindow);
-        } else {
-            JOptionPane.showMessageDialog(getRootWindow(),
-                    "Es können maximal " + contactItems.length + " Kontakte erstellt werden.");
-        }
-    }//GEN-LAST:event_jButtonNewActionPerformed
-
-    private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
-        if (selectedIndex > -1) {         
-            Contact contact = contactItems[selectedIndex].getContact();
-            showDeleteDialog(contact, getRootWindow());
-        } else {
-            JOptionPane.showMessageDialog(getRootWindow(), "Es ist kein Kontakt ausgewählt.");
-        }
-    }//GEN-LAST:event_jButtonDeleteActionPerformed
-    
-    private void jButtonEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditActionPerformed
-        if (selectedIndex > -1) {        
-            Contact contact = contactItems[selectedIndex].getContact();
-            showChangeDialog(contact, getRootWindow());
-        } else {
-            JOptionPane.showMessageDialog(getRootWindow(), "Es ist kein Kontakt ausgewählt.");
-        }
-    }//GEN-LAST:event_jButtonEditActionPerformed
 
     private void personPanelMousePressed(java.awt.event.MouseEvent evt) {
         if (evt.getButton() == 1) {
@@ -314,8 +410,7 @@ public class ContactPanel extends JPanel implements PanelInterface {
         }
         return index;
     }
-    
-    
+
     private void selectPerson(int position) {
         if (size > 0) {
             if (selectedIndex > -1) {
@@ -325,24 +420,20 @@ public class ContactPanel extends JPanel implements PanelInterface {
             selectedIndex = position;
         }
     }
-    
-    
+
     private JFrame getRootWindow() {
         return (JFrame) SwingUtilities.getWindowAncestor(this.getParent());
     }
-    
-    
-    
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonAdd;
+    private javax.swing.JButton jButtonChange;
     private javax.swing.JButton jButtonDelete;
-    private javax.swing.JButton jButtonEdit;
-    private javax.swing.JButton jButtonNew;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton jButtonSearch;
+    private javax.swing.JLabel jLabelSearch;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanelContent;
+    private javax.swing.JScrollPane jScrollPaneContent;
     private javax.swing.JTextField jTextFieldSearch;
     // End of variables declaration//GEN-END:variables
-
 }
