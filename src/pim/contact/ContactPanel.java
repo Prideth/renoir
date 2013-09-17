@@ -214,7 +214,7 @@ public class ContactPanel extends JPanel implements PanelInterface {
                 layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addGroup(group2));
 
-        //selectPerson(size - 1);
+        //selectContact(size - 1);
     }
 
     private void jButtonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddActionPerformed
@@ -261,7 +261,7 @@ public class ContactPanel extends JPanel implements PanelInterface {
                     initContactItems(null);
                     JOptionPane.showMessageDialog(getRootWindow(), "Nichts gefunden.");
                 } else {
-                     //selectEvent(null);
+                     selectContact(null);
                     jButtonSearch.setIcon(cancelIcon);
                 }
             }
@@ -390,7 +390,7 @@ public class ContactPanel extends JPanel implements PanelInterface {
         if (evt.getButton() == 1) {
             if (evt.getComponent() instanceof ContactItem) {
                 selectedContact = (ContactItem) evt.getComponent();
-                selectPerson(selectedContact);
+                selectContact(selectedContact);
                 if (evt.getClickCount() == 2) {
                     showChangeDialog(selectedContact.getContact(), getRootWindow());
                 }
@@ -409,7 +409,7 @@ public class ContactPanel extends JPanel implements PanelInterface {
         return index;
     }
 
-    private void selectPerson(ContactItem contactItem) {
+    private void selectContact(ContactItem contactItem) {
         for (int i = 0; i < size; i++) {
             contactItems[i].unselect();
         }
