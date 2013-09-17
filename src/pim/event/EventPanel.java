@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import pim.PanelInterface;
+import pim.TextFieldListener;
 import pim.util.WrapLayout;
 
 /**
@@ -44,6 +45,10 @@ public class EventPanel extends JPanel implements PanelInterface {
         selectedItem = null;
         
         initComponents();
+        
+        TextFieldListener textFieldListener = new TextFieldListener();
+        jTextFieldSearch.addMouseListener(textFieldListener);
+
         jPanelContent.setLayout(new WrapLayout(FlowLayout.LEFT, 10, 10));
         jPanelContent.setSize(new Dimension(300, 1));
     }
@@ -130,10 +135,17 @@ public class EventPanel extends JPanel implements PanelInterface {
 
         jLabelSearch.setText("Suche: ");
         jPanel1.add(jLabelSearch);
+
+        jTextFieldSearch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextFieldSearchKeyReleased(evt);
+            }
+        });
         jPanel1.add(jTextFieldSearch);
 
         jButtonSearch.setIcon(okIcon);
         jButtonSearch.setBorder(javax.swing.BorderFactory.createEmptyBorder(6, 6, 6, 6));
+        jButtonSearch.setEnabled(false);
         jButtonSearch.setIconTextGap(0);
         jButtonSearch.setInheritsPopupMenu(true);
         jButtonSearch.addActionListener(new java.awt.event.ActionListener() {
@@ -363,6 +375,7 @@ public class EventPanel extends JPanel implements PanelInterface {
             if (!searchstring.isEmpty()) {
                 initEventItems(searchstring);
                 if (!search) {
+                    
                     initEventItems(null);
                     JOptionPane.showMessageDialog(getRootWindow(), "Nichts gefunden.");
                 } else {
@@ -370,13 +383,23 @@ public class EventPanel extends JPanel implements PanelInterface {
                     jButtonSearch.setIcon(cancelIcon);
                 }
             }
-            
         } else {
+            if (jTextFieldSearch.getText().trim().isEmpty()) {
+                jButtonSearch.setEnabled(false);
+            }
             search = false;
             jButtonSearch.setIcon(okIcon);
             initEventItems(null);
         }
     }//GEN-LAST:event_jButtonSearchActionPerformed
+
+    private void jTextFieldSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldSearchKeyReleased
+        if (!search && jTextFieldSearch.getText().trim().isEmpty()) {
+            jButtonSearch.setEnabled(false);
+        } else {
+            jButtonSearch.setEnabled(true);
+        }
+    }//GEN-LAST:event_jTextFieldSearchKeyReleased
 
     private JFrame getRootWindow() {
         return (JFrame) SwingUtilities.getWindowAncestor(this.getParent());
