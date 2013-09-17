@@ -4,6 +4,7 @@
  */
 package pim.contact;
 
+import java.awt.Color;
 import javax.swing.ImageIcon;
 
 
@@ -13,7 +14,10 @@ import javax.swing.ImageIcon;
  * @author lk
  */
 public class ContactItem extends javax.swing.JPanel {
-
+    
+    private static final Color SELECT_COLOR = new Color(233, 236, 242);
+    private final Color bgColor;
+    
     private int position;
     private Contact contact;
     
@@ -21,6 +25,7 @@ public class ContactItem extends javax.swing.JPanel {
      * Creates new form PersonPanel
      */
     public ContactItem(Contact contact) {
+        bgColor = this.getBackground();
         initComponents();
         this.contact = contact;
         position = 0;
@@ -73,6 +78,14 @@ public class ContactItem extends javax.swing.JPanel {
     
     public void setPosition(int position) {
         this.position = position;
+    }
+    
+    public void select() {
+        setBackground(SELECT_COLOR);
+    }
+    
+    public void unselect() {
+        setBackground(bgColor);
     }
     
     /**
