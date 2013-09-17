@@ -24,9 +24,7 @@
               <Component id="jButtonDelete" min="-2" pref="90" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jButtonResult" min="-2" pref="90" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
-              <Component id="jLabelView" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace pref="50" max="32767" attributes="0"/>
               <Component id="jComboBoxView" min="-2" pref="130" max="-2" attributes="0"/>
           </Group>
           <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
@@ -52,7 +50,6 @@
                   <Component id="jButtonDelete" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jButtonChange" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jButtonAdd" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabelView" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jComboBoxView" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
@@ -93,11 +90,6 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonDeleteActionPerformed"/>
       </Events>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabelView">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Anzeige:"/>
-      </Properties>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
       <AuxValues>

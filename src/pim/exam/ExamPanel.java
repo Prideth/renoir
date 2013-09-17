@@ -51,7 +51,6 @@ public class ExamPanel extends JPanel implements PanelInterface {
         jComboBoxView = new javax.swing.JComboBox();
         jButtonAdd = new javax.swing.JButton();
         jButtonDelete = new javax.swing.JButton();
-        jLabelView = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableExams = new javax.swing.JTable();
         jLabelEctsTitle = new javax.swing.JLabel();
@@ -80,8 +79,6 @@ public class ExamPanel extends JPanel implements PanelInterface {
                 jButtonDeleteActionPerformed(evt);
             }
         });
-
-        jLabelView.setText("Anzeige:");
 
         jTableExams.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -143,9 +140,7 @@ public class ExamPanel extends JPanel implements PanelInterface {
                 .addComponent(jButtonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonResult, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabelView)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
                 .addComponent(jComboBoxView, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addComponent(jScrollPane1)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -168,7 +163,6 @@ public class ExamPanel extends JPanel implements PanelInterface {
                     .addComponent(jButtonDelete)
                     .addComponent(jButtonChange)
                     .addComponent(jButtonAdd)
-                    .addComponent(jLabelView)
                     .addComponent(jComboBoxView, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(1, 1, 1)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE)
@@ -442,7 +436,6 @@ public class ExamPanel extends JPanel implements PanelInterface {
     private javax.swing.JLabel jLabelAverageTitle;
     private javax.swing.JLabel jLabelEcts;
     private javax.swing.JLabel jLabelEctsTitle;
-    private javax.swing.JLabel jLabelView;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableExams;
     // End of variables declaration//GEN-END:variables
