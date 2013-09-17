@@ -5,6 +5,7 @@
 package pim.event;
 
 import java.awt.Color;
+import java.awt.event.MouseListener;
 import java.text.SimpleDateFormat;
 import javax.swing.JTextArea;
 
@@ -18,9 +19,9 @@ public class EventItem extends javax.swing.JPanel {
     private static final SimpleDateFormat SDF_DATE = new SimpleDateFormat("dd.MM.yyyy");
     private static final SimpleDateFormat SDF_TIME = new SimpleDateFormat("HH:mm");
     private static final Color BACK_COLOR = new Color(178, 216, 255);
-    private static final Color SELECT_COLOR = new Color(219, 219, 219);
+    private static final Color SELECT_COLOR = new Color(209,232,255);
     private static final Color TITLE_BACK_COLOR = new Color(0, 0, 153);
-    private static final Color TITLE_SELECT_COLOR = new Color(0, 0, 0);
+    private static final Color TITLE_SELECT_COLOR = new Color(56,56,201);
 
     private int position;
     private Event event;
@@ -38,7 +39,7 @@ public class EventItem extends javax.swing.JPanel {
         jLabelTitle.setText(event.getTitle());
         jLabelDate.setText(SDF_DATE.format(event.getDate()));
         jLabelTime.setText(SDF_TIME.format(event.getDate()));
-        jTextAreaContent.setText(event.getContent());
+        jTextAreaContent.setText((event.getContent().isEmpty()) ? "Keine Beschreibung vorhanden." : event.getContent());
     }
     
     
@@ -59,8 +60,10 @@ public class EventItem extends javax.swing.JPanel {
         this.position = position;
     }
     
-    public JTextArea getTextArea() {
-        return jTextAreaContent;
+    
+    public void addListener(MouseListener listener) {
+        addMouseListener(listener);
+        jTextAreaContent.addMouseListener(listener);
     }
     
     public void select() {
@@ -92,7 +95,7 @@ public class EventItem extends javax.swing.JPanel {
         jLabelTitle = new javax.swing.JLabel();
         jLabelDelete = new javax.swing.JLabel();
 
-        setBackground(new java.awt.Color(178, 216, 255));
+        setBackground(new java.awt.Color(158, 201, 245));
         setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         setPreferredSize(new java.awt.Dimension(270, 155));
         setRequestFocusEnabled(false);
@@ -153,7 +156,7 @@ public class EventItem extends javax.swing.JPanel {
                 .addComponent(jLabelDateCaption)
                 .addGap(6, 6, 6)
                 .addComponent(jLabelDate)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 82, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
                 .addComponent(jLabelTimeCaption)
                 .addGap(6, 6, 6)
                 .addComponent(jLabelTime)

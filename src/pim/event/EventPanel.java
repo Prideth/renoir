@@ -6,6 +6,8 @@ package pim.event;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.MouseListener;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -25,196 +27,25 @@ public class EventPanel extends JPanel implements PanelInterface {
     EventItem[] eventItems;
     private int size;
     private EventItem selectedItem;
+    private ImageIcon okIcon;
+    private ImageIcon cancelIcon;
+    private boolean search;
 
     /**
      * Creates new form EventPanel
      */
     public EventPanel() {
-        initComponents();
+        okIcon = new javax.swing.ImageIcon(getClass().getResource("/pim/icons/ok.png"));
+        cancelIcon = new javax.swing.ImageIcon(getClass().getResource("/pim/icons/cancel.png"));
+        
+        search = false;
         eventItems = new EventItem[MAX_SIZE];
-
         size = 0;
         selectedItem = null;
-
-
+        
+        initComponents();
         jPanelContent.setLayout(new WrapLayout(FlowLayout.LEFT, 10, 10));
         jPanelContent.setSize(new Dimension(300, 1));
-    }
-
-    private void initEventItems() {
-        jPanelContent.removeAll();
-        for (int i = 0; i < size; i++) {
-            jPanelContent.add(eventItems[i]);
-        }
-        jScrollPaneContent.updateUI();
-    }
-
-    @Override
-    public void updateValues(Object[] values) {
-        if (values != null) {
-            Event[] events = (Event[]) values;
-            eventItems = new EventItem[100];
-            size = 0;
-            size = events.length;
-            for (int i = 0; i < size; i++) {
-                eventItems[i] = new EventItem(events[i]);
-                eventItems[i].addMouseListener(new java.awt.event.MouseAdapter() {
-                    @Override
-                    public void mouseClicked(java.awt.event.MouseEvent evt) {
-                        eventPanelMousePressed(evt);
-                    }
-                });
-                eventItems[i].getTextArea().addMouseListener(new java.awt.event.MouseAdapter() {
-                    @Override
-                    public void mouseClicked(java.awt.event.MouseEvent evt) {
-                        eventPanelMousePressed(evt);
-                    }
-                });
-            }
-
-        } else {
-            eventItems = new EventItem[MAX_SIZE];
-            size = 0;
-        }
-        initEventItems();
-    }
-
-    @Override
-    public void insertValue(Object value) {
-        Event event = (Event) value;
-        EventItem eventItem = new EventItem(event);
-        eventItem.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                eventPanelMousePressed(evt);
-            }
-        });
-        eventItem.getTextArea().addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                eventPanelMousePressed(evt);
-            }
-        });
-        eventItems[size++] = eventItem;
-        //initEventItems();
-        jPanelContent.add(eventItem);
-        jPanelContent.updateUI();
-    }
-
-    @Override
-    public Object[] getValues() {
-        Event[] events = new Event[size];
-        for (int i = 0; i < size; i++) {
-            events[i] = eventItems[i].getEvent();
-        }
-        return events;
-    }
-
-    @Override
-    public void changeValue(Object value) {
-        Event event = (Event) value;
-        int index = getIndex(event);
-        eventItems[index].setEvent(event);
-        eventItems[index].update();
-        jPanelContent.updateUI();
-    }
-
-    @Override
-    public void deleteValue(Object value) {
-        int index = getIndex((Event) value);
-        for (int i = index; i < size - 1; i++) {
-            eventItems[i] = eventItems[i + 1];
-        }
-        eventItems[--size] = null;
-        selectedItem = null;
-        selectEvent(null);
-        initEventItems();
-    }
-
-    @Override
-    public void showAddDialog(Object value, JFrame rootWindow) {
-        Event event = null;
-        if (value != null) {
-            event = (Event) value;
-        }
-        CreateEventDialog dialog = new CreateEventDialog(rootWindow, true, event);
-        dialog.setLocationRelativeTo(rootWindow);
-        dialog.setVisible(true);
-        event = dialog.getEvent();
-        if (event != null) {
-            insertValue(event);
-        }
-    }
-
-    @Override
-    public void showChangeDialog(Object value, JFrame rootWindow) {
-        Event event = (Event) value;
-        CreateEventDialog dialog = new CreateEventDialog(rootWindow, true, event);
-        dialog.setLocationRelativeTo(rootWindow);
-        dialog.setTitle(event.getTitle());
-        dialog.setVisible(true);
-        event = dialog.getEvent();
-        if (event != null) {
-            changeValue(event);
-        }
-    }
-
-    @Override
-    public void showDeleteDialog(Object value, JFrame rootWindow) {
-        Event event = (Event) value;
-        Object[] options = {"Ja", "Nein"};
-        int n = JOptionPane.showOptionDialog(null,
-                "Notiz \"" + event.getTitle() + "\" löschen?",
-                "Löschen bestätigen",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                options,
-                options[0]);
-
-        if (n == 0) {
-            deleteValue(event);
-        }
-    }
-
-    private void selectEvent(EventItem eventItem) {
-        selectedItem = eventItem;
-        for (int i = 0; i < size; i++) {
-            eventItems[i].unselect();
-        }
-        if (eventItem != null) {
-            eventItem.select();
-        }
-    }
-
-    private int getIndex(Event event) {
-        int index = -1;
-        for (int i = 0; i < size; i++) {
-            if (event == eventItems[i].getEvent()) {
-                index = i;
-                break;
-            }
-        }
-        return index;
-    }
-
-    private void eventPanelMousePressed(java.awt.event.MouseEvent evt) {
-        if (evt.getButton() == 1) {
-
-            EventItem eventItem = null;
-            if (evt.getComponent() instanceof EventItem) {
-                eventItem = (EventItem) evt.getComponent();
-                selectEvent(eventItem);
-            }
-            if (evt.getComponent() instanceof JTextArea) {
-                eventItem = (EventItem) evt.getComponent().getParent().getParent().getParent();
-                selectEvent(eventItem);
-            }
-            if (evt.getClickCount() == 2) {
-
-                showChangeDialog(eventItem.getEvent(), getRootWindow());
-            }
-        }
     }
 
     /**
@@ -235,7 +66,7 @@ public class EventPanel extends JPanel implements PanelInterface {
         jButtonDelete = new javax.swing.JButton();
         jLabelSearch = new javax.swing.JLabel();
         jTextFieldSearch = new javax.swing.JTextField();
-        jButtonUndoSearch = new javax.swing.JButton();
+        jButtonSearch = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(518, 355));
 
@@ -301,16 +132,16 @@ public class EventPanel extends JPanel implements PanelInterface {
         jPanel1.add(jLabelSearch);
         jPanel1.add(jTextFieldSearch);
 
-        jButtonUndoSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pim/icons/ok.png"))); // NOI18N
-        jButtonUndoSearch.setBorder(javax.swing.BorderFactory.createEmptyBorder(6, 6, 6, 6));
-        jButtonUndoSearch.setIconTextGap(0);
-        jButtonUndoSearch.setInheritsPopupMenu(true);
-        jButtonUndoSearch.addActionListener(new java.awt.event.ActionListener() {
+        jButtonSearch.setIcon(okIcon);
+        jButtonSearch.setBorder(javax.swing.BorderFactory.createEmptyBorder(6, 6, 6, 6));
+        jButtonSearch.setIconTextGap(0);
+        jButtonSearch.setInheritsPopupMenu(true);
+        jButtonSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonUndoSearchActionPerformed(evt);
+                jButtonSearchActionPerformed(evt);
             }
         });
-        jPanel1.add(jButtonUndoSearch);
+        jPanel1.add(jButtonSearch);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -325,9 +156,183 @@ public class EventPanel extends JPanel implements PanelInterface {
                 .addGap(0, 0, 0)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(jScrollPaneContent, javax.swing.GroupLayout.DEFAULT_SIZE, 328, Short.MAX_VALUE))
+                .addComponent(jScrollPaneContent, javax.swing.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void initEventItems(String searchstring) {
+        jPanelContent.removeAll();
+        for (int i = 0; i < size; i++) {
+            if (searchstring == null) {
+                jPanelContent.add(eventItems[i]);
+            } else {
+                String regex = ".*" + searchstring.toLowerCase() + ".*";
+                String title = eventItems[i].getEvent().getTitle().toLowerCase();
+                String content = eventItems[i].getEvent().getContent().toLowerCase();
+                if (title.matches(regex) || content.matches(regex)) {
+                    jPanelContent.add(eventItems[i]);
+                    search = true;
+                }
+            }
+        }
+        jScrollPaneContent.updateUI();
+    }
+
+    @Override
+    public void updateValues(Object[] values) {
+        if (values != null) {
+            Event[] events = (Event[]) values;
+            eventItems = new EventItem[100];
+            size = events.length;
+            for (int i = 0; i < size; i++) {
+                eventItems[i] = new EventItem(events[i]);
+                MouseListener listener = new java.awt.event.MouseAdapter() {
+                    @Override
+                    public void mousePressed(java.awt.event.MouseEvent evt) {
+                        eventPanelMousePressed(evt);
+                    }
+                };
+                eventItems[i].addListener(listener);
+            }
+
+        } else {
+            eventItems = new EventItem[MAX_SIZE];
+            size = 0;
+        }
+        initEventItems(null);
+    }
+
+    @Override
+    public void insertValue(Object value) {
+        Event event = (Event) value;
+        EventItem eventItem = new EventItem(event);
+        MouseListener listener = new java.awt.event.MouseAdapter() {
+            @Override
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                eventPanelMousePressed(evt);
+            }
+        };
+        eventItem.addListener(listener);
+        eventItems[size++] = eventItem;
+        jPanelContent.add(eventItem);
+        jPanelContent.updateUI();
+    }
+
+    @Override
+    public Object[] getValues() {
+        Event[] events = new Event[size];
+        for (int i = 0; i < size; i++) {
+            events[i] = eventItems[i].getEvent();
+        }
+        return events;
+    }
+
+    @Override
+    public void changeValue(Object value) {
+        Event event = (Event) value;
+        int index = getIndex(event);
+        eventItems[index].setEvent(event);
+        eventItems[index].update();
+        jPanelContent.updateUI();
+    }
+
+    @Override
+    public void deleteValue(Object value) {
+        int index = getIndex((Event) value);
+        for (int i = index; i < size - 1; i++) {
+            eventItems[i] = eventItems[i + 1];
+        }
+        eventItems[--size] = null;
+        selectedItem = null;
+        selectEvent(null);
+        initEventItems(null);
+    }
+
+    @Override
+    public void showAddDialog(Object value, JFrame rootWindow) {
+        Event event = null;
+        if (value != null) {
+            event = (Event) value;
+        }
+        CreateEventDialog dialog = new CreateEventDialog(rootWindow, true, event);
+        dialog.setLocationRelativeTo(rootWindow);
+        dialog.setVisible(true);
+        event = dialog.getEvent();
+        if (event != null) {
+            insertValue(event);
+        }
+    }
+
+    @Override
+    public void showChangeDialog(Object value, JFrame rootWindow) {
+        Event event = (Event) value;
+        CreateEventDialog dialog = new CreateEventDialog(rootWindow, true, event);
+        dialog.setLocationRelativeTo(rootWindow);
+        dialog.setTitle(event.getTitle());
+        dialog.setVisible(true);
+        event = dialog.getEvent();
+        if (event != null) {
+            changeValue(event);
+        }
+    }
+
+    @Override
+    public void showDeleteDialog(Object value, JFrame rootWindow) {
+        Event event = (Event) value;
+        Object[] options = {"Ja", "Nein"};
+        int n = JOptionPane.showOptionDialog(null,
+                "Termin \"" + event.getTitle() + "\" löschen?",
+                "Löschen bestätigen",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                options,
+                options[0]);
+
+        if (n == 0) {
+            deleteValue(event);
+        }
+    }
+
+    private void selectEvent(EventItem eventItem) {
+        selectedItem = eventItem;
+        for (int i = 0; i < size; i++) {
+            eventItems[i].unselect();
+        }
+        if (eventItem != null) {
+            eventItem.select();
+        }
+    }
+
+    private int getIndex(Event event) {
+        int index = -1;
+        for (int i = 0; i < size; i++) {
+            if (event == eventItems[i].getEvent()) {
+                index = i;
+                break;
+            }
+        }
+        return index;
+    }
+
+    private void eventPanelMousePressed(java.awt.event.MouseEvent evt) {
+        if (evt.getButton() == 1) {
+
+            EventItem eventItem = null;
+            if (evt.getComponent() instanceof EventItem) {
+                eventItem = (EventItem) evt.getComponent();
+                selectEvent(eventItem);
+            }
+            if (evt.getComponent() instanceof JTextArea) {
+                eventItem = (EventItem) evt.getComponent().getParent().getParent().getParent();
+                selectEvent(eventItem);
+            }
+            if (evt.getClickCount() == 2) {
+
+                showChangeDialog(eventItem.getEvent(), getRootWindow());
+            }
+        }
+    }
 
     private void jButtonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddActionPerformed
         JFrame rootWindow = getRootWindow();
@@ -352,10 +357,26 @@ public class EventPanel extends JPanel implements PanelInterface {
         }
     }//GEN-LAST:event_jButtonDeleteActionPerformed
 
-    private void jButtonUndoSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUndoSearchActionPerformed
-        //disableCancelButton();
-        //initNoteItems("");
-    }//GEN-LAST:event_jButtonUndoSearchActionPerformed
+    private void jButtonSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSearchActionPerformed
+        if (!search) {
+            String searchstring = jTextFieldSearch.getText().trim();
+            if (!searchstring.isEmpty()) {
+                initEventItems(searchstring);
+                if (!search) {
+                    initEventItems(null);
+                    JOptionPane.showMessageDialog(getRootWindow(), "Nichts gefunden.");
+                } else {
+                    selectEvent(null);
+                    jButtonSearch.setIcon(cancelIcon);
+                }
+            }
+            
+        } else {
+            search = false;
+            jButtonSearch.setIcon(okIcon);
+            initEventItems(null);
+        }
+    }//GEN-LAST:event_jButtonSearchActionPerformed
 
     private JFrame getRootWindow() {
         return (JFrame) SwingUtilities.getWindowAncestor(this.getParent());
@@ -364,7 +385,7 @@ public class EventPanel extends JPanel implements PanelInterface {
     private javax.swing.JButton jButtonAdd;
     private javax.swing.JButton jButtonChange;
     private javax.swing.JButton jButtonDelete;
-    private javax.swing.JButton jButtonUndoSearch;
+    private javax.swing.JButton jButtonSearch;
     private javax.swing.JLabel jLabelSearch;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

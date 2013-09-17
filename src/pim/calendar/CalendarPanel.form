@@ -21,7 +21,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jLabelDate" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="jPanel2" pref="0" max="32767" attributes="0"/>
+              <Component id="jPanel2" pref="426" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -86,7 +86,7 @@
                       <Component id="jButtonEvent" min="-2" pref="75" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jButtonNote" min="-2" pref="75" max="-2" attributes="0"/>
-                      <EmptySpace pref="78" max="32767" attributes="0"/>
+                      <EmptySpace pref="33" max="32767" attributes="0"/>
                       <Component id="jButtonNow" min="-2" pref="70" max="-2" attributes="0"/>
                       <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                       <Component id="jButtonPrev" min="-2" max="-2" attributes="0"/>

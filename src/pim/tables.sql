@@ -1,15 +1,23 @@
-DROP TABLE IF EXISTS `exams`;
-DROP TABLE IF EXISTS `contacts`;
-DROP TABLE IF EXISTS `notes`;
-DROP TABLE IF EXISTS `events`;
-DROP TABLE IF EXISTS `users`;
-
-
 CREATE TABLE `users` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(12) NOT NULL DEFAULT '',
   `password` varchar(12) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+
+CREATE TABLE  `mails` (
+  `userid` int(10) unsigned NOT NULL DEFAULT '0',
+  `address` varchar(45) NOT NULL DEFAULT '',
+  `account_type` varchar(45) NOT NULL DEFAULT '',
+  `incoming_server` varchar(45) NOT NULL DEFAULT '',
+  `incoming_port` int(10) NOT NULL DEFAULT '0',
+  `outgoing_server` varchar(45) NOT NULL DEFAULT '',
+  `outgoing_port` int(10) NOT NULL DEFAULT '0',
+  `mail_username` varchar(45) NOT NULL DEFAULT '',
+  `mail_password` varchar(45) NOT NULL DEFAULT '',
+  KEY `FK_mails_userid` (`userid`),
+  CONSTRAINT `FK_mails_userid` FOREIGN KEY (`userid`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 
@@ -85,7 +93,7 @@ CREATE TABLE  `notes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 
-CREATE TABLE  `pim`.`events` (
+CREATE TABLE  `events` (
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
   `title` varchar(255) NOT NULL DEFAULT '',
   `content` text,
@@ -96,7 +104,6 @@ CREATE TABLE  `pim`.`events` (
 
 
 DELIMITER $$
-DROP FUNCTION IF EXISTS `insertUser` $$
 CREATE FUNCTION `insertUser` (u VARCHAR(12), p VARCHAR(12)) RETURNS INT
 BEGIN
       DECLARE userid INT;
