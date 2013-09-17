@@ -180,7 +180,8 @@ public class EventPanel extends JPanel implements PanelInterface {
             } else {
                 String regex = ".*" + searchstring.toLowerCase() + ".*";
                 String title = eventItems[i].getEvent().getTitle().toLowerCase();
-                String content = eventItems[i].getEvent().getContent().toLowerCase();
+                String content = eventItems[i].getEvent().getContent().toLowerCase().replaceAll("\n", "");
+                System.out.println("------------\n" + content + "\n");
                 if (title.matches(regex) || content.matches(regex)) {
                     jPanelContent.add(eventItems[i]);
                     search = true;
