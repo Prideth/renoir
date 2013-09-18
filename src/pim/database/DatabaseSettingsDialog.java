@@ -12,6 +12,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 import javax.swing.JOptionPane;
+import pim.Settings;
 import pim.TextFieldListener;
 
 /**
@@ -19,15 +20,13 @@ import pim.TextFieldListener;
  * @author lk
  */
 public class DatabaseSettingsDialog extends javax.swing.JDialog {
-
-    private Properties props;
+    
 
     /**
      * Creates new form DatabaseSettingsDialog
      */
-    public DatabaseSettingsDialog(java.awt.Frame parent, boolean modal, Properties props) {
+    public DatabaseSettingsDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        this.props = props;
         initComponents();
         
         TextFieldListener textFieldListener = new TextFieldListener();
@@ -37,11 +36,12 @@ public class DatabaseSettingsDialog extends javax.swing.JDialog {
         jTextFieldName.addMouseListener(textFieldListener);
         jPasswordField1.addMouseListener(textFieldListener);
         
-        jTextFieldServer.setText(props.getProperty("dbserver"));
-        jTextFieldPort.setText(props.getProperty("dbport"));
-        jTextFieldUser.setText(props.getProperty("dbusername"));
-        jPasswordField1.setText(props.getProperty("dbpassword"));
-        jTextFieldName.setText(props.getProperty("dbname"));
+        Settings settings = Settings.instance();       
+        jTextFieldServer.setText(settings.dbserver);
+        jTextFieldPort.setText(settings.dbport);
+        jTextFieldUser.setText(settings.dbusername);
+        jPasswordField1.setText(settings.dbpassword);
+        jTextFieldName.setText(settings.dbname);
     }
 
     /**
@@ -240,6 +240,7 @@ public class DatabaseSettingsDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_jButtonDeleteActionPerformed
 
     private void jButtonOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOkActionPerformed
+        
         String server = jTextFieldServer.getText();
         String port = jTextFieldPort.getText();
     	String username = jTextFieldUser.getText();
@@ -251,20 +252,16 @@ public class DatabaseSettingsDialog extends javax.swing.JDialog {
         try {
             con = DriverManager.getConnection(cstring, username, password);
             con.close();
-            props.setProperty("dbserver", server);
-            props.setProperty("dbport", port);
-            props.setProperty("dbusername", username);
-            props.setProperty("dbpassword", password);
-            props.setProperty("dbname", database);
-            try (FileWriter out = new FileWriter("settings.properties")) {
-                props.store(out, null);
-            }
+            Settings settings = Settings.instance();
+            settings.setProperties("dbserver", server,
+                    "dbport", port,
+                    "dbusername", username,
+                    "dbpassword", password,
+                    "dbname", database);
             dispose();
         } catch (SQLException e) {
             System.err.println(e.getMessage());
             JOptionPane.showMessageDialog(this, "Es konnte keine Verbindung zur Datenbank hergestellt werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
         }
     }//GEN-LAST:event_jButtonOkActionPerformed
     

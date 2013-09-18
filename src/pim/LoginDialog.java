@@ -19,19 +19,23 @@ import pim.database.Account;
 public class LoginDialog extends javax.swing.JDialog {
 
     private User user;
-    private Properties props;
     private Connection con;
+    
+    private String userexists;
+    private String error;
     
     /**
      * Creates new form LoginDialog
      */
-    public LoginDialog(java.awt.Frame parent, boolean modal, Properties props, Connection con) {
+    public LoginDialog(java.awt.Frame parent, boolean modal, Connection con) {
         super(parent, modal);
         user = null;
         this.con = con;
-        this.props = props;
         initComponents();
         
+        Settings settings = Settings.instance();
+        setTexts(settings.locale);
+
         TextFieldListener textFieldListener = new TextFieldListener();
         jTextFieldUser.addMouseListener(textFieldListener);
         jPasswordField.addMouseListener(textFieldListener);
@@ -44,6 +48,30 @@ public class LoginDialog extends javax.swing.JDialog {
         jPasswordField.setText("test");
     }
 
+    private void setTexts(String locale) {
+        Properties texts = null;
+        switch (locale) {
+            case "en":
+                texts = Texts.instance().props_en;
+                break;
+            case "de":
+                texts = Texts.instance().props_de;
+                break;
+        }
+
+        if (texts != null) {
+            jLabelUser.setText(texts.getProperty("jLabelUser") + ":");
+            jLabelPassword.setText(texts.getProperty("jLabelPassword") + ":");
+            jButtonLogin.setText(texts.getProperty("jButtonLogin"));
+            jButtonNew.setText(texts.getProperty("jButtonNew"));
+            jButtonCancel.setText(texts.getProperty("jButtonCancel"));
+            jCheckBoxRemember.setText(texts.getProperty("jCheckBoxRemember"));
+            userexists = texts.getProperty("userexists");
+            error = texts.getProperty("error");
+        }
+    }
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -160,14 +188,14 @@ public class LoginDialog extends javax.swing.JDialog {
         }
        
         try {
-            con = DatabaseConnector.getConnection(props, con);
+            con = DatabaseConnector.getConnection(con);
             if (con != null) {
                 Account account = new Account(con);
                 user = account.createNewUser(username, password);
                 if (user != null) {
                     dispose();
                 } else {
-                    JOptionPane.showMessageDialog(this, "Dieser Benutzername existiert bereits.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, userexists, error, JOptionPane.ERROR_MESSAGE);
                 }
             }
         } catch (SQLException e) {
@@ -188,14 +216,14 @@ public class LoginDialog extends javax.swing.JDialog {
         }
         
         try {
-            con = DatabaseConnector.getConnection(props, con);
+            con = DatabaseConnector.getConnection(con);
             if (con != null) {
                 Account account = new Account(con);
                 user = account.login(username, password);
                 if (user != null) {
                     dispose();
                 } else {
-                    JOptionPane.showMessageDialog(null, "Dieser Benutzer existiert nicht oder das Passwort ist falsch.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, userexists, error, JOptionPane.ERROR_MESSAGE);
                 }
             }
         } catch (SQLException e) {

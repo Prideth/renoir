@@ -4,6 +4,7 @@
  */
 package pim;
 
+import java.util.Properties;
 import javax.swing.JMenuItem;
 
 /**
@@ -27,12 +28,9 @@ public class TextFieldPopup extends javax.swing.JPopupMenu {
         jMenuItemDelete = new javax.swing.JMenuItem();
         jMenuItemSelectall = new javax.swing.JMenuItem();
         
-        jMenuItemUndo.setText("Rückgängig");
-        jMenuItemCut.setText("Ausschneiden");
-        jMenuItemCopy.setText("Kopieren");
-        jMenuItemPaste.setText("Einfügen");
-        jMenuItemDelete.setText("Löschen");
-        jMenuItemSelectall.setText("Alles markieren");
+ 
+        Settings settings = Settings.instance();
+        setTexts(settings.locale);
         
         jMenuItemUndo.setEnabled(false);
         
@@ -44,5 +42,24 @@ public class TextFieldPopup extends javax.swing.JPopupMenu {
         add(jMenuItemDelete);
         add(new Separator());
         add(jMenuItemSelectall);
+    }
+    
+    private void setTexts(String locale) {
+        Properties texts = null;
+        switch (locale) {
+            case "en":
+                texts = Texts.instance().props_en;
+                break;
+            case "de":
+                texts = Texts.instance().props_de;
+                break;
+        }
+
+        jMenuItemUndo.setText(texts.getProperty("jMenuItemUndo"));
+        jMenuItemCut.setText(texts.getProperty("jMenuItemCut"));
+        jMenuItemCopy.setText(texts.getProperty("jMenuItemCopy"));
+        jMenuItemPaste.setText(texts.getProperty("jMenuItemPaste"));
+        jMenuItemDelete.setText(texts.getProperty("jMenuItemDelete"));
+        jMenuItemSelectall.setText(texts.getProperty("jMenuItemSelectall"));
     }
 }

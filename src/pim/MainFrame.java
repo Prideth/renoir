@@ -37,38 +37,43 @@ import pim.notes.NotePanel;
  * @author lk
  */
 public class MainFrame extends javax.swing.JFrame {
-
-    private static final String CONFIG_FILE = "settings.properties";
     
-    private Properties props;
     private User user;
     private Connection con;
+    
     
     /**
      * Creates new form NewJFrame
      */
     public MainFrame() {
+        
         con = null;
-        props = new Properties();
-        File f = new File(CONFIG_FILE);
-        if (!f.exists()) {
-            InputStream in = getClass().getResourceAsStream(CONFIG_FILE);
-            try {
-                props.load(in);
-                in.close();
-                try (FileOutputStream out = new FileOutputStream(CONFIG_FILE)) {
-                    props.store(out, null);
-                }
-            } catch (IOException e) {}
-        } else {
-            try {
-                try (FileReader in = new FileReader(CONFIG_FILE)) {
-                    props.load(in);
-                }
-            } catch (IOException e) {}
-        }
+        
+        Settings settings = Settings.instance();
+        
         
         initComponents();
+        
+        
+        if (settings.locale == null) {
+            setTexts("de");
+            settings = Settings.instance();
+            settings.setProperties("locale", "de");
+            setTexts("de");
+        } else {
+            setTexts(settings.locale);
+        }
+        
+        switch (settings.locale) {
+            case "en":
+                jRadioButtonMenuItemDe.setSelected(false);
+                jRadioButtonMenuItemEn.setSelected(true);
+                break;
+            case "de":
+                jRadioButtonMenuItemDe.setSelected(true);
+                jRadioButtonMenuItemEn.setSelected(false);
+                break;
+        }
         
         this.addWindowListener(new WindowAdapter() {
             @Override
@@ -83,10 +88,10 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         
-        String username = props.getProperty("username");
+        String username = settings.username;
         if (!username.isEmpty()) {
-            String password = props.getProperty("password");
-            con = DatabaseConnector.getConnection(props, con);
+            String password = settings.password;
+            con = DatabaseConnector.getConnection(con);
             if (con != null) {
                 Account account = new Account(con);
                 try {
@@ -123,9 +128,45 @@ public class MainFrame extends javax.swing.JFrame {
         
     }
     
+    
+    private void setTexts(String locale) {
+        Properties texts = null;
+        switch (locale) {
+            case "en":
+                texts = Texts.instance().props_en;
+                break;
+            case "de":
+                texts = Texts.instance().props_de;
+                break;
+        }
+
+        if (texts != null) {
+            jMenuFile.setText(texts.getProperty("jMenuFile"));
+            jMenuItemLogin.setText(texts.getProperty("jMenuItemLogin"));
+            jMenuItemLogout.setText(texts.getProperty("jMenuItemLogout"));
+            jMenuItemDelete.setText(texts.getProperty("jMenuItemDeleteUser"));
+            jMenuItemSave.setText(texts.getProperty("jMenuItemSave"));
+            jMenuItemExit.setText(texts.getProperty("jMenuItemExit"));
+            jMenuSettings.setText(texts.getProperty("jMenuSettings"));
+            jMenuItemDatabase.setText(texts.getProperty("jMenuItemDatabase"));
+            jMenuItemMail.setText(texts.getProperty("jMenuItemMail"));
+            jMenuLanguage.setText(texts.getProperty("jMenuLanguage"));
+            jRadioButtonMenuItemEn.setText(texts.getProperty("jRadioButtonMenuItemEn"));
+            jRadioButtonMenuItemDe.setText(texts.getProperty("jRadioButtonMenuItemDe"));
+            jMenuInfo.setText(texts.getProperty("jMenuInfo"));
+            jButtonMail.setText(texts.getProperty("jButtonMail"));
+            jButtonExams.setText(texts.getProperty("jButtonExams"));
+            jButtonContacts.setText(texts.getProperty("jButtonContacts"));
+            jButtonCalendar.setText(texts.getProperty("jButtonCalendar"));
+            jButtonEvents.setText(texts.getProperty("jButtonEvents"));
+            jButtonNotes.setText(texts.getProperty("jButtonNotes"));
+        }
+    }
+    
+    
     private void updatePanels(Connection con) {
         if (con == null) {
-            con = DatabaseConnector.getConnection(props, con);
+            con = DatabaseConnector.getConnection(con);
         }
         if (con != null) {
             DatabaseReader dr = new DatabaseReader(con);
@@ -179,6 +220,7 @@ public class MainFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroupLanguages = new javax.swing.ButtonGroup();
         jToolBar = new javax.swing.JToolBar();
         jButtonMail = new javax.swing.JButton();
         jButtonExams = new javax.swing.JButton();
@@ -200,6 +242,9 @@ public class MainFrame extends javax.swing.JFrame {
         jMenuSettings = new javax.swing.JMenu();
         jMenuItemDatabase = new javax.swing.JMenuItem();
         jMenuItemMail = new javax.swing.JMenuItem();
+        jMenuLanguage = new javax.swing.JMenu();
+        jRadioButtonMenuItemDe = new javax.swing.JRadioButtonMenuItem();
+        jRadioButtonMenuItemEn = new javax.swing.JRadioButtonMenuItem();
         jMenuInfo = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -211,7 +256,7 @@ public class MainFrame extends javax.swing.JFrame {
         jToolBar.setRollover(true);
 
         jButtonMail.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pim/icons/mail.png"))); // NOI18N
-        jButtonMail.setText("E-Mail");
+        jButtonMail.setText("ff");
         jButtonMail.setFocusable(false);
         jButtonMail.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButtonMail.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -357,17 +402,35 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jMenuSettings.add(jMenuItemMail);
 
+        jMenuLanguage.setText("Sprache");
+
+        buttonGroupLanguages.add(jRadioButtonMenuItemDe);
+        jRadioButtonMenuItemDe.setSelected(true);
+        jRadioButtonMenuItemDe.setText("Deutsch");
+        jRadioButtonMenuItemDe.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButtonMenuItemDeActionPerformed(evt);
+            }
+        });
+        jMenuLanguage.add(jRadioButtonMenuItemDe);
+
+        buttonGroupLanguages.add(jRadioButtonMenuItemEn);
+        jRadioButtonMenuItemEn.setText("Englisch");
+        jRadioButtonMenuItemEn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButtonMenuItemEnActionPerformed(evt);
+            }
+        });
+        jMenuLanguage.add(jRadioButtonMenuItemEn);
+
+        jMenuSettings.add(jMenuLanguage);
+
         jMenuBar.add(jMenuSettings);
 
         jMenuInfo.setText("Info");
         jMenuInfo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jMenuInfoMouseClicked(evt);
-            }
-        });
-        jMenuInfo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuInfoActionPerformed(evt);
             }
         });
         jMenuBar.add(jMenuInfo);
@@ -428,7 +491,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonNotesActionPerformed
 	
     private void jMenuItemDatabaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemDatabaseActionPerformed
-        DatabaseSettingsDialog dialog = new DatabaseSettingsDialog(this, true, props);
+        DatabaseSettingsDialog dialog = new DatabaseSettingsDialog(this, true);
         dialog.setTitle("Datenbankverbindung");
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
@@ -442,7 +505,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemMailActionPerformed
 
     private void jMenuItemSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSaveActionPerformed
-        con = DatabaseConnector.getConnection(props, con);
+        con = DatabaseConnector.getConnection(con);
 
         if (con != null) {
             DatabaseWriter dw = new DatabaseWriter(con);
@@ -490,7 +553,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemSaveActionPerformed
 
     private void jMenuItemLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemLoginActionPerformed
-        LoginDialog dialog = new LoginDialog(this, true, props, con);
+        LoginDialog dialog = new LoginDialog(this, true, con);
         dialog.setTitle("Login");
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
@@ -498,14 +561,8 @@ public class MainFrame extends javax.swing.JFrame {
         if (dialog.getUser() != null) {
             user = dialog.getUser();
             if (dialog.getRemember()) {
-                props.setProperty("username", user.getUsername());
-                props.setProperty("password", user.getPassword());
-                FileWriter out;
-                try {
-                    out = new FileWriter("settings.properties");
-                    props.store(out, null);
-                    out.close();
-                } catch (IOException e) {}
+                Settings settings = Settings.instance();
+                settings.setProperties("username", user.getUsername(), "password", user.getPassword());
             }
             jMenuItemLogout.setEnabled(true);
             jMenuItemDelete.setEnabled(true);
@@ -514,6 +571,7 @@ public class MainFrame extends javax.swing.JFrame {
             con = dialog.getConnection();
             updatePanels(con);
             calendarPanel.update();
+            
         }
     }//GEN-LAST:event_jMenuItemLoginActionPerformed
 
@@ -529,19 +587,11 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void jMenuItemLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemLogoutActionPerformed
         user = null;
+        Settings settings = Settings.instance();
+        settings.setProperties("username", "", "password", "");
         jMenuItemLogout.setEnabled(false);
         jMenuItemDelete.setEnabled(false);
         jMenuItemSave.setEnabled(false);
-        props.setProperty("username", "");
-        props.setProperty("password", "");
-        FileWriter out;
-        try {
-            out = new FileWriter("settings.properties");
-            props.store(out, null);
-            out.close();
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
-        }
         contactPanel.updateValues(null);
         examPanel.updateValues(null);
         notePanel.updateValues(null);
@@ -550,17 +600,24 @@ public class MainFrame extends javax.swing.JFrame {
         this.setTitle("Personal Information Manager");
     }//GEN-LAST:event_jMenuItemLogoutActionPerformed
 
-    private void jMenuInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuInfoActionPerformed
-    
-        
-    }//GEN-LAST:event_jMenuInfoActionPerformed
-
     private void jMenuInfoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuInfoMouseClicked
         InfoDialog dialog = new InfoDialog(this, true);
         dialog.setTitle("Info");
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
     }//GEN-LAST:event_jMenuInfoMouseClicked
+
+    private void jRadioButtonMenuItemEnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonMenuItemEnActionPerformed
+        Settings settings = Settings.instance();
+        settings.setProperties("locale", "en");
+        setTexts("en");
+    }//GEN-LAST:event_jRadioButtonMenuItemEnActionPerformed
+
+    private void jRadioButtonMenuItemDeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonMenuItemDeActionPerformed
+        Settings settings = Settings.instance();
+        settings.setProperties("locale", "de");
+        setTexts("de");
+    }//GEN-LAST:event_jRadioButtonMenuItemDeActionPerformed
 
     
     private void switchPanel(javax.swing.JPanel panel, javax.swing.JButton button) {
@@ -647,6 +704,7 @@ public class MainFrame extends javax.swing.JFrame {
     private pim.notes.NotePanel notePanel;
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroupLanguages;
     private javax.swing.JButton jButtonCalendar;
     private javax.swing.JButton jButtonContacts;
     private javax.swing.JButton jButtonEvents;
@@ -663,8 +721,11 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemLogout;
     private javax.swing.JMenuItem jMenuItemMail;
     private javax.swing.JMenuItem jMenuItemSave;
+    private javax.swing.JMenu jMenuLanguage;
     private javax.swing.JMenu jMenuSettings;
     private javax.swing.JPanel jPanelContent;
+    private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItemDe;
+    private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItemEn;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;

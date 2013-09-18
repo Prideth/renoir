@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 import javax.swing.JOptionPane;
+import pim.Settings;
 
 /**
  *
@@ -19,9 +20,9 @@ import javax.swing.JOptionPane;
  */
 public class DatabaseConnector {
     
-    public static Connection getConnection(Properties props, Connection con) {
+    public static Connection getConnection(Connection con) {
         if (con == null) {
-            con = connect(props);
+            con = connect();
         } else {
             try {
                 System.out.print("ping... ");
@@ -32,20 +33,21 @@ public class DatabaseConnector {
                 }
                 System.out.println(System.currentTimeMillis() - start);
             } catch (SQLException e) {
-                con = connect(props);
+                con = connect();
             }
         }
         return con;
     }
     
-    private static Connection connect(Properties props) {
+    private static Connection connect() {
+        Settings settings = Settings.instance();
         Connection con = null;
         try {
-            String database = props.getProperty("dbname");
-            String port = props.getProperty("dbport");
-            String connection = props.getProperty("dbserver");
-            String user = props.getProperty("dbusername");
-            String password = props.getProperty("dbpassword");
+            String database = settings.dbname;
+            String port = settings.dbport;
+            String connection = settings.dbserver;
+            String user = settings.dbusername;
+            String password = settings.dbpassword;
             String cstring = "jdbc:mysql://" + connection + ":" + port + "/" + database;
             
             System.out.print("connect... ");

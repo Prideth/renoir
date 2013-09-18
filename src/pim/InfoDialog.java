@@ -4,12 +4,14 @@
  */
 package pim;
 
+import java.util.Properties;
+
 /**
  *
  * @author lk
  */
 public class InfoDialog extends javax.swing.JDialog {
-
+    
     /**
      * Creates new form InfoDialog
      */
@@ -17,44 +19,60 @@ public class InfoDialog extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         
-        String htmltext =
-                "<html><b>Autoren<b>"
-                + "<table border=\"0\" cellpadding=\"0\" cellspacing=\"2\">"
-                + "	<tr>"
-                + "		<td style=\"padding-right:10px\">Andreas Dier</td>"
-                + "		<td>dierandreas@gmail.com</td>"
-                + "	</tr>"
-                + "	<tr>"
-                + "		<td style=\"padding-right:10px\">Ardian Beqiri</td>"
-                + "		<td>ardi1@live.de</td>"
-                + "	</tr>"
-                + "	<tr>"
-                + "		<td style=\"padding-right:10px\">Dominik Erb</td>"
-                + "		<td>dominik.a.erb@gmail.com</td>"
-                + "	</tr>"
-                + "	<tr>"
-                + "		<td style=\"padding-right:10px\">J&ouml;rg Federspiel</td>"
-                + "		<td>joerg.federspiel@gmx.de</td>"
-                + "	</tr>"
-                + "	<tr>"
-                + "		<td style=\"padding-right:10px\">Lukas Ewen</td>"
-                + "		<td>lewen65@gmail.com</td>"
-                + "	</tr>"
-                + "	<tr>"
-                + "		<td style=\"padding-right:10px\">Matthias Kiefer</td>"
-                + "		<td>kiefer.matthias@gmail.com</td>"
-                + "	</tr>"
-                + "	<tr>"
-                + "		<td style=\"padding-right:10px\">Thomas Quinter</td>"
-                + "		<td>thomasquitter@gmail.com</td>"
-                + "	</tr>"
-                + "</table>"
-                + "</html>";
-        
-        jLabel4.setText(htmltext);
-        
+        Settings settings = Settings.instance();
+        setTexts(settings.locale);
     }
     
+    private void setTexts(String locale) {
+        Properties texts = null;
+        switch (locale) {
+            case "en":
+                texts = Texts.instance().props_en;
+                break;
+            case "de":
+                texts = Texts.instance().props_de;
+                break;
+        }
+
+        if (texts != null) {
+            String htmltext =
+                    "<html><b>" + texts.getProperty("authors") + "<b>"
+                    + "<table border=\"0\" cellpadding=\"0\" cellspacing=\"2\">"
+                    + "	<tr>"
+                    + "		<td style=\"padding-right:10px\">Andreas Dier</td>"
+                    + "		<td>dierandreas@gmail.com</td>"
+                    + "	</tr>"
+                    + "	<tr>"
+                    + "		<td style=\"padding-right:10px\">Ardian Beqiri</td>"
+                    + "		<td>ardi1@live.de</td>"
+                    + "	</tr>"
+                    + "	<tr>"
+                    + "		<td style=\"padding-right:10px\">Dominik Erb</td>"
+                    + "		<td>dominik.a.erb@gmail.com</td>"
+                    + "	</tr>"
+                    + "	<tr>"
+                    + "		<td style=\"padding-right:10px\">J&ouml;rg Federspiel</td>"
+                    + "		<td>joerg.federspiel@gmx.de</td>"
+                    + "	</tr>"
+                    + "	<tr>"
+                    + "		<td style=\"padding-right:10px\">Lukas Ewen</td>"
+                    + "		<td>lewen65@gmail.com</td>"
+                    + "	</tr>"
+                    + "	<tr>"
+                    + "		<td style=\"padding-right:10px\">Matthias Kiefer</td>"
+                    + "		<td>kiefer.matthias@gmail.com</td>"
+                    + "	</tr>"
+                    + "	<tr>"
+                    + "		<td style=\"padding-right:10px\">Thomas Quinter</td>"
+                    + "		<td>thomasquitter@gmail.com</td>"
+                    + "	</tr>"
+                    + "</table>"
+                    + "</html>";
+
+            jLabelAuthors.setText(htmltext);
+        }
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -65,9 +83,9 @@ public class InfoDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel2 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        jLabelImage = new javax.swing.JLabel();
+        jLabelTitle = new javax.swing.JLabel();
+        jLabelAuthors = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -77,12 +95,12 @@ public class InfoDialog extends javax.swing.JDialog {
             }
         });
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pim/icons/penguin.png"))); // NOI18N
+        jLabelImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pim/icons/penguin.png"))); // NOI18N
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jLabel1.setText("Personal Information Manager");
+        jLabelTitle.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabelTitle.setText("Personal Information Manager");
 
-        jLabel4.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jLabelAuthors.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -91,21 +109,21 @@ public class InfoDialog extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
+                    .addComponent(jLabelTitle)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
+                        .addComponent(jLabelImage)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE))))
+                        .addComponent(jLabelAuthors, javax.swing.GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
+                .addComponent(jLabelTitle)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabelImage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabelAuthors, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
@@ -119,8 +137,8 @@ public class InfoDialog extends javax.swing.JDialog {
 
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabelAuthors;
+    private javax.swing.JLabel jLabelImage;
+    private javax.swing.JLabel jLabelTitle;
     // End of variables declaration//GEN-END:variables
 }
