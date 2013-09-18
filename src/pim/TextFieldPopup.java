@@ -28,9 +28,7 @@ public class TextFieldPopup extends javax.swing.JPopupMenu {
         jMenuItemDelete = new javax.swing.JMenuItem();
         jMenuItemSelectall = new javax.swing.JMenuItem();
         
- 
-        Settings settings = Settings.instance();
-        setTexts(settings.locale);
+        setTexts(Settings.locale);
         
         jMenuItemUndo.setEnabled(false);
         

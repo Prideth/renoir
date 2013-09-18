@@ -40,14 +40,13 @@ public class DatabaseConnector {
     }
     
     private static Connection connect() {
-        Settings settings = Settings.instance();
         Connection con = null;
         try {
-            String database = settings.dbname;
-            String port = settings.dbport;
-            String connection = settings.dbserver;
-            String user = settings.dbusername;
-            String password = settings.dbpassword;
+            String database = Settings.dbname;
+            String port = Settings.dbport;
+            String connection = Settings.dbserver;
+            String user = Settings.dbusername;
+            String password = Settings.dbpassword;
             String cstring = "jdbc:mysql://" + connection + ":" + port + "/" + database;
             
             System.out.print("connect... ");

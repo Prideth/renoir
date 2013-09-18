@@ -35,13 +35,12 @@ public class DatabaseSettingsDialog extends javax.swing.JDialog {
         jTextFieldUser.addMouseListener(textFieldListener);
         jTextFieldName.addMouseListener(textFieldListener);
         jPasswordField1.addMouseListener(textFieldListener);
-        
-        Settings settings = Settings.instance();       
-        jTextFieldServer.setText(settings.dbserver);
-        jTextFieldPort.setText(settings.dbport);
-        jTextFieldUser.setText(settings.dbusername);
-        jPasswordField1.setText(settings.dbpassword);
-        jTextFieldName.setText(settings.dbname);
+             
+        jTextFieldServer.setText(Settings.dbserver);
+        jTextFieldPort.setText(Settings.dbport);
+        jTextFieldUser.setText(Settings.dbusername);
+        jPasswordField1.setText(Settings.dbpassword);
+        jTextFieldName.setText(Settings.dbname);
     }
 
     /**
@@ -252,8 +251,7 @@ public class DatabaseSettingsDialog extends javax.swing.JDialog {
         try {
             con = DriverManager.getConnection(cstring, username, password);
             con.close();
-            Settings settings = Settings.instance();
-            settings.setProperties("dbserver", server,
+            Settings.setProperties("dbserver", server,
                     "dbport", port,
                     "dbusername", username,
                     "dbpassword", password,

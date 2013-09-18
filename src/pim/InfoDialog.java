@@ -19,8 +19,7 @@ public class InfoDialog extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         
-        Settings settings = Settings.instance();
-        setTexts(settings.locale);
+        setTexts(Settings.locale);
     }
     
     private void setTexts(String locale) {

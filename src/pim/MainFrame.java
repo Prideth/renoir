@@ -9,12 +9,6 @@ import pim.database.DatabaseConnector;
 import java.awt.Color;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
@@ -41,6 +35,7 @@ public class MainFrame extends javax.swing.JFrame {
     private User user;
     private Connection con;
     
+    Settings settings = Settings.instance();
     
     /**
      * Creates new form NewJFrame
@@ -49,22 +44,18 @@ public class MainFrame extends javax.swing.JFrame {
         
         con = null;
         
-        Settings settings = Settings.instance();
-        
-        
         initComponents();
         
         
-        if (settings.locale == null) {
+        if (Settings.locale == null) {
             setTexts("de");
-            settings = Settings.instance();
-            settings.setProperties("locale", "de");
+            Settings.setProperties("locale", "de");
             setTexts("de");
         } else {
-            setTexts(settings.locale);
+            setTexts(Settings.locale);
         }
         
-        switch (settings.locale) {
+        switch (Settings.locale) {
             case "en":
                 jRadioButtonMenuItemDe.setSelected(false);
                 jRadioButtonMenuItemEn.setSelected(true);
@@ -88,9 +79,9 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         
-        String username = settings.username;
+        String username = Settings.username;
         if (!username.isEmpty()) {
-            String password = settings.password;
+            String password = Settings.password;
             con = DatabaseConnector.getConnection(con);
             if (con != null) {
                 Account account = new Account(con);
@@ -561,8 +552,7 @@ public class MainFrame extends javax.swing.JFrame {
         if (dialog.getUser() != null) {
             user = dialog.getUser();
             if (dialog.getRemember()) {
-                Settings settings = Settings.instance();
-                settings.setProperties("username", user.getUsername(), "password", user.getPassword());
+                Settings.setProperties("username", user.getUsername(), "password", user.getPassword());
             }
             jMenuItemLogout.setEnabled(true);
             jMenuItemDelete.setEnabled(true);
@@ -587,8 +577,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void jMenuItemLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemLogoutActionPerformed
         user = null;
-        Settings settings = Settings.instance();
-        settings.setProperties("username", "", "password", "");
+        Settings.setProperties("username", "", "password", "");
         jMenuItemLogout.setEnabled(false);
         jMenuItemDelete.setEnabled(false);
         jMenuItemSave.setEnabled(false);
@@ -608,14 +597,12 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuInfoMouseClicked
 
     private void jRadioButtonMenuItemEnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonMenuItemEnActionPerformed
-        Settings settings = Settings.instance();
-        settings.setProperties("locale", "en");
+        Settings.setProperties("locale", "en");
         setTexts("en");
     }//GEN-LAST:event_jRadioButtonMenuItemEnActionPerformed
 
     private void jRadioButtonMenuItemDeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonMenuItemDeActionPerformed
-        Settings settings = Settings.instance();
-        settings.setProperties("locale", "de");
+        Settings.setProperties("locale", "de");
         setTexts("de");
     }//GEN-LAST:event_jRadioButtonMenuItemDeActionPerformed
 

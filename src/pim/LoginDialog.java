@@ -33,8 +33,7 @@ public class LoginDialog extends javax.swing.JDialog {
         this.con = con;
         initComponents();
         
-        Settings settings = Settings.instance();
-        setTexts(settings.locale);
+        setTexts(Settings.locale);
 
         TextFieldListener textFieldListener = new TextFieldListener();
         jTextFieldUser.addMouseListener(textFieldListener);
