@@ -13,7 +13,7 @@ import java.util.Date;
  *
  * @author Beware
  */
-public class NoteItem extends javax.swing.JPanel implements Comparable<NoteItem>{
+public class NoteItem extends javax.swing.JPanel {
 
     private final Color BACK_COLOR = new Color(236, 227, 159);
     private final Color SELECT_COLOR = new Color(244, 239, 202);
@@ -78,18 +78,16 @@ public class NoteItem extends javax.swing.JPanel implements Comparable<NoteItem>
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLableDate = new javax.swing.JLabel();
         jScrollPaneContent = new javax.swing.JScrollPane();
         jTextAreaContent = new javax.swing.JTextArea();
+        jLableDate = new javax.swing.JLabel();
         jLabelTitle = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(236, 227, 159));
         setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         setMaximumSize(new java.awt.Dimension(100, 100));
         setPreferredSize(new java.awt.Dimension(270, 155));
-
-        jLableDate.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLableDate.setText("Datum");
+        setRequestFocusEnabled(false);
 
         jScrollPaneContent.setBorder(null);
 
@@ -99,7 +97,12 @@ public class NoteItem extends javax.swing.JPanel implements Comparable<NoteItem>
         jTextAreaContent.setText("...");
         jTextAreaContent.setBorder(null);
         jTextAreaContent.setFocusable(false);
+        jTextAreaContent.setSelectionEnd(0);
+        jTextAreaContent.setSelectionStart(0);
         jScrollPaneContent.setViewportView(jTextAreaContent);
+
+        jLableDate.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLableDate.setText("Datum");
 
         jLabelTitle.setBackground(new java.awt.Color(120, 68, 41));
         jLabelTitle.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -112,20 +115,24 @@ public class NoteItem extends javax.swing.JPanel implements Comparable<NoteItem>
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLableDate, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addComponent(jScrollPaneContent)
-                .addGap(6, 6, 6))
-            .addComponent(jLabelTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabelTitle, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jScrollPaneContent)
+                    .addContainerGap()))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jLabelTitle)
-                .addGap(6, 6, 6)
-                .addComponent(jScrollPaneContent, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 115, Short.MAX_VALUE)
                 .addComponent(jLableDate))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addContainerGap(30, Short.MAX_VALUE)
+                    .addComponent(jScrollPaneContent, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(23, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -136,20 +143,7 @@ public class NoteItem extends javax.swing.JPanel implements Comparable<NoteItem>
     private javax.swing.JTextArea jTextAreaContent;
     // End of variables declaration//GEN-END:variables
 
-    //Unused in this programversion
-    @Override
-    public int compareTo(NoteItem o) {
-        if (o.getTitle( ).isEmpty() && this.getTitle().isEmpty()) {
-          return 0;
-        }
-        if (o.getTitle().isEmpty()) {
-          return 1;
-        }
-        if (note.getTitle().isEmpty()) {
-          return -1;
-        }
-        return this.getTitle().compareTo(o.getTitle());
-    }
+
 
     /**
      * @return the title

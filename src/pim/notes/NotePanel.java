@@ -7,6 +7,7 @@ package pim.notes;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,11 +15,13 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import java.util.*;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 
 import pim.*;
+import pim.event.EventItem;
 import pim.util.WrapLayout;
 
 /**
@@ -233,12 +236,12 @@ public class NotePanel extends JPanel implements PanelInterface {
     @Override
     public void insertValue(Object value) {
         Note note = (Note) value;
-        NoteItem n = new NoteItem(note);
-        n.addMouseListener(listener);
-        noteItems[size++] = n;
+        NoteItem noteIt = new NoteItem(note);
+        noteIt.addMouseListener(listener);
+        noteItems[size++] = noteIt;
         disableCancelButton();
-        jTextFieldSearch.setText("");
         initNoteItems("");
+
     }
 
     @Override
@@ -377,15 +380,20 @@ public class NotePanel extends JPanel implements PanelInterface {
 
     }//GEN-LAST:event_jButtonUndoSearchActionPerformed
 
-    private void notePanelMousePressed(java.awt.event.MouseEvent evt) {
+    private void notePanelMousePressed(MouseEvent evt) {
         if (evt.getButton() == 1) {
             NoteItem noteItem = null;
+            
             if (evt.getComponent() instanceof NoteItem) {
                 noteItem = (NoteItem) evt.getComponent();
                 selectNote(noteItem);
             }
             if (evt.getComponent() instanceof JTextArea) {  // wird nicht ausgelöst, kp warum bei events funktionierts...
-                noteItem = (NoteItem) evt.getComponent().getParent().getParent().getParent();
+                noteItem = (NoteItem) evt.getComponent().getParent().getParent().getParent();   //Hab den Code auch nochmal komplett Code mit den Events verglichen und konnte den Fehler ebenfalls nicht feststellen - Thomas
+                selectNote(noteItem);
+            }
+            if (evt.getComponent() instanceof JLabel) {
+                noteItem = (NoteItem) evt.getComponent().getParent();
                 selectNote(noteItem);
             }
             if (noteItem != null && evt.getClickCount() == 2) {
