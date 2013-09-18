@@ -432,17 +432,34 @@ public class CalendarPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_jTableCalendarMousePressed
 
     private void jButtonExamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExamActionPerformed
-        insertExam();
+        insert(0);
     }//GEN-LAST:event_jButtonExamActionPerformed
 
     private void jButtonEventActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEventActionPerformed
-        insertEvent();
+        insert(1);
     }//GEN-LAST:event_jButtonEventActionPerformed
 
     private void jButtonNoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNoteActionPerformed
-        insertNote();
+        insert(2);
     }//GEN-LAST:event_jButtonNoteActionPerformed
 
+    public void insert(int object) {
+        JFrame rootWindow = getRootWindow();
+        Date date = cellToDate(); 
+        switch (object) {
+            case 0:
+                examPanel.showAddDialog(new Exam(null, "WS 13/14", 1, date, null, 0d, null), rootWindow);
+                break;
+            case 1:
+                eventPanel.showAddDialog(new Event(null, null, date), rootWindow);
+                break;
+            case 2:
+                notePanel.showAddDialog(new Note(0, null, null, date), rootWindow);
+                break;
+        }
+        update();
+        jTableCalendar.requestFocus();
+    }
     
     public void change() {
         int row = jTableCalendar.getSelectedRow();
@@ -481,42 +498,6 @@ public class CalendarPanel extends javax.swing.JPanel {
         }
     }
     
-    
-    public void insertExam() {
-        int column = jTableCalendar.getSelectedColumn() + 1;
-        if (column > 0) {
-            Exam exam = new Exam(null, "WS 13/14", 1, cellToDate(), null, 0d, null);
-            JFrame rootWindow = getRootWindow();
-            examPanel.showAddDialog(exam, rootWindow);
-
-        }
-        update();
-        jTableCalendar.requestFocus();
-    }
-    
-    
-    public void insertNote() {
-        int column = jTableCalendar.getSelectedColumn() + 1;
-        if (column > 0) {
-            Note note = new Note(0, null, null, cellToDate());
-            JFrame rootWindow = getRootWindow();
-            notePanel.showAddDialog(note, rootWindow);
-        }
-        update();
-        jTableCalendar.requestFocus();
-    }
-
-        public void insertEvent() {
-        int column = jTableCalendar.getSelectedColumn() + 1;
-        if (column > 0) {
-            Event event = new Event(null, null, cellToDate());
-            JFrame rootWindow = getRootWindow();
-            eventPanel.showAddDialog(event, rootWindow);
-        }
-        update();
-        jTableCalendar.requestFocus();
-    }
-
     
     private JFrame getRootWindow() {
         return (JFrame) SwingUtilities.getWindowAncestor(this.getParent());
