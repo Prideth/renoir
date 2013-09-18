@@ -302,7 +302,7 @@ public class NotePanel extends JPanel implements PanelInterface {
     public void showDeleteDialog(Object value, JFrame rootWindow) {
         Note note = (Note) value;
         Object[] options = {"Ja", "Nein"};
-        int n = JOptionPane.showOptionDialog(null,
+        int n = JOptionPane.showOptionDialog(rootWindow,
                 "Notiz \"" + note.getTitle() + "\" löschen?",
                 "Löschen bestätigen",
                 JOptionPane.YES_NO_OPTION,
