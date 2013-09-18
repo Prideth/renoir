@@ -301,7 +301,7 @@ public class EventPanel extends JPanel implements PanelInterface {
     public void showDeleteDialog(Object value, JFrame rootWindow) {
         Event event = (Event) value;
         Object[] options = {"Ja", "Nein"};
-        int n = JOptionPane.showOptionDialog(null,
+        int n = JOptionPane.showOptionDialog(rootWindow,
                 "Termin \"" + event.getTitle() + "\" löschen?",
                 "Löschen bestätigen",
                 JOptionPane.YES_NO_OPTION,
