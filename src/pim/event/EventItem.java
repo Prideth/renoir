@@ -105,10 +105,8 @@ public class EventItem extends javax.swing.JPanel {
         setRequestFocusEnabled(false);
 
         jTextAreaContent.setEditable(false);
-        jTextAreaContent.setColumns(20);
         jTextAreaContent.setLineWrap(true);
         jTextAreaContent.setRows(5);
-        jTextAreaContent.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         jTextAreaContent.setFocusable(false);
         jScrollPaneContent.setViewportView(jTextAreaContent);
 
@@ -160,7 +158,7 @@ public class EventItem extends javax.swing.JPanel {
                 .addComponent(jLabelDateCaption)
                 .addGap(6, 6, 6)
                 .addComponent(jLabelDate)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabelTimeCaption)
                 .addGap(6, 6, 6)
                 .addComponent(jLabelTime)
