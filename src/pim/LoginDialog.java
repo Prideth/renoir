@@ -51,10 +51,10 @@ public class LoginDialog extends javax.swing.JDialog {
         Properties texts = null;
         switch (locale) {
             case "en":
-                texts = Texts.instance().props_en;
+                texts = Texts.props_en;
                 break;
             case "de":
-                texts = Texts.instance().props_de;
+                texts = Texts.props_de;
                 break;
         }
 

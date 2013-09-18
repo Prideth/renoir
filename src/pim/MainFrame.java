@@ -35,7 +35,6 @@ public class MainFrame extends javax.swing.JFrame {
     private User user;
     private Connection con;
     
-    Settings settings = Settings.instance();
     
     /**
      * Creates new form NewJFrame
@@ -46,6 +45,8 @@ public class MainFrame extends javax.swing.JFrame {
         
         initComponents();
         
+        Settings.instance();
+        Texts.instance();
         
         if (Settings.locale == null) {
             setTexts("de");
@@ -124,10 +125,10 @@ public class MainFrame extends javax.swing.JFrame {
         Properties texts = null;
         switch (locale) {
             case "en":
-                texts = Texts.instance().props_en;
+                texts = Texts.props_en;
                 break;
             case "de":
-                texts = Texts.instance().props_de;
+                texts = Texts.props_de;
                 break;
         }
 
