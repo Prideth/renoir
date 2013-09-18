@@ -384,7 +384,7 @@ public class NotePanel extends JPanel implements PanelInterface {
                 noteItem = (NoteItem) evt.getComponent();
                 selectNote(noteItem);
             }
-            if (evt.getComponent() instanceof JTextArea) {
+            if (evt.getComponent() instanceof JTextArea) {  // wird nicht ausgelöst, kp warum bei events funktionierts...
                 noteItem = (NoteItem) evt.getComponent().getParent().getParent().getParent();
                 selectNote(noteItem);
             }
