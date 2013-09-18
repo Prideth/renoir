@@ -115,6 +115,18 @@ public class MailSettings extends javax.swing.JDialog {
 
         jLabel14.setText("Port:");
 
+        jTextFieldPortIn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldPortInActionPerformed(evt);
+            }
+        });
+
+        jTextFieldPortOut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldPortOutActionPerformed(evt);
+            }
+        });
+
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -262,6 +274,15 @@ public class MailSettings extends javax.swing.JDialog {
         this.dispose();
 
     }//GEN-LAST:event_jButtonSaveActionPerformed
+
+    private void jTextFieldPortInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldPortInActionPerformed
+         
+    }//GEN-LAST:event_jTextFieldPortInActionPerformed
+
+    private void jTextFieldPortOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldPortOutActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldPortOutActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonCancel;
     private javax.swing.JButton jButtonSave;
@@ -314,8 +335,8 @@ public class MailSettings extends javax.swing.JDialog {
             jTextFieldServerOut.setText(acc.getOutServer());
             jPasswordFieldPassword.setText(String.copyValueOf(acc.getPassword()));
             jTextFieldAccountName.setText(acc.getUsername());
-            jTextFieldPortIn.setText(String.valueOf(acc.getSmtpPort()));
-            jTextFieldPortOut.setText(String.valueOf(acc.getImapPort()));
+            jTextFieldPortIn.setText(String.valueOf(acc.getImapPort()));
+            jTextFieldPortOut.setText(String.valueOf(acc.getSmtpPort()));
         }
 
 
