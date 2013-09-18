@@ -6,9 +6,11 @@ package pim.event;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
@@ -28,9 +30,11 @@ public class EventPanel extends JPanel implements PanelInterface {
     EventItem[] eventItems;
     private int size;
     private EventItem selectedItem;
-    private ImageIcon okIcon;
-    private ImageIcon cancelIcon;
+    private final ImageIcon okIcon;
+    private final ImageIcon cancelIcon;
     private boolean search;
+    private final MouseListener listener;
+    private final MouseListener closeListener;
 
     /**
      * Creates new form EventPanel
@@ -43,6 +47,21 @@ public class EventPanel extends JPanel implements PanelInterface {
         eventItems = new EventItem[MAX_SIZE];
         size = 0;
         selectedItem = null;
+        
+        listener = new java.awt.event.MouseAdapter() {
+            @Override
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                eventPanelMousePressed(evt);
+            }
+        };
+        
+        closeListener = new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                EventItem eventItem = (EventItem) evt.getComponent().getParent().getParent();
+                showDeleteDialog(eventItem.getEvent(), getRootWindow());
+            }
+        };
         
         initComponents();
         
@@ -198,13 +217,8 @@ public class EventPanel extends JPanel implements PanelInterface {
             size = events.length;
             for (int i = 0; i < size; i++) {
                 eventItems[i] = new EventItem(events[i]);
-                MouseListener listener = new java.awt.event.MouseAdapter() {
-                    @Override
-                    public void mousePressed(java.awt.event.MouseEvent evt) {
-                        eventPanelMousePressed(evt);
-                    }
-                };
                 eventItems[i].addListener(listener);
+                eventItems[i].addCloseListener(closeListener);
             }
 
         } else {
@@ -218,13 +232,8 @@ public class EventPanel extends JPanel implements PanelInterface {
     public void insertValue(Object value) {
         Event event = (Event) value;
         EventItem eventItem = new EventItem(event);
-        MouseListener listener = new java.awt.event.MouseAdapter() {
-            @Override
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                eventPanelMousePressed(evt);
-            }
-        };
         eventItem.addListener(listener);
+        eventItem.addCloseListener(closeListener);
         eventItems[size++] = eventItem;
         jPanelContent.add(eventItem);
         jPanelContent.updateUI();
@@ -327,9 +336,8 @@ public class EventPanel extends JPanel implements PanelInterface {
         return index;
     }
 
-    private void eventPanelMousePressed(java.awt.event.MouseEvent evt) {
+    private void eventPanelMousePressed(MouseEvent evt) {
         if (evt.getButton() == 1) {
-
             EventItem eventItem = null;
             if (evt.getComponent() instanceof EventItem) {
                 eventItem = (EventItem) evt.getComponent();
@@ -338,13 +346,18 @@ public class EventPanel extends JPanel implements PanelInterface {
             if (evt.getComponent() instanceof JTextArea) {
                 eventItem = (EventItem) evt.getComponent().getParent().getParent().getParent();
                 selectEvent(eventItem);
-            }
-            if (evt.getClickCount() == 2) {
-
+            }  
+            if (eventItem != null && evt.getClickCount() == 2) {
                 showChangeDialog(eventItem.getEvent(), getRootWindow());
+            }
+            if (evt.getComponent() instanceof JLabel) {
+                eventItem = (EventItem) evt.getComponent().getParent().getParent();
+                selectEvent(eventItem);
             }
         }
     }
+    
+    
 
     private void jButtonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddActionPerformed
         JFrame rootWindow = getRootWindow();

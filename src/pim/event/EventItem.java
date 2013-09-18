@@ -7,7 +7,6 @@ package pim.event;
 import java.awt.Color;
 import java.awt.event.MouseListener;
 import java.text.SimpleDateFormat;
-import javax.swing.JTextArea;
 
 /**
  * Class EventSlot shows todos in panel
@@ -64,6 +63,11 @@ public class EventItem extends javax.swing.JPanel {
     public void addListener(MouseListener listener) {
         addMouseListener(listener);
         jTextAreaContent.addMouseListener(listener);
+        jLabelDelete.addMouseListener(listener);
+    }
+    
+    public void addCloseListener(MouseListener listener) {
+        jLabelDelete.addMouseListener(listener);
     }
     
     public void select() {
