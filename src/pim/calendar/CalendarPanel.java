@@ -448,13 +448,13 @@ public class CalendarPanel extends javax.swing.JPanel {
         Date date = cellToDate(); 
         switch (object) {
             case 0:
-                examPanel.showAddDialog(new Exam(null, "WS 13/14", 1, date, null, 0d, null), rootWindow);
+                examPanel.showAddDialog(date, rootWindow);
                 break;
             case 1:
-                eventPanel.showAddDialog(new Event(null, null, date), rootWindow);
+                eventPanel.showAddDialog(date, rootWindow);
                 break;
             case 2:
-                notePanel.showAddDialog(new Note(0, null, null, date), rootWindow);
+                notePanel.showAddDialog(date, rootWindow);
                 break;
         }
         update();

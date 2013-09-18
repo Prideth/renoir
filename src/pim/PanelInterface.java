@@ -4,6 +4,7 @@
  */
 package pim;
 
+import java.util.Date;
 import javax.swing.JFrame;
 
 /**
@@ -18,7 +19,7 @@ public interface PanelInterface {
     public void changeValue(Object value);
     public void deleteValue(Object value);
     
-    public void showAddDialog(Object value, JFrame rootWindow);
+    public void showAddDialog(Date date, JFrame rootWindow);
     public void showChangeDialog(Object value, JFrame rootWindow);
     public void showDeleteDialog(Object value, JFrame rootWindow);
 }

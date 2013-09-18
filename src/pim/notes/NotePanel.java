@@ -274,10 +274,10 @@ public class NotePanel extends JPanel implements PanelInterface {
     }
 
     @Override
-    public void showAddDialog(Object value, JFrame rootWindow) {
+    public void showAddDialog(Date date, JFrame rootWindow) {
         Note note = null;
-        if (value != null) {
-            note = (Note) value;
+        if (date != null) {
+            note = new Note(0, null, null, date);
         }
         CreateNoteDialog dialog = new CreateNoteDialog(rootWindow, true, note);
         dialog.setLocationRelativeTo(rootWindow);

@@ -5,6 +5,7 @@
 package pim.exam;
 
 import java.awt.Component;
+import java.util.Date;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -269,10 +270,10 @@ public class ExamPanel extends JPanel implements PanelInterface {
     }
     
     @Override
-    public void showAddDialog(Object value, JFrame rootWindow) {
+    public void showAddDialog(Date date, JFrame rootWindow) {
         Exam exam = null;
-        if (value != null) {
-            exam = (Exam) value;
+        if (date != null) {
+            exam = new Exam(null, "WS 13/14", 1, date, null, 0d, null);
         }
         CreateExamDialog dialog = new CreateExamDialog(rootWindow, true, exam);
         dialog.setTitle("Klausur erstellen");

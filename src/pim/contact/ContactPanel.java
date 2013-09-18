@@ -5,6 +5,7 @@
 package pim.contact;
 
 import java.awt.Color;
+import java.util.Date;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Group;
 import javax.swing.ImageIcon;
@@ -340,16 +341,12 @@ public class ContactPanel extends JPanel implements PanelInterface {
     }
 
     @Override
-    public void showAddDialog(Object value, JFrame rootWindow) {
-        Contact contact = null;
-        if (value != null) {
-            contact = (Contact) value;
-        }
-        CreateContactDialog dialog = new CreateContactDialog(rootWindow, true, contact);
+    public void showAddDialog(Date date, JFrame rootWindow) {
+        CreateContactDialog dialog = new CreateContactDialog(rootWindow, true, null);
         dialog.setTitle("Kontakt erstellen");
         dialog.setLocationRelativeTo(rootWindow);
         dialog.setVisible(true);
-        contact = dialog.getContact();
+        Contact contact = dialog.getContact();
         if (contact != null) {
             insertValue(contact);
         }

@@ -8,6 +8,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Date;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -270,10 +271,10 @@ public class EventPanel extends JPanel implements PanelInterface {
     }
 
     @Override
-    public void showAddDialog(Object value, JFrame rootWindow) {
+    public void showAddDialog(Date date, JFrame rootWindow) {
         Event event = null;
-        if (value != null) {
-            event = (Event) value;
+        if (date != null) {
+            event = new Event(null, null, date);
         }
         CreateEventDialog dialog = new CreateEventDialog(rootWindow, true, event);
         dialog.setLocationRelativeTo(rootWindow);
