@@ -82,7 +82,7 @@ public class MailPanel extends JPanel {
              replyTitle = texts.getProperty("replyTitle");
              statusText = texts.getProperty("status");
              receiveText = texts.getProperty("receive");
-             jComboBoxFolder.setModel(new DefaultComboBoxModel(new String[] { inbox, sent, designs, spam, trash }));
+             //jComboBoxFolder.setModel(new DefaultComboBoxModel(new String[] { inbox, sent, designs, spam, trash }));
              jTableMails.getColumnModel().getColumn(0).setHeaderValue(subject);
              jTableMails.getColumnModel().getColumn(1).setHeaderValue(sender);
              jTableMails.getColumnModel().getColumn(2).setHeaderValue(date);
@@ -99,7 +99,6 @@ public class MailPanel extends JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jComboBoxFolder = new javax.swing.JComboBox();
         jButtonWriteMail = new javax.swing.JButton();
         jTextFieldSearch = new javax.swing.JTextField();
         jLabelSearch = new javax.swing.JLabel();
@@ -115,13 +114,6 @@ public class MailPanel extends JPanel {
         jLabelStatus = new javax.swing.JLabel();
         jButtonReceiveMail = new javax.swing.JButton();
         jProgressBar1 = new javax.swing.JProgressBar();
-
-        jComboBoxFolder.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Posteingang", "Gesendet", "Entwürfe", "Spam", "Papierkorb" }));
-        jComboBoxFolder.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBoxFolderActionPerformed(evt);
-            }
-        });
 
         jButtonWriteMail.setText("Verfassen");
         jButtonWriteMail.addActionListener(new java.awt.event.ActionListener() {
@@ -277,21 +269,18 @@ public class MailPanel extends JPanel {
                 .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jComboBoxFolder, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonWriteMail, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonReceiveMail, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButtonWriteMail, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButtonReceiveMail, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(40, 40, 40)
                 .addComponent(jLabelSearch)
-                .addGap(2, 2, 2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jTextFieldSearch))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBoxFolder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonWriteMail)
                     .addComponent(jTextFieldSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabelSearch)
@@ -343,10 +332,6 @@ public class MailPanel extends JPanel {
         dialog.setVisible(true);
     }//GEN-LAST:event_jButtonReplyActionPerformed
 
-    private void jComboBoxFolderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxFolderActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBoxFolderActionPerformed
-
     private void jTextFieldSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldSearchActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldSearchActionPerformed
@@ -357,7 +342,6 @@ public class MailPanel extends JPanel {
     private javax.swing.JButton jButtonReceiveMail;
     private javax.swing.JButton jButtonReply;
     private javax.swing.JButton jButtonWriteMail;
-    private javax.swing.JComboBox jComboBoxFolder;
     private javax.swing.JLabel jLabelSearch;
     private javax.swing.JLabel jLabelStatus;
     private javax.swing.JPanel jPanel1;
