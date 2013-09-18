@@ -18,26 +18,22 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Component id="jSplitPane" max="32767" attributes="0"/>
           <Group type="102" attributes="0">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Component id="jComboBoxFolder" min="-2" pref="120" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jButtonWriteMail" min="-2" pref="110" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jButtonReceiveMail" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="jLabelSearch" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jTextFieldSearch" max="32767" attributes="0"/>
-                  </Group>
-                  <Group type="102" attributes="0">
-                      <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
-                      <Component id="jLabelStatus" max="32767" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jProgressBar1" min="-2" max="-2" attributes="0"/>
-                  </Group>
-              </Group>
+              <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
+              <Component id="jLabelStatus" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
+              <Component id="jProgressBar1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+          </Group>
+          <Group type="102" attributes="0">
+              <Component id="jComboBoxFolder" min="-2" pref="120" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jButtonWriteMail" min="-2" pref="110" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jButtonReceiveMail" min="-2" pref="110" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="jLabelSearch" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
+              <Component id="jTextFieldSearch" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -167,7 +163,7 @@
                           <Component id="jButtonDelete" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
-                      <Component id="jScrollPane1" pref="186" max="32767" attributes="0"/>
+                      <Component id="jScrollPane1" pref="196" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -221,7 +217,7 @@
     </Container>
     <Component class="javax.swing.JLabel" name="jLabelStatus">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Statusleiste"/>
+        <Property name="text" type="java.lang.String" value="Status"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="jButtonReceiveMail">

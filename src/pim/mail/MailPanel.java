@@ -4,21 +4,16 @@
  */
 package pim.mail;
 
-import java.io.BufferedReader;
+
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.mail.Message;
 import javax.mail.MessagingException;
-import javax.mail.Multipart;
-import javax.mail.Part;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.ContentType;
-import javax.mail.internet.MimeBodyPart;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -31,14 +26,24 @@ import pim.util.ObjectSerializer;
  */
 public class MailPanel extends JPanel {
 
+    private String forwardTitle;
+    private String writeTitle;
+    private String replyTitle;
+    private String statusText;
+    private String receiveText;
+    
     MailTableModel model;
-Mail selectedMail;
+    Mail selectedMail;
+    
+
     /**
      * Creates new form MailForm
      */
     public MailPanel() {
         initComponents();
 
+        setTexts(Settings.locale);
+        
         TextFieldListener textFieldListener = new TextFieldListener();
         jTextFieldSearch.addMouseListener(textFieldListener);
 
@@ -46,6 +51,45 @@ Mail selectedMail;
         jTableMails.getSelectionModel().addListSelectionListener(new MySelectionListener(jTableMails));
     }
 
+     public void setTexts(String locale) {
+        Properties texts = null;
+        switch (locale) {
+            case "en":
+                texts = Texts.props_en;
+                break;
+            case "de":
+                texts = Texts.props_de;
+                break;
+        }
+
+         if (texts != null) {
+             jButtonWriteMail.setText(texts.getProperty("jButtonWriteMail"));
+             jButtonReceiveMail.setText(texts.getProperty("jButtonReceiveMail"));
+             jLabelSearch.setText(texts.getProperty("jLabelMailSearch") + ":");
+             jButtonReply.setText(texts.getProperty("jButtonReply"));
+             jButtonForward.setText(texts.getProperty("jButtonForward"));
+             jButtonDelete.setText(texts.getProperty("jButtonMailDelete"));
+             String inbox = texts.getProperty("inbox");
+             String sent = texts.getProperty("sent");
+             String designs = texts.getProperty("designs");
+             String spam = texts.getProperty("spam");
+             String trash = texts.getProperty("trash");
+             String subject = texts.getProperty("subject");
+             String sender = texts.getProperty("sender");
+             String date = texts.getProperty("maildate");
+             forwardTitle = texts.getProperty("forwardTitle");
+             writeTitle = texts.getProperty("writeTitle");
+             replyTitle = texts.getProperty("replyTitle");
+             statusText = texts.getProperty("status");
+             receiveText = texts.getProperty("receive");
+             jComboBoxFolder.setModel(new DefaultComboBoxModel(new String[] { inbox, sent, designs, spam, trash }));
+             jTableMails.getColumnModel().getColumn(0).setHeaderValue(subject);
+             jTableMails.getColumnModel().getColumn(1).setHeaderValue(sender);
+             jTableMails.getColumnModel().getColumn(2).setHeaderValue(date);
+         }
+    }
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -207,12 +251,12 @@ Mail selectedMail;
                     .addComponent(jButtonForward)
                     .addComponent(jButtonDelete))
                 .addGap(4, 4, 4)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE))
         );
 
         jSplitPane.setRightComponent(jPanel1);
 
-        jLabelStatus.setText("Statusleiste");
+        jLabelStatus.setText("Status");
 
         jButtonReceiveMail.setText("Empfangen");
         jButtonReceiveMail.addActionListener(new java.awt.event.ActionListener() {
@@ -227,23 +271,21 @@ Mail selectedMail;
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jSplitPane)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jComboBoxFolder, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonWriteMail, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonReceiveMail)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabelSearch)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextFieldSearch))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(1, 1, 1)
-                        .addComponent(jLabelStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(1, 1, 1)
+                .addComponent(jLabelStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jComboBoxFolder, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonWriteMail, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonReceiveMail, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabelSearch)
+                .addGap(2, 2, 2)
+                .addComponent(jTextFieldSearch))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -266,7 +308,7 @@ Mail selectedMail;
     private void jButtonForwardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonForwardActionPerformed
       JFrame rootWindow = (JFrame) SwingUtilities.getWindowAncestor(this.getParent());
         MailWriteDialog dialog = new MailWriteDialog(rootWindow, true, selectedMail, "wl");
-        dialog.setTitle("Email weiterleiten");
+        dialog.setTitle(forwardTitle);
         dialog.setLocationRelativeTo(rootWindow);
         dialog.setVisible(true);
     }//GEN-LAST:event_jButtonForwardActionPerformed
@@ -278,7 +320,7 @@ Mail selectedMail;
     private void jButtonWriteMailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonWriteMailActionPerformed
           JFrame rootWindow = (JFrame) SwingUtilities.getWindowAncestor(this.getParent());
         MailWriteDialog dialog = new MailWriteDialog(rootWindow, true, null, null);
-        dialog.setTitle("Email verfassen");
+        dialog.setTitle(writeTitle);
         dialog.setLocationRelativeTo(rootWindow);
         dialog.setVisible(true);
     }//GEN-LAST:event_jButtonWriteMailActionPerformed
@@ -296,7 +338,7 @@ Mail selectedMail;
     private void jButtonReplyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReplyActionPerformed
         JFrame rootWindow = (JFrame) SwingUtilities.getWindowAncestor(this.getParent());
         MailWriteDialog dialog = new MailWriteDialog(rootWindow, true, selectedMail, "aw");
-        dialog.setTitle("Email antworten");
+        dialog.setTitle(replyTitle);
         dialog.setLocationRelativeTo(rootWindow);
         dialog.setVisible(true);
     }//GEN-LAST:event_jButtonReplyActionPerformed
@@ -328,6 +370,7 @@ Mail selectedMail;
     private javax.swing.JTextField jTextFieldSearch;
     // End of variables declaration//GEN-END:variables
 
+    
     class GetMails implements Runnable {
 
         @Override
@@ -337,14 +380,13 @@ Mail selectedMail;
             Thread mThread = null;
 
             try {
-                jLabelStatus.setText("Empfange Emails...");
+                jLabelStatus.setText(receiveText + "");
                 ObjectSerializer so = new ObjectSerializer();
                 File f = new File(System.getProperty("user.home") + "/pim/" + "mailaccount.ser");
 
                 if (!f.exists()) {
                     JFrame rootWindow = (JFrame) SwingUtilities.getWindowAncestor(getParent());
                     MailSettings dialog = new MailSettings(rootWindow, true);
-                    dialog.setTitle("E-Mail Einstellungen");
                     dialog.setLocationRelativeTo(rootWindow);
                     dialog.setVisible(true);
                 } else {
@@ -362,7 +404,7 @@ Mail selectedMail;
             } catch (MessagingException ex) {
                 Logger.getLogger(MailPanel.class.getName()).log(Level.SEVERE, null, ex);
             } finally {
-                jLabelStatus.setText("Statusleiste");
+                jLabelStatus.setText(statusText);
 
                 setMails(receive);
                 mThread.interrupt();

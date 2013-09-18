@@ -35,6 +35,7 @@ public class MainFrame extends javax.swing.JFrame {
     private User user;
     private Connection con;
     
+    private String saved;
     
     /**
      * Creates new form NewJFrame
@@ -152,6 +153,7 @@ public class MainFrame extends javax.swing.JFrame {
             jButtonCalendar.setText(texts.getProperty("jButtonCalendar"));
             jButtonEvents.setText(texts.getProperty("jButtonEvents"));
             jButtonNotes.setText(texts.getProperty("jButtonNotes"));
+            saved = texts.getProperty("saved");
         }
     }
     
@@ -539,7 +541,7 @@ public class MainFrame extends javax.swing.JFrame {
                 System.out.println("error");
             }
             
-            JOptionPane.showMessageDialog(this, "Datenbank aktualisiert.");
+            JOptionPane.showMessageDialog(this, saved);
         }
         
     }//GEN-LAST:event_jMenuItemSaveActionPerformed
@@ -598,13 +600,17 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuInfoMouseClicked
 
     private void jRadioButtonMenuItemEnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonMenuItemEnActionPerformed
-        Settings.setProperties("locale", "en");
-        setTexts("en");
+        String locale = "en";
+        Settings.setProperties("locale", locale);
+        setTexts(locale);
+        mailPanel.setTexts(locale);
     }//GEN-LAST:event_jRadioButtonMenuItemEnActionPerformed
 
     private void jRadioButtonMenuItemDeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonMenuItemDeActionPerformed
-        Settings.setProperties("locale", "de");
-        setTexts("de");
+        String locale = "de";
+        Settings.setProperties("locale", locale);
+        setTexts(locale);
+        mailPanel.setTexts(locale);
     }//GEN-LAST:event_jRadioButtonMenuItemDeActionPerformed
 
     
@@ -687,7 +693,6 @@ public class MainFrame extends javax.swing.JFrame {
     private pim.exam.ExamPanel examPanel;
     private pim.contact.ContactPanel contactPanel;
     private pim.calendar.CalendarPanel calendarPanel;
-    //private pim.calendar.CalendarPanel calendarPanel;
     private EventPanel eventPanel;
     private pim.notes.NotePanel notePanel;
     
