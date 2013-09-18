@@ -5,6 +5,7 @@
 package pim.notes;
 
 import java.awt.Color;
+import java.awt.event.MouseListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -14,13 +15,15 @@ import java.util.Date;
  */
 public class NoteItem extends javax.swing.JPanel implements Comparable<NoteItem>{
 
+    private final Color BACK_COLOR = new Color(236, 227, 159);
+    private final Color SELECT_COLOR = new Color(244, 239, 202);
+    private final SimpleDateFormat SDF = new SimpleDateFormat("dd.MM.yyyy   HH:mm");
+    
     private int pos;
     private Note note;
     private String title;
     private Date date;
     private String content;
-    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy   HH:mm");
-
     
     /**
      * Creates new form NoteItem
@@ -28,9 +31,9 @@ public class NoteItem extends javax.swing.JPanel implements Comparable<NoteItem>
     public NoteItem(Note note) {
         
         initComponents();
-        jTextAreaNoteOut.setBorder(null);
-        jTextAreaNoteOut.setLineWrap(true);
-        jTextAreaNoteOut.setWrapStyleWord(true);
+        jTextAreaContent.setBorder(null);
+        jTextAreaContent.setLineWrap(true);
+        jTextAreaContent.setWrapStyleWord(true);
 
         this.note = note;
         pos = 0;
@@ -39,8 +42,8 @@ public class NoteItem extends javax.swing.JPanel implements Comparable<NoteItem>
         content = note.getNoteContent();
         
         jLabelTitle.setText(title);
-        jTextAreaNoteOut.setText(content);
-        jLableDate.setText(simpleDateFormat.format(getDate()));
+        jTextAreaContent.setText(content);
+        jLableDate.setText(SDF.format(getDate()));
        
     }
     
@@ -54,8 +57,8 @@ public class NoteItem extends javax.swing.JPanel implements Comparable<NoteItem>
         setDate(note.getCreateDate());
         setContent(note.getNoteContent());
         jLabelTitle.setText(getTitle());
-        getjTextAreaNoteOut().setText(getContent());
-        jLableDate.setText(simpleDateFormat.format(getDate()));
+        jTextAreaContent.setText(getContent());
+        jLableDate.setText(SDF.format(getDate()));
     }
     
     public int getPosition() {
@@ -76,84 +79,61 @@ public class NoteItem extends javax.swing.JPanel implements Comparable<NoteItem>
     private void initComponents() {
 
         jLableDate = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
+        jScrollPaneContent = new javax.swing.JScrollPane();
+        jTextAreaContent = new javax.swing.JTextArea();
         jLabelTitle = new javax.swing.JLabel();
-        jTextAreaNoteOut = new javax.swing.JTextArea();
 
         setBackground(new java.awt.Color(236, 227, 159));
         setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         setMaximumSize(new java.awt.Dimension(100, 100));
+        setPreferredSize(new java.awt.Dimension(270, 155));
 
         jLableDate.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLableDate.setText("Datum");
 
-        jPanel1.setBackground(new java.awt.Color(120, 68, 41));
+        jScrollPaneContent.setBorder(null);
+
+        jTextAreaContent.setEditable(false);
+        jTextAreaContent.setBackground(new java.awt.Color(236, 227, 159));
+        jTextAreaContent.setLineWrap(true);
+        jTextAreaContent.setText("...");
+        jTextAreaContent.setBorder(null);
+        jTextAreaContent.setFocusable(false);
+        jScrollPaneContent.setViewportView(jTextAreaContent);
 
         jLabelTitle.setBackground(new java.awt.Color(120, 68, 41));
         jLabelTitle.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabelTitle.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelTitle.setText("Titel");
-        jLabelTitle.setToolTipText("");
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabelTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabelTitle, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-
-        jLabelTitle.getAccessibleContext().setAccessibleName("");
-
-        jTextAreaNoteOut.setBackground(new java.awt.Color(236, 227, 159));
-        jTextAreaNoteOut.setColumns(20);
-        jTextAreaNoteOut.setRows(5);
-        jTextAreaNoteOut.setText("Content\n...\n...");
-        jTextAreaNoteOut.setAutoscrolls(false);
-        jTextAreaNoteOut.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jTextAreaNoteOut.setMaximumSize(new java.awt.Dimension(46, 250));
-        jTextAreaNoteOut.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTextAreaNoteOutMouseClicked(evt);
-            }
-        });
+        jLabelTitle.setText("Title");
+        jLabelTitle.setOpaque(true);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLableDate, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLableDate, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jTextAreaNoteOut, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(6, 6, 6)
+                .addComponent(jScrollPaneContent)
+                .addGap(6, 6, 6))
+            .addComponent(jLabelTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(22, 22, 22)
-                .addComponent(jTextAreaNoteOut, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabelTitle)
+                .addGap(6, 6, 6)
+                .addComponent(jScrollPaneContent, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLableDate))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextAreaNoteOutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextAreaNoteOutMouseClicked
-        System.out.println("clicked");
-    }//GEN-LAST:event_jTextAreaNoteOutMouseClicked
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabelTitle;
     private javax.swing.JLabel jLableDate;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextArea jTextAreaNoteOut;
+    private javax.swing.JScrollPane jScrollPaneContent;
+    private javax.swing.JTextArea jTextAreaContent;
     // End of variables declaration//GEN-END:variables
 
     //Unused in this programversion
@@ -214,22 +194,20 @@ public class NoteItem extends javax.swing.JPanel implements Comparable<NoteItem>
         this.content = content;
     }
 
-    /**
-     * @return the jTextAreaNoteOut
-     */
-    public javax.swing.JTextArea getjTextAreaNoteOut() {
-        return jTextAreaNoteOut;
+    
+    public void addListener(MouseListener listener) {
+        addMouseListener(listener);
+        jTextAreaContent.addMouseListener(listener);
     }
 
-    /**
-     * @param jTextAreaNoteOut the jTextAreaNoteOut to set
-     */
-    public void setjTextAreaNoteOut(javax.swing.JTextArea jTextAreaNoteOut) {
-        this.jTextAreaNoteOut = jTextAreaNoteOut;
+    public void select() {
+        setBackground(SELECT_COLOR);
+        jTextAreaContent.setBackground(SELECT_COLOR);
     }
-    
-    public void setjTextAreaNoteOutBgColor(Color color) {
-        jTextAreaNoteOut.setBackground(color);
+
+    public void unselect() {
+        setBackground(BACK_COLOR);
+        jTextAreaContent.setBackground(BACK_COLOR);
     }
 }
 
