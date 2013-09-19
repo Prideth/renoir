@@ -46,6 +46,10 @@ public class InfoDialog extends javax.swing.JDialog {
                     + "		<td>ardi1@live.de</td>"
                     + "	</tr>"
                     + "	<tr>"
+                    + "		<td style=\"padding-right:10px\">Christopher Schuetz</td>"
+                    + "		<td>christopher.schuetz@arcor.de</td>"
+                    + "	</tr>"
+                    + "	<tr>"
                     + "		<td style=\"padding-right:10px\">Dominik Erb</td>"
                     + "		<td>dominik.a.erb@gmail.com</td>"
                     + "	</tr>"
@@ -68,6 +72,8 @@ public class InfoDialog extends javax.swing.JDialog {
                     + "</table>"
                     + "</html>";
 
+            
+            
             jLabelAuthors.setText(htmltext);
         }
     }
@@ -112,7 +118,7 @@ public class InfoDialog extends javax.swing.JDialog {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabelImage)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabelAuthors, javax.swing.GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE))))
+                        .addComponent(jLabelAuthors, javax.swing.GroupLayout.DEFAULT_SIZE, 316, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -120,10 +126,9 @@ public class InfoDialog extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(jLabelTitle)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabelImage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabelAuthors, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelAuthors, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabelImage, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)))
         );
 
         pack();
