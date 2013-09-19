@@ -46,7 +46,7 @@ public class InfoDialog extends javax.swing.JDialog {
                     + "		<td>ardi1@live.de</td>"
                     + "	</tr>"
                     + "	<tr>"
-                    + "		<td style=\"padding-right:10px\">Christopher Schuetz</td>"
+                    + "		<td style=\"padding-right:10px\">Christopher Sch&uuml;tz</td>"
                     + "		<td>christopher.schuetz@arcor.de</td>"
                     + "	</tr>"
                     + "	<tr>"
@@ -118,7 +118,7 @@ public class InfoDialog extends javax.swing.JDialog {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabelImage)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabelAuthors, javax.swing.GroupLayout.DEFAULT_SIZE, 316, Short.MAX_VALUE))))
+                        .addComponent(jLabelAuthors, javax.swing.GroupLayout.DEFAULT_SIZE, 304, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
