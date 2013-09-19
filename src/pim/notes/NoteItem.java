@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package pim.notes;
 
 import java.awt.Color;
@@ -10,8 +6,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- *
- * @author Beware
+ * Klasse zum erstellen eines visuellen Notizelementes über ein JPanel
+ * 
+ * @author Thomas Quitter
  */
 public class NoteItem extends javax.swing.JPanel {
 
@@ -47,10 +44,16 @@ public class NoteItem extends javax.swing.JPanel {
        
     }
     
+    /*
+     * getNote
+     */
     public Note getNote() {
         return note;
     }
 
+    /*
+     * setNote
+     */
     public void setNote(Note note) {
         this.note = note;
         setTitle(note.getTitle());
@@ -61,10 +64,16 @@ public class NoteItem extends javax.swing.JPanel {
         jLableDate.setText(SDF.format(getDate()));
     }
     
+    /*
+     * getPosition
+     */
     public int getPosition() {
         return pos;
     }
     
+    /*
+     * setPosition
+     */
     public void setPosition(int pos) {
         this.pos = pos;
     }
@@ -146,6 +155,7 @@ public class NoteItem extends javax.swing.JPanel {
 
 
     /**
+     * getTitle
      * @return the title
      */
     public String getTitle() {
@@ -154,6 +164,7 @@ public class NoteItem extends javax.swing.JPanel {
 
     
     /**
+     * setTitle
      * @param title the title to set
      */
     public void setTitle(String title) {
@@ -161,6 +172,7 @@ public class NoteItem extends javax.swing.JPanel {
     }
 
     /**
+     * getDate
      * @return the date
      */
     public Date getDate() {
@@ -168,6 +180,7 @@ public class NoteItem extends javax.swing.JPanel {
     }
 
     /**
+     * setDate
      * @param date the date to set
      */
     public void setDate(Date date) {
@@ -175,6 +188,7 @@ public class NoteItem extends javax.swing.JPanel {
     }
 
     /**
+     * getContent
      * @return the content
      */
     public String getContent() {
@@ -182,26 +196,38 @@ public class NoteItem extends javax.swing.JPanel {
     }
 
     /**
+     * setContent
      * @param content the content to set
      */
     public void setContent(String content) {
         this.content = content;
     }
 
-    
+    /*
+     * addListener
+     * Methode zur setzen eines MouseListeners auf die UI-Elemente
+     * @param listener  uebergebener MouseListener
+     */
     public void addListener(MouseListener listener) {
         addMouseListener(listener);
         jTextAreaContent.addMouseListener(listener);
     }
 
+    /*
+     * select
+     * Methode zur visuellen Auswahl des NoteItems
+     */
     public void select() {
         setBackground(SELECT_COLOR);
         jTextAreaContent.setBackground(SELECT_COLOR);
     }
 
+    /*
+     * unselect
+     * Methode zur entfernung der visuellen Auswahl des NoteItems
+     */
     public void unselect() {
         setBackground(BACK_COLOR);
         jTextAreaContent.setBackground(BACK_COLOR);
     }
 }
-

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package pim.notes;
 
 
@@ -21,12 +17,12 @@ import javax.swing.JTextArea;
 
 
 import pim.*;
-import pim.event.EventItem;
 import pim.util.WrapLayout;
 
+
 /**
- *
- * @author Beware
+ * Klasse zum erstellen des NotePanels
+ * @author Thomas Quitter
  */
 public class NotePanel extends JPanel implements PanelInterface {
 
@@ -42,6 +38,7 @@ public class NotePanel extends JPanel implements PanelInterface {
      * Creates new form NotePanel
      */
     public NotePanel() {
+        
         initComponents();
         disableCancelButton();
 
@@ -56,12 +53,12 @@ public class NotePanel extends JPanel implements PanelInterface {
         size = 0;
         selectedItem = null;
 
-        //initNoteItems("");
+        
         TextFieldListener textFieldListener = new TextFieldListener();
         jTextFieldSearch.addMouseListener(textFieldListener);
-
         jPanelContent.setLayout(new WrapLayout(FlowLayout.LEFT, 10, 10));
-
+        jTextFieldSearch.addMouseListener(textFieldListener);
+        jPanelContent.setLayout(new WrapLayout(FlowLayout.LEFT, 10, 10));
         jPanelContent.setSize(new Dimension(300, 1));
     }
 
@@ -193,14 +190,18 @@ public class NotePanel extends JPanel implements PanelInterface {
 
         getAccessibleContext().setAccessibleParent(this);
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+     * initNoteItems
+     * Methode zum Aufbau zum ausgabe der NoteItems
+     * 
+     */
     private void initNoteItems(String searchString) {
         jPanelContent.removeAll();
         if (searchString.isEmpty()) {
             for (int i = 0; i < size; i++) {
                 jPanelContent.add(noteItems[i]);
             }
-        } else {
+        } else {    //Filtern anhand des Suchfeldes
             enableCancelButton();
             for (int i = 0; i < size; i++) {
                 String regex = ".*" + searchString.toLowerCase() + ".*";
@@ -216,6 +217,11 @@ public class NotePanel extends JPanel implements PanelInterface {
         }
     }
 
+    /**
+     * updateValues
+     * 
+     * @param values 
+     */
     @Override
     public void updateValues(Object[] values) {
         Note[] notes = (Note[]) values;
@@ -230,9 +236,13 @@ public class NotePanel extends JPanel implements PanelInterface {
             size = 0;
             selectedItem = null;
         }
-        initNoteItems("");
+        initNoteItems(""); //aufbau der Ausgabe ohne Suchparameter
     }
 
+    /**
+     * insertValue
+     * @param value 
+     */
     @Override
     public void insertValue(Object value) {
         Note note = (Note) value;
@@ -244,6 +254,10 @@ public class NotePanel extends JPanel implements PanelInterface {
 
     }
 
+    /**
+     * getValues
+     * @return 
+     */
     @Override
     public Object[] getValues() {
         Note[] notes = new Note[size];
@@ -253,6 +267,10 @@ public class NotePanel extends JPanel implements PanelInterface {
         return notes;
     }
 
+    /**
+     * changeValue
+     * @param value 
+     */
     @Override
     public void changeValue(Object value) {
         Note note = (Note) value;
@@ -260,6 +278,10 @@ public class NotePanel extends JPanel implements PanelInterface {
         noteItems[index].setNote(note);
     }
 
+    /**
+     * deleteValue
+     * @param value 
+     */
     @Override
     public void deleteValue(Object value) {
         int index = getIndex((Note) value);
@@ -273,6 +295,11 @@ public class NotePanel extends JPanel implements PanelInterface {
         initNoteItems("");
     }
 
+    /**
+     * showAddDialog
+     * @param date
+     * @param rootWindow 
+     */
     @Override
     public void showAddDialog(Date date, JFrame rootWindow) {
         Note note = null;
@@ -288,6 +315,11 @@ public class NotePanel extends JPanel implements PanelInterface {
         }
     }
 
+    /**
+     * showChangeDialog
+     * @param value
+     * @param rootWindow 
+     */
     @Override
     public void showChangeDialog(Object value, JFrame rootWindow) {
         Note note = (Note) value;
@@ -301,6 +333,11 @@ public class NotePanel extends JPanel implements PanelInterface {
         }
     }
 
+    /**
+     * showDeleteDialog
+     * @param value
+     * @param rootWindow 
+     */
     @Override
     public void showDeleteDialog(Object value, JFrame rootWindow) {
         Note note = (Note) value;
@@ -319,6 +356,11 @@ public class NotePanel extends JPanel implements PanelInterface {
         }
     }
 
+    /**
+     * jButtonNewActionPerformed
+     * Button-Listener zum erstellen einer neuen Notiz
+     * @param evt 
+     */
     private void jButtonNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNewActionPerformed
         if (size < noteItems.length) {
             JFrame rootWindow = getRootWindow();
@@ -329,6 +371,11 @@ public class NotePanel extends JPanel implements PanelInterface {
         }
     }//GEN-LAST:event_jButtonNewActionPerformed
 
+    /**
+     * jButtonEditActionPerformed
+     * Button-Listener zum bearbeiten einer Notiz
+     * @param evt 
+     */
     private void jButtonEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditActionPerformed
         JFrame rootWindow = getRootWindow();
         if (selectedItem != null) {
@@ -338,6 +385,11 @@ public class NotePanel extends JPanel implements PanelInterface {
         }
     }//GEN-LAST:event_jButtonEditActionPerformed
 
+    /**
+     * jButtonDeleteActionPerformed
+     * Button-Listener zum loeschen einer Notiz
+     * @param evt 
+     */
     private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
         JFrame rootWindow = getRootWindow();
         if (selectedItem != null) {
@@ -347,20 +399,24 @@ public class NotePanel extends JPanel implements PanelInterface {
         }
     }//GEN-LAST:event_jButtonDeleteActionPerformed
 
+    /**
+     * jComboBoxSortActionPerformed
+     * Listener fuer die Such-Dropdownliste
+     * @param evt 
+     */
     private void jComboBoxSortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxSortActionPerformed
         int sortBy = jComboBoxSort.getSelectedIndex();
         if (sortBy == 0) {
-
-            sortList(DATE);
+            sortList(DATE);     //Sortierung nach Datum aufsteigend
         } else {
-
-            sortList(ALPHABETIC);
-
+            sortList(ALPHABETIC);   //Sortierung nach Alphabet aufsteigend
         }
-
-
     }//GEN-LAST:event_jComboBoxSortActionPerformed
 
+    /**
+     * 
+     * @param evt 
+     */
     private void jTextFieldSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldSearchActionPerformed
 
         String searchString = jTextFieldSearch.getText();

@@ -1,15 +1,12 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package pim.notes;
 
 import java.util.Comparator;
 import java.util.Date;
 
 /**
- *
- * @author Beware
+ * Klasse Note zur definierung eines Notiz-Objektes
+ * 
+ * @author Thomas Quitter
  */
 public class Note implements Comparable<Note>{
     
@@ -29,6 +26,7 @@ public class Note implements Comparable<Note>{
     }
     
     /**
+     * getID
      * @return the id
      */
     public int getId() {
@@ -36,6 +34,7 @@ public class Note implements Comparable<Note>{
     }
 
     /**
+     * setID
      * @param id the id to set
      */
     public void setId(int id) {
@@ -43,6 +42,7 @@ public class Note implements Comparable<Note>{
     }
 
     /**
+     * getTitle
      * @return the title
      */
     public String getTitle() {
@@ -50,6 +50,7 @@ public class Note implements Comparable<Note>{
     }
 
     /**
+     * setTitle
      * @param title the title to set
      */
     public void setTitle(String title) {
@@ -57,6 +58,7 @@ public class Note implements Comparable<Note>{
     }
 
     /**
+     * getNoteContent
      * @return the noteContent
      */
     public String getNoteContent() {
@@ -64,6 +66,7 @@ public class Note implements Comparable<Note>{
     }
 
     /**
+     * setNoteContent
      * @param noteContent the noteContent to set
      */
     public void setNoteContent(String noteContent) {
@@ -71,6 +74,7 @@ public class Note implements Comparable<Note>{
     }
 
     /**
+     * getCreateDate
      * @return the createDate
      */
     public Date getCreateDate() {
@@ -78,6 +82,7 @@ public class Note implements Comparable<Note>{
     }
 
     /**
+     * setCreateDate
      * @param createDate the createDate to set
      */
     public void setCreateDate(Date createDate) {
@@ -85,6 +90,10 @@ public class Note implements Comparable<Note>{
     }
     
     @Override
+    /**
+     * compareTo
+     * @param note  Noteobject to compare
+     */
     public int compareTo( Note note ) {
         if (note.getTitle( )== null && this.getTitle() == null) {
           return 0;
@@ -99,20 +108,33 @@ public class Note implements Comparable<Note>{
     }
     
     @Override
+    /*
+     * toString
+     * @return title as String
+     */
     public String toString() {
         return title;
     }
 
+    /**
+     * Comparator to compare Notes by Title
+     * @param one first Note to compare
+     * @param other secound Note to compare
+     */
     public static Comparator<Note> COMPARE_BY_TITLE = new Comparator<Note>() {
         public int compare(Note one, Note other) {
             return one.title.compareTo(other.title);
         }
     };
-
+    
+    /**
+     * Comparator to compare Notes by Date
+     * @param one first Note to compare
+     * @param other secound Note to compare
+     */
     public static Comparator<Note> COMPARE_BY_DATE = new Comparator<Note>() {
         public int compare(Note one, Note other) {
             return one.createDate.compareTo(other.createDate);
         }
     };
-
 }
