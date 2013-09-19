@@ -7,8 +7,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.table.TableColumnModel;
 import pim.*;
 
 /**
@@ -29,6 +31,8 @@ public class CreateExamDialog extends javax.swing.JDialog {
         this.exam = exam;
         changed = false;
         initComponents();
+        
+        setTexts(Settings.locale);
         
         TextFieldListener textFieldListener = new TextFieldListener();
         jTextFieldSubject.addMouseListener(textFieldListener);
@@ -52,6 +56,30 @@ public class CreateExamDialog extends javax.swing.JDialog {
             jTextFieldRoom.setText(exam.getRoom());
         }
         
+    }
+    
+    
+    public void setTexts(String locale) {
+        Properties texts = null;
+        switch (locale) {
+            case "en":
+                texts = Texts.props_en;
+                break;
+            case "de":
+                texts = Texts.props_de;
+                break;
+        }
+
+        if (texts != null) {
+            jLabelSubject.setText(texts.getProperty("subject") + ":");
+            jLabelSemester.setText(texts.getProperty("semester") + ":");
+            jLabelEcts.setText(texts.getProperty("ects") + ":");
+            jLabelDate.setText(texts.getProperty("date") + ":");
+            jLabelTime.setText(texts.getProperty("time") + ":");
+            jLabelRoom.setText(texts.getProperty("room") + ":");
+            jButtonSubmit.setText(texts.getProperty("jButtonExamSubmit"));
+            jButtonCancel.setText(texts.getProperty("jButtonCancel"));
+        }
     }
 
     

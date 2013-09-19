@@ -99,15 +99,12 @@ public class MainFrame extends javax.swing.JFrame {
         examPanel = new ExamPanel();
         notePanel = new NotePanel();
         eventPanel = new EventPanel();
+        mailPanel = new pim.mail.MailPanel();
+        calendarPanel = new pim.calendar.CalendarPanel(examPanel, notePanel, eventPanel);
         
         if (user != null) {
             updatePanels(con);
         }
-        
-        mailPanel = new pim.mail.MailPanel();
-        calendarPanel = new pim.calendar.CalendarPanel(examPanel, notePanel, eventPanel);
-        //calendarPanel = new pim.calendar.CalendarPanel();
-        
         
         
         if (user != null) {
@@ -604,6 +601,11 @@ public class MainFrame extends javax.swing.JFrame {
         Settings.setProperties("locale", locale);
         setTexts(locale);
         mailPanel.setTexts(locale);
+        examPanel.setTexts(locale);
+        contactPanel.setTexts(locale);
+        notePanel.setTexts(locale);
+        eventPanel.setTexts(locale);
+        calendarPanel.setTexts(locale);
     }//GEN-LAST:event_jRadioButtonMenuItemEnActionPerformed
 
     private void jRadioButtonMenuItemDeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonMenuItemDeActionPerformed
@@ -611,6 +613,11 @@ public class MainFrame extends javax.swing.JFrame {
         Settings.setProperties("locale", locale);
         setTexts(locale);
         mailPanel.setTexts(locale);
+        examPanel.setTexts(locale);
+        contactPanel.setTexts(locale);
+        notePanel.setTexts(locale);
+        eventPanel.setTexts(locale);
+        calendarPanel.setTexts(locale);
     }//GEN-LAST:event_jRadioButtonMenuItemDeActionPerformed
 
     

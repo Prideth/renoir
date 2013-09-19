@@ -9,6 +9,7 @@ import java.awt.FlowLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Date;
+import java.util.Properties;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -17,7 +18,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import pim.PanelInterface;
+import pim.Settings;
 import pim.TextFieldListener;
+import pim.Texts;
 import pim.util.WrapLayout;
 
 /**
@@ -65,6 +68,7 @@ public class EventPanel extends JPanel implements PanelInterface {
         };
         
         initComponents();
+        setTexts(Settings.locale);
         
         TextFieldListener textFieldListener = new TextFieldListener();
         jTextFieldSearch.addMouseListener(textFieldListener);
@@ -72,6 +76,23 @@ public class EventPanel extends JPanel implements PanelInterface {
         jPanelContent.setLayout(new WrapLayout(FlowLayout.LEFT, 10, 10));
         jPanelContent.setSize(new Dimension(300, 1));
     }
+    
+    public void setTexts(String locale) {
+        Properties texts = null;
+        switch (locale) {
+            case "en":
+                texts = Texts.props_en;
+                break;
+            case "de":
+                texts = Texts.props_de;
+                break;
+        }
+
+        if (texts != null) {
+        }
+
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.

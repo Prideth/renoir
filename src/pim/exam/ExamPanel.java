@@ -5,7 +5,9 @@
 package pim.exam;
 
 import java.awt.Component;
+import java.text.MessageFormat;
 import java.util.Date;
+import java.util.Properties;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -14,8 +16,11 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
 import pim.PanelInterface;
+import pim.Settings;
+import pim.Texts;
 
 /**
  *
@@ -26,20 +31,85 @@ public class ExamPanel extends JPanel implements PanelInterface {
     private DefaultTableModel model;
     private TableRowSorter sorter;
     
+    private String createExamText;
+    private String yesText;
+    private String noText;
+    private String deleteExamText;
+    private String deleteTitleText;
+    private String noExamSelected;
+    
     
     /**
      * Creates new form ExamPanel
      */
     public ExamPanel() {
         initComponents();
+        setTexts(Settings.locale);
         model = (DefaultTableModel) jTableExams.getModel();
         sorter = new TableRowSorter(model);
         sorter.setComparator(1, new sortBySemester());
         jTableExams.setRowSorter(sorter);
-        jTableExams.getTableHeader().addMouseListener(new HeaderListener());
     }
     
-    
+    public void setTexts(String locale) {
+        Properties texts = null;
+        switch (locale) {
+            case "en":
+                texts = Texts.props_en;
+                break;
+            case "de":
+                texts = Texts.props_de;
+                break;
+        }
+
+        if (texts != null) {
+            jButtonAdd.setText(texts.getProperty("jButtonExamAdd"));
+            jButtonDelete.setText(texts.getProperty("jButtonExamDelete"));
+            jButtonChange.setText(texts.getProperty("jButtonExamChange"));
+            jButtonResult.setText(texts.getProperty("jButtonExamResult"));
+            String subject = texts.getProperty("subject");
+            String semester = texts.getProperty("semester");
+            String ects = texts.getProperty("ects");
+            String date = texts.getProperty("date");
+            String time = texts.getProperty("time");
+            String room = texts.getProperty("room");
+            String grade = texts.getProperty("grade");
+            String average = texts.getProperty("average");
+
+            TableColumnModel header = jTableExams.getColumnModel();
+            header.getColumn(0).setHeaderValue(subject);
+            header.getColumn(1).setHeaderValue(semester);
+            header.getColumn(2).setHeaderValue(ects);
+            header.getColumn(3).setHeaderValue(date);
+            header.getColumn(4).setHeaderValue(time);
+            header.getColumn(5).setHeaderValue(room);
+            header.getColumn(6).setHeaderValue(grade);
+            header.getColumn(7).setHeaderValue(average);
+
+            //int index = jComboBoxView.getSelectedIndex();
+            String[] values = new String[Exam.SEMESTER.length + 2];
+            values[0] = texts.getProperty("all");
+            values[1] = texts.getProperty("noresult");
+            for (int i = 2; i < Exam.SEMESTER.length + 2; i++) {
+                values[i] = Exam.SEMESTER[i - 2];
+            }
+            jComboBoxView.setModel(new javax.swing.DefaultComboBoxModel(values));
+            //jComboBoxView.setSelectedIndex(index);
+
+            jLabelEctsTitle.setText(texts.getProperty("ectsStatus") + ":");
+            jLabelAverageTitle.setText(texts.getProperty("averageStatus") + ":");
+
+            createExamText = texts.getProperty("createExam");
+            yesText = texts.getProperty("yes");
+            noText = texts.getProperty("no");
+            deleteExamText = texts.getProperty("deleteExam");
+            deleteTitleText = texts.getProperty("deleteExamTitle");
+            noExamSelected = texts.getProperty("noExamSelected");
+        }
+
+    }
+
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -61,6 +131,7 @@ public class ExamPanel extends JPanel implements PanelInterface {
         jButtonResult = new javax.swing.JButton();
         jButtonChange = new javax.swing.JButton();
 
+        jComboBoxView.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Alle Klausuren", "Ohne Ergebnis", "WS 13/14", "SS 13", "WS 12/13", "SS 12", "WS 11/12", "SS 11", "WS 10/11" }));
         jComboBoxView.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBoxViewActionPerformed(evt);
@@ -175,14 +246,6 @@ public class ExamPanel extends JPanel implements PanelInterface {
                     .addComponent(jLabelAverage))
                 .addGap(0, 0, 0))
         );
-
-        String[] values = new String[Exam.SEMESTER.length + 2];
-        values[0] = "Alle Klausuren";
-        values[1] = "Ohne Ergebnis";
-        for (int i = 2; i < Exam.SEMESTER.length + 2; i++) {
-            values[i] = Exam.SEMESTER[i-2];
-        }
-        jComboBoxView.setModel(new javax.swing.DefaultComboBoxModel(values));
     }// </editor-fold>//GEN-END:initComponents
 
     
@@ -276,7 +339,7 @@ public class ExamPanel extends JPanel implements PanelInterface {
             exam = new Exam(null, "WS 13/14", 1, date, null, 0d, null);
         }
         CreateExamDialog dialog = new CreateExamDialog(rootWindow, true, exam);
-        dialog.setTitle("Klausur erstellen");
+        dialog.setTitle(createExamText);
         dialog.setLocationRelativeTo(rootWindow);
         dialog.setVisible(true);
         exam = dialog.getExam();
@@ -301,10 +364,10 @@ public class ExamPanel extends JPanel implements PanelInterface {
     @Override
     public void showDeleteDialog(Object value, JFrame rootWindow) {
         Exam exam = (Exam) value;
-        Object[] options = {"Ja", "Nein"};
+        Object[] options = {yesText, noText};
         int n = JOptionPane.showOptionDialog(rootWindow,
-                "Klausur \"" + exam.getSubject() + "\" löschen?",
-                "Löschen bestätigen",
+                MessageFormat.format(deleteExamText, exam.getSubject()),
+                deleteTitleText,
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
                 null,
@@ -328,7 +391,7 @@ public class ExamPanel extends JPanel implements PanelInterface {
             Exam exam = (Exam) model.getValueAt(index, 0);
             showDeleteDialog(exam, rootWindow);
         } else {
-             JOptionPane.showMessageDialog(rootWindow, "Es ist keine Klausur ausgewählt.");
+             JOptionPane.showMessageDialog(rootWindow, noExamSelected);
         }
     }//GEN-LAST:event_jButtonDeleteActionPerformed
 
@@ -349,7 +412,7 @@ public class ExamPanel extends JPanel implements PanelInterface {
                 calculateAverage();
             }
         } else {
-             JOptionPane.showMessageDialog(rootWindow, "Es ist keine Klausur ausgewählt.");
+             JOptionPane.showMessageDialog(rootWindow, noExamSelected);
         }
     }//GEN-LAST:event_jButtonResultActionPerformed
 
@@ -363,7 +426,7 @@ public class ExamPanel extends JPanel implements PanelInterface {
                 showChangeDialog(exam, rootWindow);
             }
         } else {
-             JOptionPane.showMessageDialog(rootWindow, "Es ist keine Klausur ausgewählt.");
+             JOptionPane.showMessageDialog(rootWindow, noExamSelected);
         }
     }//GEN-LAST:event_jButtonChangeActionPerformed
 

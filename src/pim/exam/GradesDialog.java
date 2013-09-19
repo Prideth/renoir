@@ -4,7 +4,10 @@
  */
 package pim.exam;
 
+import java.util.Properties;
 import javax.swing.JTextField;
+import pim.Settings;
+import pim.Texts;
 
 /**
  *
@@ -24,9 +27,31 @@ public class GradesDialog extends javax.swing.JDialog {
         this.exam = exam;
         changed = false;
         initComponents();
+        setTexts(Settings.locale);
         initValues();
         if (exam.getNumbers() != null) {
             oldnumbers = exam.getNumbers().clone();
+        }
+    }
+
+    public void setTexts(String locale) {
+        Properties texts = null;
+        switch (locale) {
+            case "en":
+                texts = Texts.props_en;
+                break;
+            case "de":
+                texts = Texts.props_de;
+                break;
+        }
+
+        if (texts != null) {
+            jLabelGrade.setText(texts.getProperty("grade") + ":");
+            jPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(texts.getProperty("grades")));
+            jButtonSubmit.setText(texts.getProperty("jButtonExamSubmit"));
+            jButtonCancel.setText(texts.getProperty("jButtonCancel"));
+            jLabelStudentsCaption.setText(texts.getProperty("jLabelStudents") + ":");
+            jLabelAverageCaption.setText(texts.getProperty("average") + ":");
         }
     }
 
@@ -1171,8 +1196,8 @@ public class GradesDialog extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabelGrade, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabelGrade)
+                        .addGap(6, 6, 6)
                         .addComponent(jComboBoxGrade, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(jPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))

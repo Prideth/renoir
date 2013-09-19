@@ -40,6 +40,7 @@ public class NotePanel extends JPanel implements PanelInterface {
     public NotePanel() {
         
         initComponents();
+        setTexts(Settings.locale);
         disableCancelButton();
 
         listener = new java.awt.event.MouseAdapter() {
@@ -60,6 +61,23 @@ public class NotePanel extends JPanel implements PanelInterface {
         jTextFieldSearch.addMouseListener(textFieldListener);
         jPanelContent.setLayout(new WrapLayout(FlowLayout.LEFT, 10, 10));
         jPanelContent.setSize(new Dimension(300, 1));
+    }
+    
+    
+    public void setTexts(String locale) {
+        Properties texts = null;
+        switch (locale) {
+            case "en":
+                texts = Texts.props_en;
+                break;
+            case "de":
+                texts = Texts.props_de;
+                break;
+        }
+
+        if (texts != null) {
+        }
+
     }
 
     /**

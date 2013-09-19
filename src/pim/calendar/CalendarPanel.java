@@ -12,11 +12,15 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Properties;
 import javax.swing.JFrame;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
+import pim.Settings;
+import pim.Texts;
 import pim.event.Event;
 import pim.event.EventPanel;
 import pim.exam.Exam;
@@ -64,6 +68,7 @@ public class CalendarPanel extends javax.swing.JPanel {
         this.notePanel = notePanel;
         this.eventPanel = eventPanel;
         initComponents();
+        setTexts(Settings.locale);
         
         calendar = Calendar.getInstance();
         year = calendar.get(Calendar.YEAR);
@@ -113,6 +118,23 @@ public class CalendarPanel extends javax.swing.JPanel {
         FixedColumnTable fct = new FixedColumnTable(1, jScrollPane1);
     }
 
+    public void setTexts(String locale) {
+        Properties texts = null;
+        switch (locale) {
+            case "en":
+                texts = Texts.props_en;
+                break;
+            case "de":
+                texts = Texts.props_de;
+                break;
+        }
+
+        if (texts != null) {
+        }
+
+    }
+    
+    
     public void update() {
         model = getModel();
     }

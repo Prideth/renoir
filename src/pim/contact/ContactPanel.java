@@ -6,6 +6,7 @@ package pim.contact;
 
 import java.awt.Color;
 import java.util.Date;
+import java.util.Properties;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Group;
 import javax.swing.ImageIcon;
@@ -14,7 +15,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import pim.PanelInterface;
+import pim.Settings;
 import pim.TextFieldListener;
+import pim.Texts;
 
 /**
  *
@@ -40,11 +43,29 @@ public class ContactPanel extends JPanel implements PanelInterface {
         selectedContact = null;
 
         initComponents();
+        setTexts(Settings.locale);
         TextFieldListener textFieldListener = new TextFieldListener();
         jTextFieldSearch.addMouseListener(textFieldListener);
         contactItems = new ContactItem[100];
         size = 0;
     }
+    
+    public void setTexts(String locale) {
+        Properties texts = null;
+        switch (locale) {
+            case "en":
+                texts = Texts.props_en;
+                break;
+            case "de":
+                texts = Texts.props_de;
+                break;
+        }
+
+        if (texts != null) {
+        }
+
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
