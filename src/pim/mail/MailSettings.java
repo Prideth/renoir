@@ -4,8 +4,7 @@
  */
 package pim.mail;
 
-import java.io.File;
-import pim.util.ObjectSerializer;
+import pim.Settings;
 
 /**
  *
@@ -20,8 +19,7 @@ public class MailSettings extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-
-        setTextToCom();
+        initText();
     }
 
     /**
@@ -253,36 +251,30 @@ public class MailSettings extends javax.swing.JDialog {
         String inServer = jTextFieldServerIn.getText();
         String outServer = jTextFieldServerOut.getText();
         char[] input = jPasswordFieldPassword.getPassword();
+        String password = String.valueOf(input);
         String accountname = jTextFieldAccountName.getText();
-        int portIn = Integer.parseInt(jTextFieldPortIn.getText());
-        int portOut = Integer.parseInt(jTextFieldPortOut.getText());
+        String portIn = jTextFieldPortIn.getText();
+        String portOut = jTextFieldPortOut.getText();
 
 
-        MailAccount acc = new MailAccount(inServer, outServer, portOut, portIn, accountname, input, mail, name, type);
-
-        ObjectSerializer so = new ObjectSerializer();
-
-        File dir = new File(System.getProperty("user.home") + "/pim/");
-        File f = new File(System.getProperty("user.home") + "/pim/" + "mailaccount.ser");
-        if (!dir.exists()) {
-            dir.mkdir();
-            System.out.println(dir.getPath() + ", erstellt.");
-        }
-
-        so.save2file(acc, f);
-        System.out.println(f.getPath() + ", erfolgreich gespeichert.");
+        Settings.setProperties("mailName", name,
+                "mailAdress", mail,
+                "mailType", type,
+                "mailPassword", password,
+                "mailAccount", accountname,
+                "mailInPort", portIn,
+                "mailOutPort", portOut,
+                "mailInServer", inServer,
+                "mailOutServer", outServer);
         this.dispose();
-
     }//GEN-LAST:event_jButtonSaveActionPerformed
 
     private void jTextFieldPortInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldPortInActionPerformed
-         
     }//GEN-LAST:event_jTextFieldPortInActionPerformed
 
     private void jTextFieldPortOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldPortOutActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldPortOutActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonCancel;
     private javax.swing.JButton jButtonSave;
@@ -311,34 +303,15 @@ public class MailSettings extends javax.swing.JDialog {
     private javax.swing.JTextField jTextFieldServerOut;
     // End of variables declaration//GEN-END:variables
 
-    private void setTextToCom() {
-        ObjectSerializer so = new ObjectSerializer();
-        File f = new File(System.getProperty("user.home") + "/pim/" + "mailaccount.ser");
-
-        if (!f.exists()) {
-            System.out.println(f.getPath() + ", existiert nicht.");
-        } else {
-            MailAccount acc = (MailAccount) so.readFromFile(f);
-
-            jTextFieldName.setText(acc.getName());
-            jTextFieldMailAddress.setText(acc.getEmail());
-
-            for (int i = 0; i < jComboBoxAccountTyp.getItemCount(); i++) {
-                if (!((String) jComboBoxAccountTyp.getItemAt(i)).equals(acc.getType())) {
-                } else {
-                    jComboBoxAccountTyp.setSelectedIndex(i);
-                    break;
-                }
-            }
-
-            jTextFieldServerIn.setText(acc.getInServer());
-            jTextFieldServerOut.setText(acc.getOutServer());
-            jPasswordFieldPassword.setText(String.copyValueOf(acc.getPassword()));
-            jTextFieldAccountName.setText(acc.getUsername());
-            jTextFieldPortIn.setText(String.valueOf(acc.getImapPort()));
-            jTextFieldPortOut.setText(String.valueOf(acc.getSmtpPort()));
-        }
-
-
+    private void initText() {
+        jTextFieldName.setText(Settings.mailName);
+        jTextFieldMailAddress.setText(Settings.mailAdress);
+        jComboBoxAccountTyp.setSelectedItem(Settings.mailType);
+        jTextFieldServerIn.setText(Settings.mailInServer);
+        jTextFieldServerOut.setText(Settings.mailOutServer);
+        jPasswordFieldPassword.setText(Settings.mailPassword);
+        jTextFieldAccountName.setText(Settings.mailAccount);
+        jTextFieldPortIn.setText(Settings.mailInPort);
+        jTextFieldPortOut.setText(Settings.mailOutPort);
     }
 }

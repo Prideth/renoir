@@ -4,7 +4,6 @@
  */
 package pim.mail;
 
-import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JDialog;
@@ -12,7 +11,6 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import pim.*;
-import pim.util.ObjectSerializer;
 
 /**
  *
@@ -23,8 +21,6 @@ public class MailWriteDialog extends JDialog {
     private static final String EMAIL_PATTERN =
             "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-    private MailAccount acc;
-    private File f;
     private Mail mail;
 
     /**
@@ -42,16 +38,12 @@ public class MailWriteDialog extends JDialog {
         jTextAreaBody.addMouseListener(textFieldListener);
         jTextFieldSender.setEditable(false);
         jTextFieldSender.setEnabled(false);
-        mail = null;
-        ObjectSerializer so = new ObjectSerializer();
-        f = new File(System.getProperty("user.home") + "/pim/" + "mailaccount.ser");
 
-        if (f.exists()) {
-            acc = (MailAccount) so.readFromFile(f);
-            jTextFieldSender.setText(acc.getEmail());
+
+        if (!Settings.mailAdress.equals("")) {
+            jTextFieldSender.setText(Settings.mailAdress);
 
             if (mail != null && what.equals("aw")) {
-
                 jTextFieldReceiver.setText(mail.getFrom());
                 jTextFieldSubject.setText("Aw: " + mail.getSubject());
                 jTextAreaBody.setText("\n\n____________________________________________________________\n\n");
@@ -66,8 +58,6 @@ public class MailWriteDialog extends JDialog {
                 jTextAreaBody.requestFocus();
 
             }
-
-
 
         } else {
             JFrame rootWindow = (JFrame) SwingUtilities.getWindowAncestor(getParent());
@@ -218,18 +208,7 @@ public class MailWriteDialog extends JDialog {
                 n = JOptionPane.showOptionDialog(this, "Möchten Sie diese Nachricht ohne Betreff senden?", "PIM", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
             }
             if (n == 1 || !subject.equals("")) {
-
-                if (!f.exists()) {
-                    JFrame rootWindow = (JFrame) SwingUtilities.getWindowAncestor(getParent());
-                    MailSettings dialog = new MailSettings(rootWindow, true);
-                    dialog.setTitle("E-Mail Einstellungen");
-                    dialog.setLocationRelativeTo(rootWindow);
-                    dialog.setVisible(true);
-                } else {
-                    setMail(new Mail(acc.getEmail(), recipient, subject, text));
-                    setAccount(acc);
-                }
-
+                setMail(new Mail(Settings.mailAdress, recipient, subject, text));
                 this.dispose();
             }
         }
@@ -264,13 +243,5 @@ public class MailWriteDialog extends JDialog {
 
     public Mail getMail() {
         return mail;
-    }
-
-    public MailAccount getAccount() {
-        return acc;
-    }
-
-    private void setAccount(MailAccount acc) {
-        this.acc = acc;
     }
 }

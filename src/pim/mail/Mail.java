@@ -4,9 +4,11 @@
  */
 package pim.mail;
 
+import java.util.Comparator;
 import java.util.Date;
 import javax.mail.Address;
 import javax.mail.internet.ContentType;
+import pim.exam.Exam;
 
 /**
  *
@@ -137,4 +139,5 @@ public class Mail {
     public void setContent(Object content) {
         this.content = content;
     }
+    
 }

@@ -4,7 +4,6 @@
  */
 package pim.mail;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Properties;
@@ -16,9 +15,10 @@ import javax.mail.internet.ContentType;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.TableRowSorter;
 import pim.*;
 import pim.util.InternetChecker;
-import pim.util.ObjectSerializer;
+
 
 /**
  *
@@ -31,9 +31,8 @@ public class MailPanel extends JPanel {
     private String replyTitle;
     private String statusText;
     private String receiveText;
-    MailTableModel model;
-    Mail selectedMail;
-
+   private  MailTableModel model;
+   private Mail selectedMail;
     /**
      * Creates new form MailForm
      */
@@ -311,15 +310,15 @@ public class MailPanel extends JPanel {
         dialog.setVisible(true);
         Mail mail = null;
         mail = dialog.getMail();
-        MailAccount macc = dialog.getAccount();
-        
-        if (mail != null)
-        try {
-            MailFunction.send(macc, mail.getTo(), mail.getSubject(), (String) mail.getContent());
-        } catch (AddressException ex) {
-            Logger.getLogger(MailPanel.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (MessagingException ex) {
-            Logger.getLogger(MailPanel.class.getName()).log(Level.SEVERE, null, ex);
+
+        if (mail != null) {
+            try {
+                MailFunction.send(mail.getTo(), mail.getSubject(), (String) mail.getContent());
+            } catch (AddressException ex) {
+                Logger.getLogger(MailPanel.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (MessagingException ex) {
+                Logger.getLogger(MailPanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_jButtonWriteMailActionPerformed
 
@@ -371,29 +370,16 @@ public class MailPanel extends JPanel {
         @Override
         public void run() {
             ArrayList<Mail> receive = null;
-
             Thread mThread = null;
 
             try {
                 jLabelStatus.setText(receiveText + "");
-                ObjectSerializer so = new ObjectSerializer();
-                File f = new File(System.getProperty("user.home") + "/pim/" + "mailaccount.ser");
 
-                if (!f.exists()) {
-                    JFrame rootWindow = (JFrame) SwingUtilities.getWindowAncestor(getParent());
-                    MailSettings dialog = new MailSettings(rootWindow, true);
-                    dialog.setLocationRelativeTo(rootWindow);
-                    dialog.setVisible(true);
-                } else {
+                Progress v = new Progress();
+                mThread = new Thread(v);
+                mThread.start();
 
-                    Progress v = new Progress();
-                    mThread = new Thread(v);
-                    mThread.start();
-
-                    MailAccount acc = (MailAccount) so.readFromFile(f);
-                    receive = MailFunction.receive(acc);
-                }
-
+                receive = MailFunction.receive();
             } catch (AddressException ex) {
                 Logger.getLogger(MailPanel.class.getName()).log(Level.SEVERE, null, ex);
             } catch (MessagingException ex) {
@@ -434,7 +420,7 @@ public class MailPanel extends JPanel {
         model = new MailTableModel();
         jTableMails.setModel(model);
 
-        if (a.size() > 0 || a != null) {
+        if (a.size() > model.getRowCount() || a != null) {
             for (int i = 0; i < a.size(); i++) {
                 model.addMail(a.get(i));
             }
