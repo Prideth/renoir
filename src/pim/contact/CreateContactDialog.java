@@ -5,6 +5,7 @@
 package pim.contact;
 
 import java.awt.image.BufferedImage;
+import java.util.Properties;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import pim.*;
@@ -25,6 +26,7 @@ public class CreateContactDialog extends javax.swing.JDialog {
         super(parent, modal);
         this.contact = contact;
         initComponents();
+        setTexts(Settings.locale);
         
         TextFieldListener textFieldListener = new TextFieldListener();
         jTextFieldName.addMouseListener(textFieldListener);
@@ -63,6 +65,32 @@ public class CreateContactDialog extends javax.swing.JDialog {
         }
     }
 
+     public void setTexts(String locale) {
+        Properties texts = null;
+        switch (locale) {
+            case "en":
+                texts = Texts.props_en;
+                break;
+            case "de":
+                texts = Texts.props_de;
+                break;
+        }
+
+        if (texts != null) {
+            
+            jLabelName.setText(texts.getProperty("jLabelContactName") + ":");
+            jLabelMail.setText(texts.getProperty("jLabelContactMail") + ":");
+            jLabelNumber.setText(texts.getProperty("jLabelContactNumber") + ":");
+            jLabelMoreFields.setText(texts.getProperty("jLabelMoreFields"));
+            jLabelDescription.setText(texts.getProperty("jLabelDescription"));
+            jLabelContent.setText(texts.getProperty("jLabelContent"));
+            jButtonOk.setText(texts.getProperty("jButtonContactsOk"));
+            jButtonCancel.setText(texts.getProperty("jButtonContactsCancel"));
+        }
+
+    }
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -76,7 +104,7 @@ public class CreateContactDialog extends javax.swing.JDialog {
         jTextFieldName = new javax.swing.JTextField();
         jButtonOk = new javax.swing.JButton();
         jLabelMail = new javax.swing.JLabel();
-        jLabelMobil = new javax.swing.JLabel();
+        jLabelNumber = new javax.swing.JLabel();
         jTextFieldMail = new javax.swing.JTextField();
         jTextFieldMobil = new javax.swing.JTextField();
         jButtonCancel = new javax.swing.JButton();
@@ -108,7 +136,7 @@ public class CreateContactDialog extends javax.swing.JDialog {
 
         jLabelMail.setText("E-Mail:");
 
-        jLabelMobil.setText("Nummer:");
+        jLabelNumber.setText("Nummer:");
 
         jButtonCancel.setText("Abbrechen");
         jButtonCancel.addActionListener(new java.awt.event.ActionListener() {
@@ -148,12 +176,9 @@ public class CreateContactDialog extends javax.swing.JDialog {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabelContent)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextFieldContent1)
-                            .addComponent(jTextFieldContent2)
-                            .addComponent(jTextFieldContent3))
-                        .addGap(0, 0, 0))))
+                    .addComponent(jTextFieldContent1)
+                    .addComponent(jTextFieldContent2)
+                    .addComponent(jTextFieldContent3)))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -200,7 +225,7 @@ public class CreateContactDialog extends javax.swing.JDialog {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabelMail)
-                            .addComponent(jLabelMobil, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabelNumber, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabelName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -228,7 +253,7 @@ public class CreateContactDialog extends javax.swing.JDialog {
                     .addComponent(jTextFieldMail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelMobil)
+                    .addComponent(jLabelNumber)
                     .addComponent(jTextFieldMobil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -339,9 +364,9 @@ public class CreateContactDialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabelDescription;
     private javax.swing.JLabel jLabelImage;
     private javax.swing.JLabel jLabelMail;
-    private javax.swing.JLabel jLabelMobil;
     private javax.swing.JLabel jLabelMoreFields;
     private javax.swing.JLabel jLabelName;
+    private javax.swing.JLabel jLabelNumber;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;

@@ -5,6 +5,7 @@
 package pim.contact;
 
 import java.awt.Color;
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.Properties;
 import javax.swing.GroupLayout;
@@ -25,6 +26,14 @@ import pim.Texts;
  */
 public class ContactPanel extends JPanel implements PanelInterface {
 
+    private String noContactSelected;
+    private String noContactFound;
+    private String createContact;
+    private String yesText;
+    private String noText;
+    private String deleteContact;
+    private String deleteContactTitle;
+    
     ContactItem[] contactItems;
     ContactItem selectedContact;
     
@@ -62,6 +71,18 @@ public class ContactPanel extends JPanel implements PanelInterface {
         }
 
         if (texts != null) {
+            
+            jButtonAdd.setText(texts.getProperty("jButtonContactAdd"));
+            jButtonChange.setText(texts.getProperty("jButtonContactChange"));
+            jButtonDelete.setText(texts.getProperty("jButtonContactDelete"));
+            jLabelSearch.setText(texts.getProperty("jLabelContactSearch") + ": ");
+            noContactSelected = texts.getProperty("noContactSelected");
+            noContactFound = texts.getProperty("noContactFound");
+            createContact = texts.getProperty("createContact");
+            yesText = texts.getProperty("yes");
+            noText= texts.getProperty("no");
+            deleteContact = texts.getProperty("deleteContact");
+            deleteContactTitle = texts.getProperty("deleteContactTitle");
         }
 
     }
@@ -253,7 +274,7 @@ public class ContactPanel extends JPanel implements PanelInterface {
         if (selectedContact != null) {
             showChangeDialog(selectedContact.getContact(), getRootWindow());
         } else {
-            JOptionPane.showMessageDialog(getRootWindow(), "Es ist kein Kontakt ausgewählt.");
+            JOptionPane.showMessageDialog(getRootWindow(), noContactSelected);
         }
     }//GEN-LAST:event_jButtonChangeActionPerformed
 
@@ -261,7 +282,7 @@ public class ContactPanel extends JPanel implements PanelInterface {
         if (selectedContact != null) {
             showDeleteDialog(selectedContact.getContact(), getRootWindow());
         } else {
-            JOptionPane.showMessageDialog(getRootWindow(), "Es ist kein Kontakt ausgewählt.");
+            JOptionPane.showMessageDialog(getRootWindow(), noContactSelected);
         }
     }//GEN-LAST:event_jButtonDeleteActionPerformed
 
@@ -281,7 +302,7 @@ public class ContactPanel extends JPanel implements PanelInterface {
                 if (!search) {
 
                     initContactItems(null);
-                    JOptionPane.showMessageDialog(getRootWindow(), "Nichts gefunden.");
+                    JOptionPane.showMessageDialog(getRootWindow(), noContactFound);
                 } else {
                      selectContact(null);
                     jButtonSearch.setIcon(cancelIcon);
@@ -364,7 +385,7 @@ public class ContactPanel extends JPanel implements PanelInterface {
     @Override
     public void showAddDialog(Date date, JFrame rootWindow) {
         CreateContactDialog dialog = new CreateContactDialog(rootWindow, true, null);
-        dialog.setTitle("Kontakt erstellen");
+        dialog.setTitle(createContact);
         dialog.setLocationRelativeTo(rootWindow);
         dialog.setVisible(true);
         Contact contact = dialog.getContact();
@@ -389,10 +410,10 @@ public class ContactPanel extends JPanel implements PanelInterface {
     @Override
     public void showDeleteDialog(Object value, JFrame rootWindow) {
         Contact contact = (Contact) value;
-        Object[] options = {"Ja", "Nein"};
+        Object[] options = {yesText, noText};
         int n = JOptionPane.showOptionDialog(getRootWindow(),
-                "Kontakt \"" + contact.getName() + "\" löschen?",
-                "Löschen bestätigen",
+                MessageFormat.format(deleteContact, contact.getName()),
+                deleteContactTitle,
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
                 null,
