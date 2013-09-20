@@ -7,6 +7,7 @@ package pim;
 import pim.database.DatabaseSettingsDialog;
 import pim.database.DatabaseConnector;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.Connection;
@@ -156,6 +157,7 @@ public class MainFrame extends javax.swing.JFrame {
     
     
     private void updatePanels(Connection con) {
+        setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         if (con == null) {
             con = DatabaseConnector.getConnection(con);
         }
@@ -198,7 +200,9 @@ public class MainFrame extends javax.swing.JFrame {
             } catch (SQLException e) {
                 System.err.println("error");
             }
+            
         }
+        setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }
     
 
@@ -496,6 +500,8 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemMailActionPerformed
 
     private void jMenuItemSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSaveActionPerformed
+        
+        setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         con = DatabaseConnector.getConnection(con);
 
         if (con != null) {
@@ -537,10 +543,10 @@ public class MainFrame extends javax.swing.JFrame {
                 e.printStackTrace();
                 System.out.println("error");
             }
-            
+            setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
             JOptionPane.showMessageDialog(this, saved);
         }
-        
+        setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_jMenuItemSaveActionPerformed
 
     private void jMenuItemLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemLoginActionPerformed
