@@ -21,6 +21,7 @@ public class Mail {
     private ContentType contentType;
     private Object content;
     private boolean msgType;
+    private String to;
 
     public Mail(String from, Address[] recipientsTo, String subject, Date sentDate, ContentType contentType, Object content, boolean msgType) {
         this.from = from;
@@ -33,6 +34,13 @@ public class Mail {
 
     
     }
+  
+    public Mail(String from, String to, String subject, String content) {
+         this.from = from;
+        this.content = content;
+        this.subject = subject;
+      this.to = to;
+    }
 
      public boolean getMsgType() {
         return msgType;
@@ -44,6 +52,13 @@ public class Mail {
      */
     public String getFrom() {
         return from;
+    }
+    
+        /**
+     * @return the from
+     */
+    public String getTo() {
+        return to;
     }
 
     /**
