@@ -192,6 +192,8 @@ public class MainFrame extends javax.swing.JFrame {
                 System.err.println("error");
             }
             
+            calendarPanel.update();
+            
             System.out.print("read contacts... ");
             start = System.currentTimeMillis();
             try {
