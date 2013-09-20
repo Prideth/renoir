@@ -4,7 +4,6 @@
  */
 package pim.mail;
 
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,6 +17,7 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import pim.*;
+import pim.util.InternetChecker;
 import pim.util.ObjectSerializer;
 
 /**
@@ -31,10 +31,8 @@ public class MailPanel extends JPanel {
     private String replyTitle;
     private String statusText;
     private String receiveText;
-    
     MailTableModel model;
     Mail selectedMail;
-    
 
     /**
      * Creates new form MailForm
@@ -43,7 +41,7 @@ public class MailPanel extends JPanel {
         initComponents();
 
         setTexts(Settings.locale);
-        
+
         TextFieldListener textFieldListener = new TextFieldListener();
         jTextFieldSearch.addMouseListener(textFieldListener);
 
@@ -51,7 +49,7 @@ public class MailPanel extends JPanel {
         jTableMails.getSelectionModel().addListSelectionListener(new MySelectionListener(jTableMails));
     }
 
-     public void setTexts(String locale) {
+    public void setTexts(String locale) {
         Properties texts = null;
         switch (locale) {
             case "en":
@@ -62,34 +60,33 @@ public class MailPanel extends JPanel {
                 break;
         }
 
-         if (texts != null) {
-             jButtonWriteMail.setText(texts.getProperty("jButtonWriteMail"));
-             jButtonReceiveMail.setText(texts.getProperty("jButtonReceiveMail"));
-             jLabelSearch.setText(texts.getProperty("jLabelMailSearch") + ":");
-             jButtonReply.setText(texts.getProperty("jButtonReply"));
-             jButtonForward.setText(texts.getProperty("jButtonForward"));
-             jButtonDelete.setText(texts.getProperty("jButtonMailDelete"));
-             String inbox = texts.getProperty("inbox");
-             String sent = texts.getProperty("sent");
-             String designs = texts.getProperty("designs");
-             String spam = texts.getProperty("spam");
-             String trash = texts.getProperty("trash");
-             String subject = texts.getProperty("subject");
-             String sender = texts.getProperty("sender");
-             String date = texts.getProperty("maildate");
-             forwardTitle = texts.getProperty("forwardTitle");
-             writeTitle = texts.getProperty("writeTitle");
-             replyTitle = texts.getProperty("replyTitle");
-             statusText = texts.getProperty("status");
-             receiveText = texts.getProperty("receive");
-             //jComboBoxFolder.setModel(new DefaultComboBoxModel(new String[] { inbox, sent, designs, spam, trash }));
-             jTableMails.getColumnModel().getColumn(0).setHeaderValue(subject);
-             jTableMails.getColumnModel().getColumn(1).setHeaderValue(sender);
-             jTableMails.getColumnModel().getColumn(2).setHeaderValue(date);
-         }
+        if (texts != null) {
+            jButtonWriteMail.setText(texts.getProperty("jButtonWriteMail"));
+            jButtonReceiveMail.setText(texts.getProperty("jButtonReceiveMail"));
+            jLabelSearch.setText(texts.getProperty("jLabelMailSearch") + ":");
+            jButtonReply.setText(texts.getProperty("jButtonReply"));
+            jButtonForward.setText(texts.getProperty("jButtonForward"));
+            jButtonDelete.setText(texts.getProperty("jButtonMailDelete"));
+            String inbox = texts.getProperty("inbox");
+            String sent = texts.getProperty("sent");
+            String designs = texts.getProperty("designs");
+            String spam = texts.getProperty("spam");
+            String trash = texts.getProperty("trash");
+            String subject = texts.getProperty("subject");
+            String sender = texts.getProperty("sender");
+            String date = texts.getProperty("maildate");
+            forwardTitle = texts.getProperty("forwardTitle");
+            writeTitle = texts.getProperty("writeTitle");
+            replyTitle = texts.getProperty("replyTitle");
+            statusText = texts.getProperty("status");
+            receiveText = texts.getProperty("receive");
+            //jComboBoxFolder.setModel(new DefaultComboBoxModel(new String[] { inbox, sent, designs, spam, trash }));
+            jTableMails.getColumnModel().getColumn(0).setHeaderValue(subject);
+            jTableMails.getColumnModel().getColumn(1).setHeaderValue(sender);
+            jTableMails.getColumnModel().getColumn(2).setHeaderValue(date);
+        }
     }
-    
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -295,7 +292,7 @@ public class MailPanel extends JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonForwardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonForwardActionPerformed
-      JFrame rootWindow = (JFrame) SwingUtilities.getWindowAncestor(this.getParent());
+        JFrame rootWindow = (JFrame) SwingUtilities.getWindowAncestor(this.getParent());
         MailWriteDialog dialog = new MailWriteDialog(rootWindow, true, selectedMail, "wl");
         dialog.setTitle(forwardTitle);
         dialog.setLocationRelativeTo(rootWindow);
@@ -307,17 +304,33 @@ public class MailPanel extends JPanel {
     }//GEN-LAST:event_jButtonDeleteActionPerformed
 
     private void jButtonWriteMailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonWriteMailActionPerformed
-          JFrame rootWindow = (JFrame) SwingUtilities.getWindowAncestor(this.getParent());
+        JFrame rootWindow = (JFrame) SwingUtilities.getWindowAncestor(this.getParent());
         MailWriteDialog dialog = new MailWriteDialog(rootWindow, true, null, null);
         dialog.setTitle(writeTitle);
         dialog.setLocationRelativeTo(rootWindow);
         dialog.setVisible(true);
+        Mail mail = null;
+        mail = dialog.getMail();
+        MailAccount macc = dialog.getAccount();
+        
+        if (mail != null)
+        try {
+            MailFunction.send(macc, mail.getTo(), mail.getSubject(), (String) mail.getContent());
+        } catch (AddressException ex) {
+            Logger.getLogger(MailPanel.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (MessagingException ex) {
+            Logger.getLogger(MailPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButtonWriteMailActionPerformed
 
     private void jButtonReceiveMailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReceiveMailActionPerformed
-        GetMails getMails = new GetMails();
-        Thread mThread = new Thread(getMails);
-        mThread.start();
+        if (InternetChecker.getDefaultInstance().isConnectionPresent()) {
+            GetMails getMails = new GetMails();
+            Thread mThread = new Thread(getMails);
+            mThread.start();
+        } else {
+            JOptionPane.showMessageDialog(this.getParent(), "Keine Internetverbindung");
+        }
     }//GEN-LAST:event_jButtonReceiveMailActionPerformed
 
     private void jTableMailsFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTableMailsFocusGained
@@ -335,7 +348,6 @@ public class MailPanel extends JPanel {
     private void jTextFieldSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldSearchActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldSearchActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonDelete;
     private javax.swing.JButton jButtonForward;
@@ -354,7 +366,6 @@ public class MailPanel extends JPanel {
     private javax.swing.JTextField jTextFieldSearch;
     // End of variables declaration//GEN-END:variables
 
-    
     class GetMails implements Runnable {
 
         @Override
