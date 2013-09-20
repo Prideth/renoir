@@ -5,12 +5,8 @@
 package pim.mail;
 
 import java.io.File;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.mail.MessagingException;
-import javax.mail.internet.AddressException;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -20,7 +16,7 @@ import pim.util.ObjectSerializer;
 
 /**
  *
- * @author 
+ * @author
  */
 public class MailWriteDialog extends JDialog {
 
@@ -29,11 +25,12 @@ public class MailWriteDialog extends JDialog {
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
     private MailAccount acc;
     private File f;
+    private Mail mail;
 
     /**
      * Creates new form MailWriteDialog
      */
-  public MailWriteDialog(JFrame parent, boolean modal, Mail mail, String what) {
+    public MailWriteDialog(JFrame parent, boolean modal, Mail mail, String what) {
         super(parent, modal);
         initComponents();
 
@@ -45,7 +42,7 @@ public class MailWriteDialog extends JDialog {
         jTextAreaBody.addMouseListener(textFieldListener);
         jTextFieldSender.setEditable(false);
         jTextFieldSender.setEnabled(false);
-
+        mail = null;
         ObjectSerializer so = new ObjectSerializer();
         f = new File(System.getProperty("user.home") + "/pim/" + "mailaccount.ser");
 
@@ -81,7 +78,6 @@ public class MailWriteDialog extends JDialog {
         }
 
     }
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -222,21 +218,18 @@ public class MailWriteDialog extends JDialog {
                 n = JOptionPane.showOptionDialog(this, "Möchten Sie diese Nachricht ohne Betreff senden?", "PIM", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
             }
             if (n == 1 || !subject.equals("")) {
-                try {
-                    if (!f.exists()) {
-                        JFrame rootWindow = (JFrame) SwingUtilities.getWindowAncestor(getParent());
-                        MailSettings dialog = new MailSettings(rootWindow, true);
-                        dialog.setTitle("E-Mail Einstellungen");
-                        dialog.setLocationRelativeTo(rootWindow);
-                        dialog.setVisible(true);
-                    } else {
-                        MailFunction.send(acc, recipient, subject, text);
-                    }
-                } catch (AddressException ex) {
-                    Logger.getLogger(MailWriteDialog.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (MessagingException ex) {
-                    Logger.getLogger(MailWriteDialog.class.getName()).log(Level.SEVERE, null, ex);
+
+                if (!f.exists()) {
+                    JFrame rootWindow = (JFrame) SwingUtilities.getWindowAncestor(getParent());
+                    MailSettings dialog = new MailSettings(rootWindow, true);
+                    dialog.setTitle("E-Mail Einstellungen");
+                    dialog.setLocationRelativeTo(rootWindow);
+                    dialog.setVisible(true);
+                } else {
+                    setMail(new Mail(acc.getEmail(), recipient, subject, text));
+                    setAccount(acc);
                 }
+
                 this.dispose();
             }
         }
@@ -263,5 +256,21 @@ public class MailWriteDialog extends JDialog {
         matcher = pattern.matcher(mail);
         return matcher.matches();
 
+    }
+
+    private void setMail(Mail mail) {
+        this.mail = mail;
+    }
+
+    public Mail getMail() {
+        return mail;
+    }
+
+    public MailAccount getAccount() {
+        return acc;
+    }
+
+    private void setAccount(MailAccount acc) {
+        this.acc = acc;
     }
 }
