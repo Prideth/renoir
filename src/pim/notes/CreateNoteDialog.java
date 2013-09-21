@@ -9,8 +9,9 @@ import java.util.Date;
 import pim.TextFieldListener;
 
 /**
- *
- * @author Beware
+ * Klasse zum erstellen/bearbeiten einer Notiz ueber einen JDialog
+ * 
+ * @author Thomas Quitter
  */
 public class CreateNoteDialog extends javax.swing.JDialog {
 

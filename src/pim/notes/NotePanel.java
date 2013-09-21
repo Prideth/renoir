@@ -21,7 +21,7 @@ import pim.util.WrapLayout;
 
 
 /**
- * Klasse zum erstellen des NotePanels
+ * Klasse zum erstellen des NotePanels ueber ein JPanel
  * @author Thomas Quitter
  */
 public class NotePanel extends JPanel implements PanelInterface {
@@ -229,6 +229,7 @@ public class NotePanel extends JPanel implements PanelInterface {
             }
         }
         jPanelContent.updateUI();
+        
 
         if (size > 0) {
             selectNote(noteItems[size - 1]);
@@ -432,7 +433,7 @@ public class NotePanel extends JPanel implements PanelInterface {
     }//GEN-LAST:event_jComboBoxSortActionPerformed
 
     /**
-     * 
+     * Initialisieren der Suchfunktion nach einer Eingabe in das Suchfeld
      * @param evt 
      */
     private void jTextFieldSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldSearchActionPerformed
@@ -448,12 +449,20 @@ public class NotePanel extends JPanel implements PanelInterface {
 
     }//GEN-LAST:event_jTextFieldSearchActionPerformed
 
+    /**
+     * Deaktivieren der Suche
+     * @param evt 
+     */
     private void jButtonUndoSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUndoSearchActionPerformed
         disableCancelButton();
         initNoteItems("");
 
     }//GEN-LAST:event_jButtonUndoSearchActionPerformed
 
+    /**
+     * Methode zum anwaehlen eines NoteItems
+     * @param evt 
+     */
     private void notePanelMousePressed(MouseEvent evt) {
         if (evt.getButton() == 1) {
             NoteItem noteItem = null;
@@ -488,6 +497,7 @@ public class NotePanel extends JPanel implements PanelInterface {
         return index;
     }
 
+
     private void selectNote(NoteItem noteItem) {
         selectedItem = noteItem;
         for (int i = 0; i < size; i++) {
@@ -498,6 +508,10 @@ public class NotePanel extends JPanel implements PanelInterface {
         }
     }
 
+    /**
+     * Sortieren der Notes ueber collections und comparators
+     * @param sortBy 
+     */
     private void sortList(String sortBy) {
 
         if (noteItems.length > 0) {
@@ -506,50 +520,32 @@ public class NotePanel extends JPanel implements PanelInterface {
 
             for (int i = 0; i < size; i++) {
                 tempNoteItemList.add(noteItems[i]);
-
             }
-            ListIterator<NoteItem> it = tempNoteItemList.listIterator(tempNoteItemList.size());
-
 
             switch (sortBy) {
                 case ALPHABETIC:
-
                     Collections.sort(tempNoteItemList, TITLE_COMPARATOR);
-                    //Collections.reverse(tempNoteItemList);
-
                     int i = 0;
-
                     for (NoteItem noteItemTemp : tempNoteItemList) {
                         noteItems[i] = noteItemTemp;
-
                         i++;
                     }
-
                     initNoteItems(jTextFieldSearch.getText());
                     selectNote(null);
-
-
                     break;
 
                 case DATE:
 
                     Collections.sort(tempNoteItemList, DATE_COMPARATOR);
-                    //Collections.reverse(tempNoteItemList);
                     i = 0;
-
                     for (NoteItem noteItemTemp : tempNoteItemList) {
                         noteItems[i] = noteItemTemp;
-
                         i++;
                     }
-
                     initNoteItems(jTextFieldSearch.getText());
                     selectNote(null);
-
                     break;
             }
-
-
         }
     }
 
@@ -566,6 +562,9 @@ public class NotePanel extends JPanel implements PanelInterface {
         return (JFrame) SwingUtilities.getWindowAncestor(this.getParent());
     }
     
+    /**
+     * Comparator zum alphabetischen Sortieren (nach Titel) der Notes
+     */
     public final static Comparator<NoteItem> TITLE_COMPARATOR = new Comparator<NoteItem>() {
         @Override
         public int compare(NoteItem p1, NoteItem p2) {
@@ -573,6 +572,9 @@ public class NotePanel extends JPanel implements PanelInterface {
         }
     };
     
+    /**
+     * Comparator zum Sortieren der Notes nach Datum
+     */
     public final static Comparator<NoteItem> DATE_COMPARATOR = new Comparator<NoteItem>() {
         @Override
         public int compare(NoteItem p1, NoteItem p2) {
