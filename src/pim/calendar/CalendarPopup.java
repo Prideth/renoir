@@ -6,8 +6,11 @@ package pim.calendar;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Properties;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+import pim.Settings;
+import pim.Texts;
 
 /**
  *
@@ -53,11 +56,8 @@ public class CalendarPopup extends javax.swing.JPopupMenu {
             jMenuItemDelete.setEnabled(false);
         }
         
-        jMenuItemExam.setText("Neue Klausur");
-        jMenuItemEvent.setText("Neuer Termin");
-        jMenuItemNote.setText("Neue Notiz");
-        jMenuItemChange.setText("Ändern");
-        jMenuItemDelete.setText("Löschen");
+        setTexts(Settings.locale);
+        
         
         add(jMenuItemExam);
         add(jMenuItemEvent);
@@ -65,6 +65,28 @@ public class CalendarPopup extends javax.swing.JPopupMenu {
         add(new JPopupMenu.Separator());
         add(jMenuItemChange);
         add(jMenuItemDelete);
+    }
+    
+    public void setTexts(String locale) {
+        Properties texts = null;
+        switch (locale) {
+            case "en":
+                texts = Texts.props_en;
+                break;
+            case "de":
+                texts = Texts.props_de;
+                break;
+        }
+
+        if (texts != null) {
+            jMenuItemExam.setText(texts.getProperty("jMenuItemExam"));
+            jMenuItemEvent.setText(texts.getProperty("jMenuItemEvent"));
+            jMenuItemNote.setText(texts.getProperty("jMenuItemNote"));
+            jMenuItemChange.setText(texts.getProperty("jMenuItemChange"));
+            jMenuItemDelete.setText(texts.getProperty("jMenuItemDelete"));
+
+        }
+
     }
     
     private void action(ActionEvent evt) {

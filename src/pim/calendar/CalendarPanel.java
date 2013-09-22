@@ -45,7 +45,7 @@ public class CalendarPanel extends javax.swing.JPanel {
         "21:00", "21:30", "22:00", "22:30", "23:00", "23:30"
     };
     
-    private static final String[] MONTHS = new String[]{
+    private String[] months = new String[]{
         "Januar", "Februar", "März", "April", "Mai", "Juni", "Juli",
         "August", "September", "Oktober", "November", "Dezember"
     };
@@ -74,7 +74,7 @@ public class CalendarPanel extends javax.swing.JPanel {
         year = calendar.get(Calendar.YEAR);
         month = calendar.get(Calendar.MONTH);
         
-        jLabelDate.setText(MONTHS[month] + " " + year);
+        jLabelDate.setText(months[month] + " " + year);
         
         model = getModel();
         
@@ -130,6 +130,26 @@ public class CalendarPanel extends javax.swing.JPanel {
         }
 
         if (texts != null) {
+            months = new String[]{
+                texts.getProperty("january"),
+                texts.getProperty("february"),
+                texts.getProperty("march"),
+                texts.getProperty("april"),
+                texts.getProperty("may"),
+                texts.getProperty("june"),
+                texts.getProperty("july"),
+                texts.getProperty("august"),
+                texts.getProperty("september"),
+                texts.getProperty("october"),
+                texts.getProperty("november"),
+                texts.getProperty("december")
+            };
+            jLabelDate.setText(months[month] + " " + year);
+            jButtonExam.setText(texts.getProperty("jButtonExam"));
+            jButtonEvent.setText(texts.getProperty("jButtonEvent"));
+            jButtonNote.setText(texts.getProperty("jButtonNote"));
+            jButtonNow.setText(texts.getProperty("jButtonNow"));
+            
         }
 
     }
@@ -409,7 +429,7 @@ public class CalendarPanel extends javax.swing.JPanel {
             month = 0;
             year++;
         }
-        jLabelDate.setText(MONTHS[month] + " " + year);
+        jLabelDate.setText(months[month] + " " + year);
         model = getModel();
     }//GEN-LAST:event_jButtonNextActionPerformed
 
@@ -419,14 +439,14 @@ public class CalendarPanel extends javax.swing.JPanel {
             month = 11;
             year--;
         }
-        jLabelDate.setText((MONTHS[month]) + " " + year);
+        jLabelDate.setText((months[month]) + " " + year);
         model = getModel();
     }//GEN-LAST:event_jButtonPrevActionPerformed
 
     private void jButtonNowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNowActionPerformed
         year = calendar.get(Calendar.YEAR);
         month = calendar.get(Calendar.MONTH);
-        jLabelDate.setText(MONTHS[month] + " " + year);
+        jLabelDate.setText(months[month] + " " + year);
         
         model = getModel();
         
