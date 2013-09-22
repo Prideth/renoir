@@ -34,9 +34,6 @@ public class EventPanel extends JPanel implements PanelInterface {
     EventItem[] eventItems;
     private int size;
     private EventItem selectedItem;
-    private final ImageIcon okIcon;
-    private final ImageIcon cancelIcon;
-    private boolean search;
     private final MouseListener listener;
     private final MouseListener closeListener;
 
@@ -44,10 +41,6 @@ public class EventPanel extends JPanel implements PanelInterface {
      * Creates new form EventPanel
      */
     public EventPanel() {
-        okIcon = new javax.swing.ImageIcon(getClass().getResource("/pim/icons/ok.png"));
-        cancelIcon = new javax.swing.ImageIcon(getClass().getResource("/pim/icons/cancel.png"));
-        
-        search = false;
         eventItems = new EventItem[MAX_SIZE];
         size = 0;
         selectedItem = null;
@@ -112,7 +105,6 @@ public class EventPanel extends JPanel implements PanelInterface {
         jButtonDelete = new javax.swing.JButton();
         jLabelSearch = new javax.swing.JLabel();
         jTextFieldSearch = new javax.swing.JTextField();
-        jButtonSearch = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(518, 355));
 
@@ -184,18 +176,6 @@ public class EventPanel extends JPanel implements PanelInterface {
         });
         jPanel1.add(jTextFieldSearch);
 
-        jButtonSearch.setIcon(okIcon);
-        jButtonSearch.setBorder(javax.swing.BorderFactory.createEmptyBorder(6, 6, 6, 6));
-        jButtonSearch.setEnabled(false);
-        jButtonSearch.setIconTextGap(0);
-        jButtonSearch.setInheritsPopupMenu(true);
-        jButtonSearch.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonSearchActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jButtonSearch);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -224,7 +204,6 @@ public class EventPanel extends JPanel implements PanelInterface {
                 String content = eventItems[i].getEvent().getContent().toLowerCase().replaceAll("\n", "");
                 if (title.matches(regex) || content.matches(regex)) {
                     jPanelContent.add(eventItems[i]);
-                    search = true;
                 }
             }
         }
@@ -404,36 +383,12 @@ public class EventPanel extends JPanel implements PanelInterface {
         }
     }//GEN-LAST:event_jButtonDeleteActionPerformed
 
-    private void jButtonSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSearchActionPerformed
-        if (!search) {
-            String searchstring = jTextFieldSearch.getText().trim();
-            if (!searchstring.isEmpty()) {
-                initEventItems(searchstring);
-                if (!search) {
-                    
-                    initEventItems(null);
-                    JOptionPane.showMessageDialog(getRootWindow(), "Nichts gefunden.");
-                } else {
-                    selectEvent(null);
-                    jButtonSearch.setIcon(cancelIcon);
-                }
-            }
-        } else {
-            if (jTextFieldSearch.getText().trim().isEmpty()) {
-                jButtonSearch.setEnabled(false);
-            }
-            search = false;
-            jButtonSearch.setIcon(okIcon);
-            initEventItems(null);
-        }
-    }//GEN-LAST:event_jButtonSearchActionPerformed
-
     private void jTextFieldSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldSearchKeyReleased
-        if (!search && jTextFieldSearch.getText().trim().isEmpty()) {
-            jButtonSearch.setEnabled(false);
-        } else {
-            jButtonSearch.setEnabled(true);
+        String searchstring = jTextFieldSearch.getText().trim();
+        if (searchstring.isEmpty()) {
+            searchstring = null;
         }
+        initEventItems(searchstring);
     }//GEN-LAST:event_jTextFieldSearchKeyReleased
 
     private JFrame getRootWindow() {
@@ -443,7 +398,6 @@ public class EventPanel extends JPanel implements PanelInterface {
     private javax.swing.JButton jButtonAdd;
     private javax.swing.JButton jButtonChange;
     private javax.swing.JButton jButtonDelete;
-    private javax.swing.JButton jButtonSearch;
     private javax.swing.JLabel jLabelSearch;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

@@ -41,7 +41,6 @@ public class NotePanel extends JPanel implements PanelInterface {
         
         initComponents();
         setTexts(Settings.locale);
-        disableCancelButton();
 
         listener = new java.awt.event.MouseAdapter() {
             @Override
@@ -97,7 +96,6 @@ public class NotePanel extends JPanel implements PanelInterface {
         jTextFieldSearch = new javax.swing.JTextField();
         jComboBoxSort = new javax.swing.JComboBox();
         jLabel2 = new javax.swing.JLabel();
-        jButtonUndoSearch = new javax.swing.JButton();
 
         setMinimumSize(new java.awt.Dimension(200, 200));
 
@@ -125,7 +123,7 @@ public class NotePanel extends JPanel implements PanelInterface {
         );
         jPanelContentLayout.setVerticalGroup(
             jPanelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 282, Short.MAX_VALUE)
+            .addGap(0, 324, Short.MAX_VALUE)
         );
 
         jScrollPane1.setViewportView(jPanelContent);
@@ -139,9 +137,9 @@ public class NotePanel extends JPanel implements PanelInterface {
 
         jLabel1.setText("Suche:");
 
-        jTextFieldSearch.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldSearchActionPerformed(evt);
+        jTextFieldSearch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextFieldSearchKeyReleased(evt);
             }
         });
 
@@ -154,38 +152,26 @@ public class NotePanel extends JPanel implements PanelInterface {
 
         jLabel2.setText("Sortieren:");
 
-        jButtonUndoSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pim/icons/cancel.png"))); // NOI18N
-        jButtonUndoSearch.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonUndoSearchActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButtonNew, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addComponent(jComboBoxSort, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextFieldSearch)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonUndoSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                .addComponent(jButtonNew, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jComboBoxSort, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 574, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(3, 3, 3)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTextFieldSearch))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -196,14 +182,12 @@ public class NotePanel extends JPanel implements PanelInterface {
                     .addComponent(jButtonEdit)
                     .addComponent(jComboBoxSort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
-                .addGap(8, 8, 8)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButtonUndoSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jTextFieldSearch)
-                        .addComponent(jLabel1)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE))
+                .addGap(3, 3, 3)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextFieldSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addGap(3, 3, 3)
+                .addComponent(jScrollPane1))
         );
 
         getAccessibleContext().setAccessibleParent(this);
@@ -220,7 +204,6 @@ public class NotePanel extends JPanel implements PanelInterface {
                 jPanelContent.add(noteItems[i]);
             }
         } else {    //Filtern anhand des Suchfeldes
-            enableCancelButton();
             for (int i = 0; i < size; i++) {
                 String regex = ".*" + searchString.toLowerCase() + ".*";
                 if (noteItems[i].getTitle().toLowerCase().matches(regex) | noteItems[i].getContent().toLowerCase().replaceAll("\n", "").matches(regex)) {
@@ -268,7 +251,6 @@ public class NotePanel extends JPanel implements PanelInterface {
         NoteItem noteIt = new NoteItem(note);
         noteIt.addMouseListener(listener);
         noteItems[size++] = noteIt;
-        disableCancelButton();
         initNoteItems("");
 
     }
@@ -310,7 +292,6 @@ public class NotePanel extends JPanel implements PanelInterface {
         noteItems[--size] = null;
         selectedItem = null;
         selectNote(null);
-        disableCancelButton();
         initNoteItems("");
     }
 
@@ -432,32 +413,10 @@ public class NotePanel extends JPanel implements PanelInterface {
         }
     }//GEN-LAST:event_jComboBoxSortActionPerformed
 
-    /**
-     * Initialisieren der Suchfunktion nach einer Eingabe in das Suchfeld
-     * @param evt 
-     */
-    private void jTextFieldSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldSearchActionPerformed
-
-        String searchString = jTextFieldSearch.getText();
-        if (size > 0) {
-            initNoteItems(searchString);
-        }
-        if (jTextFieldSearch.getText().isEmpty()) {
-            disableCancelButton();
-        }
-
-
-    }//GEN-LAST:event_jTextFieldSearchActionPerformed
-
-    /**
-     * Deaktivieren der Suche
-     * @param evt 
-     */
-    private void jButtonUndoSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUndoSearchActionPerformed
-        disableCancelButton();
-        initNoteItems("");
-
-    }//GEN-LAST:event_jButtonUndoSearchActionPerformed
+    private void jTextFieldSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldSearchKeyReleased
+                        String searchstring = jTextFieldSearch.getText().trim();
+        initNoteItems(searchstring);
+    }//GEN-LAST:event_jTextFieldSearchKeyReleased
 
     /**
      * Methode zum anwaehlen eines NoteItems
@@ -549,15 +508,7 @@ public class NotePanel extends JPanel implements PanelInterface {
         }
     }
 
-    private void enableCancelButton() {
-        jButtonUndoSearch.setEnabled(true);
-    }
-
-    private void disableCancelButton() {
-        jButtonUndoSearch.setEnabled(false);
-        jTextFieldSearch.setText("");
-    }
-
+    
     private JFrame getRootWindow() {
         return (JFrame) SwingUtilities.getWindowAncestor(this.getParent());
     }
@@ -586,7 +537,6 @@ public class NotePanel extends JPanel implements PanelInterface {
     private javax.swing.JButton jButtonDelete;
     private javax.swing.JButton jButtonEdit;
     private javax.swing.JButton jButtonNew;
-    private javax.swing.JButton jButtonUndoSearch;
     private javax.swing.JComboBox jComboBoxSort;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

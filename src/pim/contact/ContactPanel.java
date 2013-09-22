@@ -4,7 +4,6 @@
  */
 package pim.contact;
 
-import java.awt.Color;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.Properties;
@@ -27,7 +26,6 @@ import pim.Texts;
 public class ContactPanel extends JPanel implements PanelInterface {
 
     private String noContactSelected;
-    private String noContactFound;
     private String createContact;
     private String yesText;
     private String noText;
@@ -38,17 +36,10 @@ public class ContactPanel extends JPanel implements PanelInterface {
     ContactItem selectedContact;
     
     private int size;
-    private ImageIcon okIcon;
-    private ImageIcon cancelIcon;
-    private boolean search;
-
     /**
      * Creates new form ContactPanel
      */
     public ContactPanel() {
-        okIcon = new javax.swing.ImageIcon(getClass().getResource("/pim/icons/ok.png"));
-        cancelIcon = new javax.swing.ImageIcon(getClass().getResource("/pim/icons/cancel.png"));
-
         selectedContact = null;
 
         initComponents();
@@ -77,7 +68,6 @@ public class ContactPanel extends JPanel implements PanelInterface {
             jButtonDelete.setText(texts.getProperty("jButtonContactDelete"));
             jLabelSearch.setText(texts.getProperty("jLabelContactSearch") + ": ");
             noContactSelected = texts.getProperty("noContactSelected");
-            noContactFound = texts.getProperty("noContactFound");
             createContact = texts.getProperty("createContact");
             yesText = texts.getProperty("yes");
             noText= texts.getProperty("no");
@@ -106,7 +96,6 @@ public class ContactPanel extends JPanel implements PanelInterface {
         jButtonDelete = new javax.swing.JButton();
         jLabelSearch = new javax.swing.JLabel();
         jTextFieldSearch = new javax.swing.JTextField();
-        jButtonSearch = new javax.swing.JButton();
 
         jScrollPaneContent.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
@@ -178,18 +167,6 @@ public class ContactPanel extends JPanel implements PanelInterface {
         });
         jPanel2.add(jTextFieldSearch);
 
-        jButtonSearch.setIcon(okIcon);
-        jButtonSearch.setBorder(javax.swing.BorderFactory.createEmptyBorder(6, 6, 6, 6));
-        jButtonSearch.setEnabled(false);
-        jButtonSearch.setIconTextGap(0);
-        jButtonSearch.setInheritsPopupMenu(true);
-        jButtonSearch.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonSearchActionPerformed(evt);
-            }
-        });
-        jPanel2.add(jButtonSearch);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -235,7 +212,6 @@ public class ContactPanel extends JPanel implements PanelInterface {
                         || ((content2 != null) && content2.matches(regex))
                         || ((content3 != null) && content3.matches(regex))) {
                     show = true;
-                    search = true;
                 }
             }
             if (show) {
@@ -279,7 +255,7 @@ public class ContactPanel extends JPanel implements PanelInterface {
     }//GEN-LAST:event_jButtonChangeActionPerformed
 
     private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
-        if (selectedContact != null) {
+            if (selectedContact != null) {
             showDeleteDialog(selectedContact.getContact(), getRootWindow());
         } else {
             JOptionPane.showMessageDialog(getRootWindow(), noContactSelected);
@@ -287,37 +263,12 @@ public class ContactPanel extends JPanel implements PanelInterface {
     }//GEN-LAST:event_jButtonDeleteActionPerformed
 
     private void jTextFieldSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldSearchKeyReleased
-        if (!search && jTextFieldSearch.getText().trim().isEmpty()) {
-            jButtonSearch.setEnabled(false);
-        } else {
-            jButtonSearch.setEnabled(true);
+        String searchstring = jTextFieldSearch.getText().trim();
+        if (searchstring.isEmpty()) {
+            searchstring = null;
         }
+        initContactItems(searchstring);
     }//GEN-LAST:event_jTextFieldSearchKeyReleased
-
-    private void jButtonSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSearchActionPerformed
-        if (!search) {
-            String searchstring = jTextFieldSearch.getText().trim();
-            if (!searchstring.isEmpty()) {
-                initContactItems(searchstring);
-                if (!search) {
-
-                    initContactItems(null);
-                    JOptionPane.showMessageDialog(getRootWindow(), noContactFound);
-                } else {
-                     selectContact(null);
-                    jButtonSearch.setIcon(cancelIcon);
-                }
-            }
-        } else {
-            if (jTextFieldSearch.getText().trim().isEmpty()) {
-                jButtonSearch.setEnabled(false);
-            }
-            search = false;
-            jButtonSearch.setIcon(okIcon);
-            initContactItems(null);
-        }
-
-    }//GEN-LAST:event_jButtonSearchActionPerformed
 
     @Override
     public void updateValues(Object[] values) {
@@ -464,7 +415,6 @@ public class ContactPanel extends JPanel implements PanelInterface {
     private javax.swing.JButton jButtonAdd;
     private javax.swing.JButton jButtonChange;
     private javax.swing.JButton jButtonDelete;
-    private javax.swing.JButton jButtonSearch;
     private javax.swing.JLabel jLabelSearch;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
