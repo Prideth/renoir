@@ -49,8 +49,6 @@ public class MailSettings extends javax.swing.JDialog {
         jTextFieldAccountName = new javax.swing.JTextField();
         jButtonCancel = new javax.swing.JButton();
         jButtonSave = new javax.swing.JButton();
-        jLabel11 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
         jPasswordFieldPassword = new javax.swing.JPasswordField();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
@@ -58,15 +56,16 @@ public class MailSettings extends javax.swing.JDialog {
         jTextFieldPortOut = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
-        jLabel1.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         jLabel1.setText("Benutzerinformationen");
 
         jLabel2.setText("Ihr Name:");
 
         jLabel3.setText("E-Mail-Adresse:");
 
-        jLabel4.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         jLabel4.setText("Serverinformationen");
 
         jLabel5.setText("Kontotyp:");
@@ -75,7 +74,7 @@ public class MailSettings extends javax.swing.JDialog {
 
         jLabel7.setText("Postausgangsserver:");
 
-        jLabel8.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         jLabel8.setText("Anmeldeinformationen");
 
         jLabel9.setText("Benutzername:");
@@ -104,26 +103,9 @@ public class MailSettings extends javax.swing.JDialog {
             }
         });
 
-        jLabel11.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
-        jLabel11.setText("Internet-E-Mail-Einstellungen");
-
-        jLabel12.setText("Alle Einstellungen auf dieser Seite sind nötig.");
-
         jLabel13.setText("Port:");
 
         jLabel14.setText("Port:");
-
-        jTextFieldPortIn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldPortInActionPerformed(evt);
-            }
-        });
-
-        jTextFieldPortOut.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldPortOutActionPerformed(evt);
-            }
-        });
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -131,64 +113,56 @@ public class MailSettings extends javax.swing.JDialog {
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                    .add(jLabel1)
+                    .add(jLabel4)
+                    .add(jLabel8)
                     .add(layout.createSequentialGroup()
-                        .add(6, 6, 6)
-                        .add(jLabel12))
-                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                        .add(layout.createSequentialGroup()
-                            .add(jButtonSave)
-                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                            .add(jButtonCancel))
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                            .add(jLabel1)
-                            .add(jLabel4)
-                            .add(jLabel8)
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(jLabel5)
+                            .add(jLabel6)
+                            .add(jLabel7)
+                            .add(jLabel9)
+                            .add(jLabel10))
+                        .add(78, 78, 78)
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(jComboBoxAccountTyp, 0, 256, Short.MAX_VALUE)
+                            .add(jTextFieldAccountName)
+                            .add(jPasswordFieldPassword)
                             .add(layout.createSequentialGroup()
+                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
+                                    .add(org.jdesktop.layout.GroupLayout.LEADING, jTextFieldServerIn, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
+                                    .add(org.jdesktop.layout.GroupLayout.LEADING, jTextFieldServerOut))
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                    .add(jLabel5)
-                                    .add(jLabel6)
-                                    .add(jLabel7)
-                                    .add(jLabel9)
-                                    .add(jLabel10))
-                                .add(78, 78, 78)
-                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                    .add(jComboBoxAccountTyp, 0, 256, Short.MAX_VALUE)
-                                    .add(jTextFieldAccountName)
-                                    .add(jPasswordFieldPassword)
                                     .add(layout.createSequentialGroup()
-                                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
-                                            .add(org.jdesktop.layout.GroupLayout.LEADING, jTextFieldServerIn, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
-                                            .add(org.jdesktop.layout.GroupLayout.LEADING, jTextFieldServerOut))
+                                        .add(jLabel14)
                                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                            .add(layout.createSequentialGroup()
-                                                .add(jLabel14)
-                                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                                .add(jTextFieldPortOut))
-                                            .add(layout.createSequentialGroup()
-                                                .add(jLabel13)
-                                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                                .add(jTextFieldPortIn))))))
-                            .add(layout.createSequentialGroup()
-                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                    .add(jLabel3)
-                                    .add(jLabel2))
-                                .add(104, 104, 104)
-                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                                    .add(jTextFieldName, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE)
-                                    .add(jTextFieldMailAddress)))))
-                    .add(jLabel11))
+                                        .add(jTextFieldPortOut))
+                                    .add(layout.createSequentialGroup()
+                                        .add(jLabel13)
+                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                        .add(jTextFieldPortIn))))))
+                    .add(layout.createSequentialGroup()
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(jLabel3)
+                            .add(jLabel2))
+                        .add(104, 104, 104)
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(jTextFieldName)
+                            .add(jTextFieldMailAddress))))
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .add(jButtonSave)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jButtonCancel)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .add(jLabel11)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jLabel12)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 65, Short.MAX_VALUE)
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .add(jLabel1)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
@@ -226,7 +200,7 @@ public class MailSettings extends javax.swing.JDialog {
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabel10)
                     .add(jPasswordFieldPassword, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .add(59, 59, 59)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jButtonCancel)
                     .add(jButtonSave))
@@ -281,8 +255,6 @@ public class MailSettings extends javax.swing.JDialog {
     private javax.swing.JComboBox jComboBoxAccountTyp;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
