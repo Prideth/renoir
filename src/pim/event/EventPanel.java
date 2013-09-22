@@ -8,9 +8,9 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.Properties;
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -30,6 +30,12 @@ import pim.util.WrapLayout;
  */
 public class EventPanel extends JPanel implements PanelInterface {
 
+    private String addTitle;
+    private String yesText;
+    private String noText;
+    private String deleteEvent;
+    private String deleteEventTitle;
+    
     private static final int MAX_SIZE = 100;
     EventItem[] eventItems;
     private int size;
@@ -86,6 +92,11 @@ public class EventPanel extends JPanel implements PanelInterface {
             jButtonChange.setText(texts.getProperty("jButtonEventChange"));
             jButtonDelete.setText(texts.getProperty("jButtonEventDelete"));
             jLabelSearch.setText(texts.getProperty("jLabelEventSearch") + ": ");
+            addTitle = texts.getProperty("eventAddTitle");
+            yesText = texts.getProperty("yes");
+            noText = texts.getProperty("no");
+            deleteEvent = texts.getProperty("deleteEvent");
+            deleteEventTitle = texts.getProperty("deleteEventTitle");
         }
 
 
@@ -282,6 +293,7 @@ public class EventPanel extends JPanel implements PanelInterface {
             event = new Event(null, null, date);
         }
         CreateEventDialog dialog = new CreateEventDialog(rootWindow, true, event);
+        dialog.setTitle(addTitle);
         dialog.setLocationRelativeTo(rootWindow);
         dialog.setVisible(true);
         event = dialog.getEvent();
@@ -306,10 +318,10 @@ public class EventPanel extends JPanel implements PanelInterface {
     @Override
     public void showDeleteDialog(Object value, JFrame rootWindow) {
         Event event = (Event) value;
-        Object[] options = {"Ja", "Nein"};
-        int n = JOptionPane.showOptionDialog(rootWindow,
-                "Termin \"" + event.getTitle() + "\" löschen?",
-                "Löschen bestätigen",
+        Object[] options = {yesText, noText};
+        int n = JOptionPane.showOptionDialog(getRootWindow(),
+                MessageFormat.format(deleteEvent, event.getTitle()),
+                deleteEventTitle,
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
                 null,

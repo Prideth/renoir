@@ -56,12 +56,12 @@
                   <Component id="jComboBoxSort" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabelSort" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jTextFieldSearch" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabelSearch" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
               <Component id="jScrollPane1" max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -123,6 +123,7 @@
     </Component>
     <Component class="javax.swing.JTextField" name="jTextFieldSearch">
       <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextFieldSearchActionPerformed"/>
         <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextFieldSearchKeyReleased"/>
       </Events>
     </Component>

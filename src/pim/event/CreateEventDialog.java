@@ -60,10 +60,12 @@ public class CreateEventDialog extends javax.swing.JDialog {
         }
 
         if (texts != null) {
-          
+            jLabelTitle.setText(texts.getProperty("jLabelEventTitle") + ":");
+            jLabelDate.setText(texts.getProperty("jLabelEventDate") + ":");
+            jLabelTime.setText(texts.getProperty("jLabelEventTime") + ":");
+            jButtonOk.setText(texts.getProperty("jButtonEventOk"));
+            jButtonCancel.setText(texts.getProperty("jButtonEventCancel"));
         }
-
-
     }
     
     /**

@@ -6,7 +6,10 @@ package pim.notes;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Properties;
+import pim.Settings;
 import pim.TextFieldListener;
+import pim.Texts;
 
 /**
  * Klasse zum erstellen/bearbeiten einer Notiz ueber einen JDialog
@@ -24,6 +27,7 @@ public class CreateNoteDialog extends javax.swing.JDialog {
         super(parent, modal);
         this.note = note;
         initComponents();
+        setTexts(Settings.locale);
         
         TextFieldListener textFieldListener = new TextFieldListener();
         jTextFieldName.addMouseListener(textFieldListener);
@@ -35,6 +39,26 @@ public class CreateNoteDialog extends javax.swing.JDialog {
         }
     }
 
+    
+        public void setTexts(String locale) {
+        Properties texts = null;
+        switch (locale) {
+            case "en":
+                texts = Texts.props_en;
+                break;
+            case "de":
+                texts = Texts.props_de;
+                break;
+        }
+
+        if (texts != null) {
+            jLabelName.setText(texts.getProperty("jLabelNoteTitle") + ":");
+            jLabelNote.setText(texts.getProperty("jLabelNote") + ":");
+            jButtonOk.setText(texts.getProperty("jButtonNoteOk"));
+            jButtonCancel.setText(texts.getProperty("jButtonNoteCancel"));
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import javax.swing.JFrame;
@@ -25,6 +26,12 @@ import pim.util.WrapLayout;
  * @author Thomas Quitter
  */
 public class NotePanel extends JPanel implements PanelInterface {
+    
+    private String addTitle;
+    private String yesText;
+    private String noText;
+    private String deleteNote;
+    private String deleteNoteTitle;
 
     private NoteItem[] noteItems;
     private NoteItem selectedItem;
@@ -80,6 +87,13 @@ public class NotePanel extends JPanel implements PanelInterface {
             jButtonDelete.setText(texts.getProperty("jButtonNoteDelete"));
             jLabelSearch.setText(texts.getProperty("jLabelNoteSearch") + ":");
             jLabelSort.setText(texts.getProperty("jLabelSort") + ":");
+            addTitle = texts.getProperty("noteAddTitle");
+            yesText = texts.getProperty("yes");
+            noText = texts.getProperty("no");
+            deleteNote = texts.getProperty("deleteNote");
+            deleteNoteTitle = texts.getProperty("deleteNoteTitle");
+            jComboBoxSort.setModel(new javax.swing.DefaultComboBoxModel(new String[]{
+                texts.getProperty("sortDate"), texts.getProperty("sortTitle")}));
         }
 
     }
@@ -142,6 +156,11 @@ public class NotePanel extends JPanel implements PanelInterface {
 
         jLabelSearch.setText("Suche:");
 
+        jTextFieldSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldSearchActionPerformed(evt);
+            }
+        });
         jTextFieldSearch.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 jTextFieldSearchKeyReleased(evt);
@@ -187,11 +206,11 @@ public class NotePanel extends JPanel implements PanelInterface {
                     .addComponent(jButtonEdit)
                     .addComponent(jComboBoxSort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabelSort))
-                .addGap(3, 3, 3)
+                .addGap(2, 2, 2)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextFieldSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabelSearch))
-                .addGap(3, 3, 3)
+                .addGap(2, 2, 2)
                 .addComponent(jScrollPane1))
         );
 
@@ -312,6 +331,7 @@ public class NotePanel extends JPanel implements PanelInterface {
             note = new Note(0, null, null, date);
         }
         CreateNoteDialog dialog = new CreateNoteDialog(rootWindow, true, note);
+        dialog.setTitle(addTitle);
         dialog.setLocationRelativeTo(rootWindow);
         dialog.setVisible(true);
         note = dialog.getNote();
@@ -346,10 +366,10 @@ public class NotePanel extends JPanel implements PanelInterface {
     @Override
     public void showDeleteDialog(Object value, JFrame rootWindow) {
         Note note = (Note) value;
-        Object[] options = {"Ja", "Nein"};
-        int n = JOptionPane.showOptionDialog(rootWindow,
-                "Notiz \"" + note.getTitle() + "\" löschen?",
-                "Löschen bestätigen",
+        Object[] options = {yesText, noText};
+        int n = JOptionPane.showOptionDialog(getRootWindow(),
+                MessageFormat.format(deleteNote, note.getTitle()),
+                deleteNoteTitle,
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
                 null,
@@ -422,6 +442,10 @@ public class NotePanel extends JPanel implements PanelInterface {
                         String searchstring = jTextFieldSearch.getText().trim();
         initNoteItems(searchstring);
     }//GEN-LAST:event_jTextFieldSearchKeyReleased
+
+    private void jTextFieldSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldSearchActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldSearchActionPerformed
 
     /**
      * Methode zum anwaehlen eines NoteItems
