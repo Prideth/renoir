@@ -75,6 +75,11 @@ public class NotePanel extends JPanel implements PanelInterface {
         }
 
         if (texts != null) {
+            jButtonNew.setText(texts.getProperty("jButtonNoteAdd"));
+            jButtonEdit.setText(texts.getProperty("jButtonNoteChange"));
+            jButtonDelete.setText(texts.getProperty("jButtonNoteDelete"));
+            jLabelSearch.setText(texts.getProperty("jLabelNoteSearch") + ":");
+            jLabelSort.setText(texts.getProperty("jLabelSort") + ":");
         }
 
     }
@@ -92,10 +97,10 @@ public class NotePanel extends JPanel implements PanelInterface {
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanelContent = new javax.swing.JPanel();
         jButtonDelete = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        jLabelSearch = new javax.swing.JLabel();
         jTextFieldSearch = new javax.swing.JTextField();
         jComboBoxSort = new javax.swing.JComboBox();
-        jLabel2 = new javax.swing.JLabel();
+        jLabelSort = new javax.swing.JLabel();
 
         setMinimumSize(new java.awt.Dimension(200, 200));
 
@@ -135,7 +140,7 @@ public class NotePanel extends JPanel implements PanelInterface {
             }
         });
 
-        jLabel1.setText("Suche:");
+        jLabelSearch.setText("Suche:");
 
         jTextFieldSearch.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -150,26 +155,26 @@ public class NotePanel extends JPanel implements PanelInterface {
             }
         });
 
-        jLabel2.setText("Sortieren:");
+        jLabelSort.setText("Sortieren:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jButtonNew, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButtonNew, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButtonEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButtonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel2)
+                .addComponent(jLabelSort)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jComboBoxSort, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 574, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addGap(3, 3, 3)
-                .addComponent(jLabel1)
+                .addComponent(jLabelSearch)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextFieldSearch))
         );
@@ -181,11 +186,11 @@ public class NotePanel extends JPanel implements PanelInterface {
                     .addComponent(jButtonDelete)
                     .addComponent(jButtonEdit)
                     .addComponent(jComboBoxSort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
+                    .addComponent(jLabelSort))
                 .addGap(3, 3, 3)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextFieldSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                    .addComponent(jLabelSearch))
                 .addGap(3, 3, 3)
                 .addComponent(jScrollPane1))
         );
@@ -538,8 +543,8 @@ public class NotePanel extends JPanel implements PanelInterface {
     private javax.swing.JButton jButtonEdit;
     private javax.swing.JButton jButtonNew;
     private javax.swing.JComboBox jComboBoxSort;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabelSearch;
+    private javax.swing.JLabel jLabelSort;
     private javax.swing.JPanel jPanelContent;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextFieldSearch;

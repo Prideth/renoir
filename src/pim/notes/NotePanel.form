@@ -27,20 +27,20 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
-              <Component id="jButtonNew" min="-2" pref="100" max="-2" attributes="0"/>
+              <Component id="jButtonNew" min="-2" pref="90" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jButtonEdit" min="-2" pref="100" max="-2" attributes="0"/>
+              <Component id="jButtonEdit" min="-2" pref="90" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jButtonDelete" min="-2" pref="97" max="-2" attributes="0"/>
+              <Component id="jButtonDelete" min="-2" pref="90" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
-              <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+              <Component id="jLabelSort" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jComboBoxSort" min="-2" pref="110" max="-2" attributes="0"/>
           </Group>
           <Component id="jScrollPane1" pref="574" max="32767" attributes="0"/>
           <Group type="102" attributes="0">
               <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
-              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+              <Component id="jLabelSearch" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jTextFieldSearch" max="32767" attributes="0"/>
           </Group>
@@ -54,12 +54,12 @@
                   <Component id="jButtonDelete" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jButtonEdit" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jComboBoxSort" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabelSort" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jTextFieldSearch" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabelSearch" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
               <Component id="jScrollPane1" max="32767" attributes="0"/>
@@ -116,7 +116,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonDeleteActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabel1">
+    <Component class="javax.swing.JLabel" name="jLabelSearch">
       <Properties>
         <Property name="text" type="java.lang.String" value="Suche:"/>
       </Properties>
@@ -139,7 +139,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jComboBoxSortActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabel2">
+    <Component class="javax.swing.JLabel" name="jLabelSort">
       <Properties>
         <Property name="text" type="java.lang.String" value="Sortieren:"/>
       </Properties>

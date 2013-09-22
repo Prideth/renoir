@@ -82,7 +82,12 @@ public class EventPanel extends JPanel implements PanelInterface {
         }
 
         if (texts != null) {
+            jButtonAdd.setText(texts.getProperty("jButtonEventAdd"));
+            jButtonChange.setText(texts.getProperty("jButtonEventChange"));
+            jButtonDelete.setText(texts.getProperty("jButtonEventDelete"));
+            jLabelSearch.setText(texts.getProperty("jLabelEventSearch") + ": ");
         }
+
 
     }
     

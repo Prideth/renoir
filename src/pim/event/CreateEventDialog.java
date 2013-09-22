@@ -7,8 +7,11 @@ package pim.event;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import pim.Settings;
+import pim.Texts;
 
 
 
@@ -24,6 +27,8 @@ public class CreateEventDialog extends javax.swing.JDialog {
         super(parent, modal);
         this.event = event;
         initComponents();
+        
+        setTexts(Settings.locale);
         
         dateChooserCombo.setSelectedDate(null);
         
@@ -43,6 +48,24 @@ public class CreateEventDialog extends javax.swing.JDialog {
         }
     }
 
+    public void setTexts(String locale) {
+        Properties texts = null;
+        switch (locale) {
+            case "en":
+                texts = Texts.props_en;
+                break;
+            case "de":
+                texts = Texts.props_de;
+                break;
+        }
+
+        if (texts != null) {
+          
+        }
+
+
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
